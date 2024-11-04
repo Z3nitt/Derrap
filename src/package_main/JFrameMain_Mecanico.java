@@ -1,5 +1,6 @@
 package package_main;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -12,6 +13,7 @@ import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
@@ -25,7 +27,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JButton btnBORRAR;
+	private JButton btnLogout;
 	
 	
 
@@ -67,14 +69,25 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         
         
-        btnBORRAR = new JButton();
+        btnLogout = new JButton("Cerrar Sesión");
+        btnLogout.addActionListener(this);
+        btnLogout.setBounds(815, 11, 119, 23);
+        fondoPantalla.add(btnLogout);
         
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnBORRAR) {
-        	
+        if (e.getSource() == btnLogout) {
+        	logout();
         }
  }
+
+	private void logout() {
+		JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
+		JFrameLogin JFLogin = new JFrameLogin();
+		JFLogin.setVisible(true);
+        dispose();
+		
+	}
 
 }

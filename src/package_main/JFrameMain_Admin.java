@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.Color;
 
 public class JFrameMain_Admin extends JFrame implements ActionListener {
 	Conector_BBDD conexion = new Conector_BBDD();
@@ -35,7 +36,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JButton btncrearAdmin, btncrearMecanicos, btnenviarAdmin, btnenviarMecanico;
+	private JButton btncrearAdmin, btncrearMecanicos, btnenviarAdmin, btnenviarMecanico, btnLogout;
 	private JPanel jpcrearUsuario,jpvacio1,jpvacio2,jpvacio3;
 	private JTextField txtusuarioAdmin,txtpasswordAdmin, txtusuarioMecanico, txtpasswordMecanico, txtnombreAdmin, txtapellidosAdmin, txtnombreMecanico, txtapellidosMecanico;
 	private JLabel lblusuarioAdmin, lblpasswordAdmin, lblusuarioMecanico, lblpasswordMecanico, lblinfoAdmin, lblinfoMecanico, lblnombreAdmin, lblapellidosAdmin, lblnombreMecanico, lblapellidosMecanico;
@@ -87,7 +88,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
         
         JTabbedPane jtpmenuPrincipal = new JTabbedPane();
-        jtpmenuPrincipal.setBounds(20, 10, 900, 480);
+        jtpmenuPrincipal.setBounds(20, 30, 900, 460);
         
         jtpmenuPrincipal.add("Añadir Usuarios",jpcrearUsuario);
         jtpmenuPrincipal.add("Vacio 1",jpvacio1);
@@ -225,6 +226,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         jpcrearUsuario.add(btnenviarMecanico);
         btnenviarMecanico.setVisible(false);
         
+        btnLogout = new JButton("Cerrar Sesión");
+        btnLogout.addActionListener(this);
+        btnLogout.setBounds(815, 11, 119, 23);
+        fondoPantalla.add(btnLogout);
+        
+        
         
         
         
@@ -318,6 +325,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	        	txtnombreMecanico.setText("");
 	        	txtpasswordMecanico.setText("");
 	        	txtusuarioMecanico.setText("");
+        	} else if(e.getSource() == btnLogout) {
+        		logout();
         	}
 	 }
 	 
@@ -421,5 +430,11 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	 			JOptionPane.showMessageDialog(this, "El usuario introducido no es válido. Solo se permite usar un DNI como nombre de usuario","Error de autenticación", JOptionPane.WARNING_MESSAGE);
 	 		 }
 	 }
-
+	 
+	 public void logout() {
+		 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
+		 JFrameLogin JFLogin = new JFrameLogin();
+		 JFLogin.setVisible(true);
+         dispose();
+	 }
 }

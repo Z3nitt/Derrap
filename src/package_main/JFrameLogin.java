@@ -3,11 +3,13 @@ package package_main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -35,6 +37,7 @@ public class JFrameLogin extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField txtUsuario;
+    private JLabel lblUsuario, lblPass;
     private JButton btnLogin;
     private JPasswordField jpassword;
 
@@ -69,9 +72,21 @@ public class JFrameLogin extends JFrame implements ActionListener {
 
         setSize(width / 2, height / 2);
         setLocationRelativeTo(null);
+        
+        lblUsuario = new JLabel("Usuario: ");
+        lblUsuario.setBounds(383, 105, 155, 30);
+        lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(lblUsuario);
+        
+        lblPass = new JLabel("Contraseña: ");
+        lblPass.setBounds(383, 250, 155, 30);
+        lblPass.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblPass.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(lblPass);
 
         jpassword = new JPasswordField();
-        jpassword.setBounds(383, 247, 155, 30);
+        jpassword.setBounds(383, 275, 155, 30);
         jpassword.setHorizontalAlignment(SwingConstants.CENTER);
         addPlaceholder(jpassword, "Contraseña");
         contentPane.add(jpassword);
@@ -85,6 +100,8 @@ public class JFrameLogin extends JFrame implements ActionListener {
         btnLogin = new JButton("Acceder");
         btnLogin.setBounds(404, 374, 114, 40);
         btnLogin.addActionListener(this);
+        btnLogin.setBackground(new Color(0, 0, 0));
+        btnLogin.setForeground(new Color(207, 249, 252));
         contentPane.add(btnLogin);
     }
 
