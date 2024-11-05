@@ -9,7 +9,7 @@ import java.sql.*;
 public class Conector_BBDD {
 	//BASE DE DATOS LOCAL
 	private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
-	private static final String URL = "jdbc:mysql://localhost:3306/derrap?useSSL=false";
+	private static final String URL = "jdbc:mysql://localhost:3306/derrap2?useSSL=false";
 	private static final String USUARIO = "root";
 	private static final String CLAVE = "1234";
 	Connection cn = null;

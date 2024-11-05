@@ -13,6 +13,17 @@ import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+
+import ventana_emergente.VtnCrearActualizarMecanico;
+
+import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +36,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.JTable;
 
 public class JFrameMain_Admin extends JFrame implements ActionListener {
 	Conector_BBDD conexion = new Conector_BBDD();
@@ -32,14 +44,16 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	Connection cn = null;
     Statement stm = null;
     ResultSet rsetresultado = null;
+    VtnCrearActualizarMecanico vtnmecanico = new VtnCrearActualizarMecanico();
 	
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JButton btncrearAdmin, btncrearMecanicos, btnenviarAdmin, btnenviarMecanico, btnLogout;
-	private JPanel jpcrearUsuario,jpvacio1,jpvacio2,jpvacio3;
-	private JTextField txtusuarioAdmin,txtpasswordAdmin, txtusuarioMecanico, txtpasswordMecanico, txtnombreAdmin, txtapellidosAdmin, txtnombreMecanico, txtapellidosMecanico;
-	private JLabel lblusuarioAdmin, lblpasswordAdmin, lblusuarioMecanico, lblpasswordMecanico, lblinfoAdmin, lblinfoMecanico, lblnombreAdmin, lblapellidosAdmin, lblnombreMecanico, lblapellidosMecanico;
+	private JButton btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente,btnCrearCoche, btnProveedores,btnMecanicos, btnCrearProveedores;
+	private JPanel jpClientes,jpvacio1,jpvacio2,jpvacio3;
+	private JTextField txtusuarioAdmin,txtpasswordAdmin, txtusuarioMecanico, txtpasswordMecanico, txtnombreAdmin, txtapellidosAdmin, txtnombreMecanico, txtapellidosMecanico,txtBuscadorClientes,txtBuscadorMecanicos, txtBuscadorProveedor;
+	private JTable tblTablaClientes,tblTablaCoches, tblTablaMecanicos, tblTablaProveedores;
+	private JTextField txtBuscadorCoches;
 
 	/**
 	 * Launch the application.
@@ -75,11 +89,11 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         int height = pantalla.height;
         int width = pantalla.width;
 
-        setSize(width / 2, height / 2);
+        setSize(1062, 660);
         setLocationRelativeTo(null);
         
-        jpcrearUsuario = new JPanel();
-        jpcrearUsuario.setLayout(null);
+        jpClientes = new JPanel();
+        jpClientes.setLayout(null);
         
         
         jpvacio1 = new JPanel();
@@ -88,245 +102,348 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
         
         JTabbedPane jtpmenuPrincipal = new JTabbedPane();
-        jtpmenuPrincipal.setBounds(20, 30, 900, 460);
+        jtpmenuPrincipal.setBounds(10, 38, 1026, 572);
         
-        jtpmenuPrincipal.add("Añadir Usuarios",jpcrearUsuario);
+        jtpmenuPrincipal.add("Clientes",jpClientes);
         jtpmenuPrincipal.add("Vacio 1",jpvacio1);
         jtpmenuPrincipal.add("Vacio 2",jpvacio2);
         jtpmenuPrincipal.add("Vacio 3",jpvacio3);
         
         getContentPane().add(jtpmenuPrincipal);
         
-        //CREAR ADMINS
-        btncrearAdmin = new JButton("Crear Administrador");
-        btncrearAdmin.setBounds(50, 100, 150, 30);
-        btncrearAdmin.addActionListener(this);
-        jpcrearUsuario.add(btncrearAdmin);
-        
-        lblinfoAdmin = new JLabel();
-        lblinfoAdmin.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
-        lblinfoAdmin.setHorizontalAlignment(SwingConstants.CENTER);
-        lblinfoAdmin.setBounds(50, 200, 223, 30);
-        lblinfoAdmin.setText("CREANDO NUEVO ADMINISTRADOR");
-        jpcrearUsuario.add(lblinfoAdmin);
-        lblinfoAdmin.setVisible(false);
-        
-        
-        lblusuarioAdmin = new JLabel();
-        lblusuarioAdmin.setBounds(50, 260, 150, 30);
-        lblusuarioAdmin.setText("Introducir DNI: ");
-        jpcrearUsuario.add(lblusuarioAdmin);
-        lblusuarioAdmin.setVisible(false);
-        
-        txtusuarioAdmin = new JTextField();
-        txtusuarioAdmin.setBounds(200, 260, 150, 30);
-        jpcrearUsuario.add(txtusuarioAdmin);
-        txtusuarioAdmin.setVisible(false);
-        
-        lblpasswordAdmin = new JLabel();
-        lblpasswordAdmin.setBounds(50, 320, 150, 30);
-        lblpasswordAdmin.setText("Introducir contraseña: ");
-        jpcrearUsuario.add(lblpasswordAdmin);
-        lblpasswordAdmin.setVisible(false);
-        
-        txtpasswordAdmin = new JTextField();
-        txtpasswordAdmin.setBounds(200, 320, 150, 30);
-        jpcrearUsuario.add(txtpasswordAdmin);
-        txtpasswordAdmin.setVisible(false);
-        
-        lblnombreAdmin = new JLabel();
-        lblnombreAdmin.setBounds(400, 260, 150, 30);
-        lblnombreAdmin.setText("Introducir Nombre: ");
-        jpcrearUsuario.add(lblnombreAdmin);
-        lblnombreAdmin.setVisible(false);
-        
-        txtnombreAdmin = new JTextField();
-        txtnombreAdmin.setBounds(550, 260, 150, 30);
-        jpcrearUsuario.add(txtnombreAdmin);
-        txtnombreAdmin.setVisible(false);
-        
-        lblapellidosAdmin = new JLabel();
-        lblapellidosAdmin.setBounds(400, 320, 150, 30);
-        lblapellidosAdmin.setText("Introducir Apellidos: ");
-        jpcrearUsuario.add(lblapellidosAdmin);
-        lblapellidosAdmin.setVisible(false);
-        
-        txtapellidosAdmin = new JTextField();
-        txtapellidosAdmin.setBounds(550, 320, 150, 30);
-        jpcrearUsuario.add(txtapellidosAdmin);
-        txtapellidosAdmin.setVisible(false);
-        
-        btnenviarAdmin = new JButton("Registrar");
-        btnenviarAdmin.setBounds(325, 390, 150, 30);
-        btnenviarAdmin.addActionListener(this);
-        jpcrearUsuario.add(btnenviarAdmin);
-        btnenviarAdmin.setVisible(false);
+
         
         //CREAR MECANICOS
-        btncrearMecanicos = new JButton("Crear Mecánico");
-        btncrearMecanicos.setBounds(690, 100, 150, 30);
-        btncrearMecanicos.addActionListener(this);
-        jpcrearUsuario.add(btncrearMecanicos);
+        btnMecanicos = new JButton("MECÁNICOS");
+        btnMecanicos.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnMecanicos.setBounds(21, 226, 150, 30);
+        btnMecanicos.addActionListener(this);
+        jpClientes.add(btnMecanicos);
         
-        lblinfoMecanico = new JLabel();
-        lblinfoMecanico.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
-        lblinfoMecanico.setHorizontalAlignment(SwingConstants.CENTER);
-        lblinfoMecanico.setBounds(50, 200, 223, 30);
-        lblinfoMecanico.setText("CREANDO NUEVO MECÁNICO");
-        jpcrearUsuario.add(lblinfoMecanico);
-        lblinfoMecanico.setVisible(false);
+        JLabel lblTitulo = new JLabel("GESTIÓN");
+        lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitulo.setBounds(21, 26, 150, 24);
+        jpClientes.add(lblTitulo);
         
-        lblusuarioMecanico = new JLabel();
-        lblusuarioMecanico.setBounds(50, 260, 150, 30);
-        lblusuarioMecanico.setText("Introducir DNI: ");
-        jpcrearUsuario.add(lblusuarioMecanico);
-        lblusuarioMecanico.setVisible(false);
+        btnClientes = new JButton("CLIENTES");
+        btnClientes.addActionListener(this);
+        btnClientes.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnClientes.setBounds(21, 105, 150, 30);
+        jpClientes.add(btnClientes);
         
-        txtusuarioMecanico = new JTextField();
-        txtusuarioMecanico.setBounds(200, 260, 150, 30);
-        jpcrearUsuario.add(txtusuarioMecanico);
-        txtusuarioMecanico.setVisible(false);
+        btnProveedores = new JButton("PROVEEDORES");
+        btnProveedores.addActionListener(this);
+        btnProveedores.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnProveedores.setBounds(21, 356, 150, 30);
+        jpClientes.add(btnProveedores);
         
-        lblpasswordMecanico = new JLabel();
-        lblpasswordMecanico.setBounds(50, 320, 150, 30);
-        lblpasswordMecanico.setText("Introducir contraseña: ");
-        jpcrearUsuario.add(lblpasswordMecanico);
-        lblpasswordMecanico.setVisible(false);
+
         
-        txtpasswordMecanico = new JTextField();
-        txtpasswordMecanico.setBounds(200, 320, 150, 30);
-        jpcrearUsuario.add(txtpasswordMecanico);
-        txtpasswordMecanico.setVisible(false);
         
-        lblnombreMecanico = new JLabel();
-        lblnombreMecanico.setBounds(400, 260, 150, 30);
-        lblnombreMecanico.setText("Introducir Nombre: ");
-        jpcrearUsuario.add(lblnombreMecanico);
-        lblnombreMecanico.setVisible(false);
         
-        txtnombreMecanico = new JTextField();
-        txtnombreMecanico.setBounds(550, 260, 150, 30);
-        jpcrearUsuario.add(txtnombreMecanico);
-        txtnombreMecanico.setVisible(false);
+     // Crear el JTextField con ícono y hint
+        txtBuscadorClientes = new JTextField();
+        txtBuscadorClientes.setColumns(10); // Ajusta el ancho
+        txtBuscadorClientes.setText("Buscar clientes..."); // Placeholder
+        txtBuscadorClientes.setForeground(Color.GRAY);
+
+        // Configurar el hint con el FocusListener
+        String hint = "Buscar clientes...";
+        txtBuscadorClientes.setText(hint);
+        txtBuscadorClientes.setForeground(Color.GRAY);
+        txtBuscadorClientes.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtBuscadorClientes.getText().equals(hint)) {
+                    txtBuscadorClientes.setText("");
+                    txtBuscadorClientes.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtBuscadorClientes.getText().isEmpty()) {
+                    txtBuscadorClientes.setText(hint);
+                    txtBuscadorClientes.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        // Configurar el ícono
+
+        // Crear un panel para el JTextField con el ícono
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setBounds(469, 26, 497, 24);
+        searchPanel.add(txtBuscadorClientes, BorderLayout.CENTER);
+
+        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
+        jpClientes.add(searchPanel);
+
         
-        lblapellidosMecanico = new JLabel();
-        lblapellidosMecanico.setBounds(400, 320, 150, 30);
-        lblapellidosMecanico.setText("Introducir Apellidos: ");
-        jpcrearUsuario.add(lblapellidosMecanico);
-        lblapellidosMecanico.setVisible(false);
+        tblTablaClientes = new JTable();
+        tblTablaClientes.setBounds(469, 61, 497, 153);
+        jpClientes.add(tblTablaClientes);
         
-        txtapellidosMecanico = new JTextField();
-        txtapellidosMecanico.setBounds(550, 320, 150, 30);
-        jpcrearUsuario.add(txtapellidosMecanico);
-        txtapellidosMecanico.setVisible(false);
+        btnCrearCliente = new JButton("+");
+        btnCrearCliente.addActionListener(this);
+        btnCrearCliente.setBackground(new Color(170, 255, 0));
+        btnCrearCliente.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnCrearCliente.setBounds(469, 226, 497, 35);
+        jpClientes.add(btnCrearCliente);
         
-        btnenviarMecanico = new JButton("Registrar");
-        btnenviarMecanico.setBounds(325, 390, 150, 30);
-        btnenviarMecanico.addActionListener(this);
-        jpcrearUsuario.add(btnenviarMecanico);
-        btnenviarMecanico.setVisible(false);
+     // Cambia el botón btnImprimir para que sea redondo y tenga un ícono
+        btnImprimir = new JButton() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                if (isOpaque()) {
+                    // Dibujar el fondo en forma de círculo
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.setColor(getBackground());
+                    g2.fillOval(0, 0, getWidth(), getHeight());
+                    g2.dispose();
+                }
+                super.paintComponent(g);
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+                // Define dimensiones iguales para mantener el botón redondo
+                return new Dimension(50, 50); // Tamaño personalizado para el botón
+            }
+        };
+        btnImprimir.setContentAreaFilled(false);
+        btnImprimir.setFocusPainted(false);
+        btnImprimir.setBorderPainted(false);
+        btnImprimir.setOpaque(false);
+        btnImprimir.addActionListener(this);
+
+        // Coloca un ícono en el botón redondo
+        Icon icon3 = new ImageIcon(getClass().getResource("/package_assets/printicon.png")); // Ruta del ícono
+        btnImprimir.setIcon(icon3);
+        btnImprimir.setBackground(new Color(255, 87, 34)); // Color de fondo del botón
+
+        // Añade el botón a tu panel
+        btnImprimir.setBounds(10, 463, 150, 45); // Ajusta la posición y tamaño
+        jpClientes.add(btnImprimir);
+
+        
+        txtBuscadorCoches = new JTextField();
+        txtBuscadorCoches.setColumns(10); // Ajusta el ancho
+        txtBuscadorCoches.setText("Buscar coches..."); // Placeholder
+        txtBuscadorCoches.setForeground(Color.GRAY);
+        
+        String hint2 = "Buscar coches...";
+        txtBuscadorCoches.setText(hint2);
+        txtBuscadorCoches.setForeground(Color.GRAY);
+        txtBuscadorCoches.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtBuscadorCoches.getText().equals(hint2)) {
+                	txtBuscadorCoches.setText("");
+                	txtBuscadorCoches.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtBuscadorCoches.getText().isEmpty()) {
+                	txtBuscadorCoches.setText(hint2);
+                	txtBuscadorCoches.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+
+        // Crear un panel para el JTextField con el ícono
+        JPanel searchPanel2 = new JPanel(new BorderLayout());
+        searchPanel2.setBounds(469, 288, 497, 24);
+        searchPanel2.add(txtBuscadorCoches, BorderLayout.CENTER);
+
+        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
+        jpClientes.add(searchPanel2);
+        
+
+        tblTablaCoches = new JTable();
+        tblTablaCoches.setBounds(469, 331, 497, 127);
+        jpClientes.add(tblTablaCoches);
+        
+        btnCrearCoche = new JButton("+");
+        btnCrearCoche.setBackground(new Color(170, 255, 0));
+        btnCrearCoche.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnCrearCoche.setBounds(469, 473, 497, 35);
+        jpClientes.add(btnCrearCoche);
+        
+        
+        txtBuscadorMecanicos = new JTextField();
+        txtBuscadorMecanicos.setColumns(10); // Ajusta el ancho
+        txtBuscadorMecanicos.setText("Buscar mecanicos..."); // Placeholder
+        txtBuscadorMecanicos.setForeground(Color.GRAY);
+
+        // Configurar el hint con el FocusListener
+        String hint3 = "Buscar mecanicos...";
+        txtBuscadorMecanicos.setText(hint3);
+        txtBuscadorMecanicos.setForeground(Color.GRAY);
+        txtBuscadorMecanicos.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtBuscadorMecanicos.getText().equals(hint3)) {
+                	txtBuscadorMecanicos.setText("");
+                	txtBuscadorMecanicos.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtBuscadorMecanicos.getText().isEmpty()) {
+                	txtBuscadorMecanicos.setText(hint3);
+                	txtBuscadorMecanicos.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        // Configurar el ícono
+
+        // Crear un panel para el JTextField con el ícono
+        JPanel searchPanel3 = new JPanel(new BorderLayout());
+        searchPanel3.setBounds(469, 26, 497, 24);
+        searchPanel3.add(txtBuscadorMecanicos, BorderLayout.CENTER);
+
+        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
+        jpClientes.add(searchPanel3);
+
+        
+        tblTablaMecanicos = new JTable();
+        tblTablaMecanicos.setBounds(469, 61, 497, 153);
+        jpClientes.add(tblTablaMecanicos);
+        
+        btnCrearMecanicos = new JButton("+");
+        btnCrearMecanicos.addActionListener(this);
+        btnCrearMecanicos.setBackground(new Color(170, 255, 0));
+        btnCrearMecanicos.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnCrearMecanicos.setBounds(469, 226, 497, 35);
+        jpClientes.add(btnCrearMecanicos);
+        
+        txtBuscadorProveedor = new JTextField();
+        txtBuscadorProveedor.setColumns(10); // Ajusta el ancho
+        txtBuscadorProveedor.setText("Buscar proveedor..."); // Placeholder
+        txtBuscadorProveedor.setForeground(Color.GRAY);
+
+        // Configurar el hint con el FocusListener
+        String hint4 = "Buscar proveedor...";
+        txtBuscadorProveedor.setText(hint4);
+        txtBuscadorProveedor.setForeground(Color.GRAY);
+        txtBuscadorProveedor.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtBuscadorProveedor.getText().equals(hint4)) {
+                	txtBuscadorProveedor.setText("");
+                	txtBuscadorProveedor.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtBuscadorProveedor.getText().isEmpty()) {
+                	txtBuscadorProveedor.setText(hint4);
+                	txtBuscadorProveedor.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        // Configurar el ícono
+
+        // Crear un panel para el JTextField con el ícono
+        JPanel searchPanel4 = new JPanel(new BorderLayout());
+        searchPanel4.setBounds(469, 26, 497, 24);
+        searchPanel4.add(txtBuscadorProveedor, BorderLayout.CENTER);
+
+        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
+        jpClientes.add(searchPanel4);
+
+        
+        tblTablaProveedores = new JTable();
+        tblTablaProveedores.setBounds(469, 61, 497, 153);
+        jpClientes.add(tblTablaProveedores);
+        
+        btnCrearProveedores = new JButton("+");
+        btnCrearProveedores.addActionListener(this);
+        btnCrearProveedores.setBackground(new Color(170, 255, 0));
+        btnCrearProveedores.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnCrearProveedores.setBounds(469, 226, 497, 35);
+        jpClientes.add(btnCrearProveedores);
+        
         
         btnLogout = new JButton("Cerrar Sesión");
         btnLogout.addActionListener(this);
-        btnLogout.setBounds(815, 11, 119, 23);
+        btnLogout.setBounds(917, 11, 119, 23);
         fondoPantalla.add(btnLogout);
         
+        txtBuscadorClientes.setVisible(false);
+		tblTablaClientes.setVisible(false);
+		btnCrearCliente.setVisible(false);
+		txtBuscadorCoches.setVisible(false);
+		tblTablaCoches.setVisible(false);
+		btnCrearCoche.setVisible(false);
+		
+		txtBuscadorMecanicos.setVisible(false);
+		tblTablaMecanicos.setVisible(false);
+		btnCrearMecanicos.setVisible(false);
+		
+		txtBuscadorProveedor.setVisible(false);
+		tblTablaProveedores.setVisible(false);
+		btnCrearProveedores.setVisible(false);
         
-        
-        
+        //ACTION PERFORMED_____________________________________________________________
         
 	}
 	
 	 public void actionPerformed(ActionEvent e) {
-	        if (e.getSource() == btncrearAdmin) {
-	        	lblinfoAdmin.setVisible(true);
-	        	lblusuarioAdmin.setVisible(true);
-	        	txtusuarioAdmin.setVisible(true);
-	        	lblpasswordAdmin.setVisible(true);
-	        	txtpasswordAdmin.setVisible(true);
-	        	btnenviarAdmin.setVisible(true);
-	        	lblnombreAdmin.setVisible(true);
-	        	txtnombreAdmin.setVisible(true);
-	        	lblapellidosAdmin.setVisible(true);
-	        	txtapellidosAdmin.setVisible(true);
-	        	
-	        	txtapellidosAdmin.setText("");
-	        	txtnombreAdmin.setText("");
-	        	txtpasswordAdmin.setText("");
-	        	txtusuarioAdmin.setText("");
-	        	txtapellidosMecanico.setText("");
-	        	txtnombreMecanico.setText("");
-	        	txtpasswordMecanico.setText("");
-	        	txtusuarioMecanico.setText("");
-	        	
-	        	lblinfoMecanico.setVisible(false);
-	        	lblusuarioMecanico.setVisible(false);
-	        	txtusuarioMecanico.setVisible(false);
-	        	lblpasswordMecanico.setVisible(false);
-	        	txtpasswordMecanico.setVisible(false);
-	        	btnenviarMecanico.setVisible(false);
-	        	lblnombreMecanico.setVisible(false);
-	        	txtnombreMecanico.setVisible(false);
-	        	lblapellidosMecanico.setVisible(false);
-	        	txtapellidosMecanico.setVisible(false);
-
-	        }else if(e.getSource() == btncrearMecanicos) {
-	        	lblinfoAdmin.setVisible(false);
-	        	lblusuarioAdmin.setVisible(false);
-	        	txtusuarioAdmin.setVisible(false);
-	        	lblpasswordAdmin.setVisible(false);
-	        	txtpasswordAdmin.setVisible(false);
-	        	btnenviarAdmin.setVisible(false);
-	        	lblnombreAdmin.setVisible(false);
-	        	txtnombreAdmin.setVisible(false);
-	        	lblapellidosAdmin.setVisible(false);
-	        	txtapellidosAdmin.setVisible(false);
-	        	
-	        	txtapellidosAdmin.setText("");
-	        	txtnombreAdmin.setText("");
-	        	txtpasswordAdmin.setText("");
-	        	txtusuarioAdmin.setText("");
-	        	txtapellidosMecanico.setText("");
-	        	txtnombreMecanico.setText("");
-	        	txtpasswordMecanico.setText("");
-	        	txtusuarioMecanico.setText("");
-	        	
-	        	lblinfoMecanico.setVisible(true);
-	        	lblusuarioMecanico.setVisible(true);
-	        	txtusuarioMecanico.setVisible(true);
-	        	lblpasswordMecanico.setVisible(true);
-	        	txtpasswordMecanico.setVisible(true);
-	        	btnenviarMecanico.setVisible(true);
-	        	lblnombreMecanico.setVisible(true);
-	        	txtnombreMecanico.setVisible(true);
-	        	lblapellidosMecanico.setVisible(true);
-	        	txtapellidosMecanico.setVisible(true);
-	        	
-	        }else if(e.getSource() == btnenviarAdmin) {
-	        	registroAdmin();
-	        	
-	        	txtapellidosAdmin.setText("");
-	        	txtnombreAdmin.setText("");
-	        	txtpasswordAdmin.setText("");
-	        	txtusuarioAdmin.setText("");
-	        	txtapellidosMecanico.setText("");
-	        	txtnombreMecanico.setText("");
-	        	txtpasswordMecanico.setText("");
-	        	txtusuarioMecanico.setText("");
-        		
-        	}else if (e.getSource() == btnenviarMecanico) {
-        		registroMecanico();
-        		
-        		txtapellidosAdmin.setText("");
-	        	txtnombreAdmin.setText("");
-	        	txtpasswordAdmin.setText("");
-	        	txtusuarioAdmin.setText("");
-	        	txtapellidosMecanico.setText("");
-	        	txtnombreMecanico.setText("");
-	        	txtpasswordMecanico.setText("");
-	        	txtusuarioMecanico.setText("");
-        	} else if(e.getSource() == btnLogout) {
+	         if(e.getSource() == btnLogout) {
         		logout();
+        	} else if(e.getSource() == btnImprimir) {
+        		System.out.println("adasdasds");
+        	} else if(e.getSource() == btnClientes) {
+        		txtBuscadorClientes.setVisible(true);
+        		tblTablaClientes.setVisible(true);
+        		btnCrearCliente.setVisible(true);
+        		txtBuscadorCoches.setVisible(true);
+        		tblTablaCoches.setVisible(true);
+        		btnCrearCoche.setVisible(true);
+        		
+        		txtBuscadorMecanicos.setVisible(false);
+        		tblTablaMecanicos.setVisible(false);
+        		btnCrearMecanicos.setVisible(false);
+        	} else if (e.getSource() == btnMecanicos) {
+        		txtBuscadorMecanicos.setVisible(true);
+        		tblTablaMecanicos.setVisible(true);
+        		btnCrearMecanicos.setVisible(true);
+        		
+        		txtBuscadorClientes.setVisible(false);
+        		tblTablaClientes.setVisible(false);
+        		btnCrearCliente.setVisible(false);
+        		txtBuscadorCoches.setVisible(false);
+        		tblTablaCoches.setVisible(false);
+        		btnCrearCoche.setVisible(false);
+        	} else if (e.getSource() == btnProveedores) {
+        		txtBuscadorProveedor.setVisible(true);
+        		tblTablaProveedores.setVisible(true);
+        		btnCrearProveedores.setVisible(true);
+        		
+        		txtBuscadorMecanicos.setVisible(false);
+        		tblTablaMecanicos.setVisible(false);
+        		btnCrearMecanicos.setVisible(false);
+        		
+        		txtBuscadorClientes.setVisible(false);
+        		tblTablaClientes.setVisible(false);
+        		btnCrearCliente.setVisible(false);
+        		txtBuscadorCoches.setVisible(false);
+        		tblTablaCoches.setVisible(false);
+        		btnCrearCoche.setVisible(false);
+        	} else if (e.getSource() == btnCrearMecanicos) {
+        		vtnmecanico.setVisible(true);
+                
         	}
 	 }
 	 
