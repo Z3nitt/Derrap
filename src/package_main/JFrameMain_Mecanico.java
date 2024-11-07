@@ -27,7 +27,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JButton btnLogout;
+	JButton btnLogout;
 	
 	
 
@@ -61,18 +61,18 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
         fondoPantalla.setLayout(null);
 		setContentPane(fondoPantalla);
 		
-		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        int height = pantalla.height;
-        int width = pantalla.width;
+		btnLogout = new JButton("Cerrar Sesión");
+		btnLogout.addActionListener(this);
+		btnLogout.setBounds(969, 10, 129, 38);
+		fondoPantalla.add(btnLogout);
+		
 
-        setSize(width / 2, height / 2);
+
+        setSize(1122, 735);
         setLocationRelativeTo(null);
         
         
-        btnLogout = new JButton("Cerrar Sesión");
-        btnLogout.addActionListener(this);
-        btnLogout.setBounds(815, 11, 119, 23);
-        fondoPantalla.add(btnLogout);
+
         
 	}
 	
@@ -89,5 +89,4 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
         dispose();
 		
 	}
-
 }

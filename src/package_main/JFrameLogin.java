@@ -66,11 +66,11 @@ public class JFrameLogin extends JFrame implements ActionListener {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        int height = pantalla.height;
-        int width = pantalla.width;
+        //Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        //int height = pantalla.height;
+        //int width = pantalla.width;
 
-        setSize(width / 2, height / 2);
+        setSize(910, 622);
         setLocationRelativeTo(null);
         
         lblUsuario = new JLabel("Usuario: ");

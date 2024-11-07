@@ -16,13 +16,15 @@ import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import ventana_emergente.VtnCrearActualizarMecanico;
 
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -39,75 +41,76 @@ import java.awt.Color;
 import javax.swing.JTable;
 
 public class JFrameMain_Admin extends JFrame implements ActionListener {
-	Conector_BBDD conexion = new Conector_BBDD();
-	Background fondoPantalla = new Background();
-	Connection cn = null;
+    Conector_BBDD conexion = new Conector_BBDD();
+    Background fondoPantalla = new Background();
+    Connection cn = null;
     Statement stm = null;
     ResultSet rsetresultado = null;
     VtnCrearActualizarMecanico vtnmecanico = new VtnCrearActualizarMecanico();
-	
+    
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JButton btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores;
+    private JPanel jpClientes, jpMaterial, jpServicios, jpEconomia;
+    private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorProveedor;
+    private JTable tblTablaClientes, tblTablaCoches, tblTablaMecanicos, tblTablaProveedores;
+    private JTextField txtBuscadorCoches;
+    private JScrollPane scrollPaneClientes, scrollPaneCoches, scrollPaneMecanicos, scrollPaneProveedores;
+    private JPanel searchPanel, searchPanel2, searchPanel3, searchPanel4;
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JButton btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente,btnCrearCoche, btnProveedores,btnMecanicos, btnCrearProveedores;
-	private JPanel jpClientes,jpvacio1,jpvacio2,jpvacio3;
-	private JTextField txtusuarioAdmin,txtpasswordAdmin, txtusuarioMecanico, txtpasswordMecanico, txtnombreAdmin, txtapellidosAdmin, txtnombreMecanico, txtapellidosMecanico,txtBuscadorClientes,txtBuscadorMecanicos, txtBuscadorProveedor;
-	private JTable tblTablaClientes,tblTablaCoches, tblTablaMecanicos, tblTablaProveedores;
-	private JTextField txtBuscadorCoches;
+    // Llamada principal para ejecutar la aplicación
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    JFrameMain_Admin frame = new JFrameMain_Admin();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFrameMain_Admin frame = new JFrameMain_Admin();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public JFrameMain_Admin() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1083, 626);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setTitle("Administrador | Derrap");
+    // Constructor de la clase que crea el JFrame
+    public JFrameMain_Admin() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1083, 626);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setTitle("Administrador | Derrap");
         setIconImage(new ImageIcon(getClass().getResource("/package_assets/icon.png")).getImage());
         setResizable(false);
         fondoPantalla.setLayout(null);
-		setContentPane(fondoPantalla);
-		
-		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        int height = pantalla.height;
-        int width = pantalla.width;
+        setContentPane(fondoPantalla);
+        
+        //Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        //int height = pantalla.height;
+        //int width = pantalla.width;
 
-        setSize(1062, 660);
+        setSize(1122, 735);
         setLocationRelativeTo(null);
         
         jpClientes = new JPanel();
         jpClientes.setLayout(null);
         
+        jpMaterial = new JPanel();
+        jpMaterial.setLayout(null);
         
-        jpvacio1 = new JPanel();
-        jpvacio2 = new JPanel();
-        jpvacio3 = new JPanel();
+        jpServicios = new JPanel();
+        jpServicios.setLayout(null);
         
+        jpEconomia = new JPanel();
+        jpEconomia.setLayout(null);
         
         JTabbedPane jtpmenuPrincipal = new JTabbedPane();
-        jtpmenuPrincipal.setBounds(10, 38, 1026, 572);
+        jtpmenuPrincipal.setBounds(10, 26, 1088, 662);
+        jtpmenuPrincipal.setFont(new Font("Tahoma", Font.BOLD, 15));
         
-        jtpmenuPrincipal.add("Clientes",jpClientes);
-        jtpmenuPrincipal.add("Vacio 1",jpvacio1);
-        jtpmenuPrincipal.add("Vacio 2",jpvacio2);
-        jtpmenuPrincipal.add("Vacio 3",jpvacio3);
+        jtpmenuPrincipal.add("Clientes", jpClientes);
+        jtpmenuPrincipal.add("Material", jpMaterial);
+        jtpmenuPrincipal.add("Servicios", jpServicios);
+        jtpmenuPrincipal.add("Economía", jpEconomia);
         
         getContentPane().add(jtpmenuPrincipal);
         
@@ -173,7 +176,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         // Configurar el ícono
 
         // Crear un panel para el JTextField con el ícono
-        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel = new JPanel(new BorderLayout());
         searchPanel.setBounds(469, 26, 497, 24);
         searchPanel.add(txtBuscadorClientes, BorderLayout.CENTER);
 
@@ -182,10 +185,11 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 
         
         tblTablaClientes = new JTable();
-        tblTablaClientes.setBounds(469, 61, 497, 153);
-        jpClientes.add(tblTablaClientes);
+        scrollPaneClientes = new JScrollPane(tblTablaClientes); 
+        scrollPaneClientes.setBounds(469, 61, 497, 153); 
+        jpClientes.add(scrollPaneClientes);
         
-        btnCrearCliente = new JButton("+");
+        btnCrearCliente = new JButton("Añadir/Editar");
         btnCrearCliente.addActionListener(this);
         btnCrearCliente.setBackground(new Color(170, 255, 0));
         btnCrearCliente.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -225,7 +229,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         btnImprimir.setBackground(new Color(255, 87, 34)); // Color de fondo del botón
 
         // Añade el botón a tu panel
-        btnImprimir.setBounds(10, 463, 150, 45); // Ajusta la posición y tamaño
+        btnImprimir.setBounds(10, 506, 150, 45); // Ajusta la posición y tamaño
         jpClientes.add(btnImprimir);
 
         
@@ -257,7 +261,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 
 
         // Crear un panel para el JTextField con el ícono
-        JPanel searchPanel2 = new JPanel(new BorderLayout());
+        searchPanel2 = new JPanel(new BorderLayout());
         searchPanel2.setBounds(469, 288, 497, 24);
         searchPanel2.add(txtBuscadorCoches, BorderLayout.CENTER);
 
@@ -266,10 +270,16 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
 
         tblTablaCoches = new JTable();
-        tblTablaCoches.setBounds(469, 331, 497, 127);
-        jpClientes.add(tblTablaCoches);
+        scrollPaneCoches = new JScrollPane(tblTablaCoches); 
+        scrollPaneCoches.setBounds(469, 331, 497, 127); 
+        jpClientes.add(scrollPaneCoches);
+
         
-        btnCrearCoche = new JButton("+");
+        btnCrearCoche = new JButton("Añadir/Editar");
+        btnCrearCoche.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         btnCrearCoche.setBackground(new Color(170, 255, 0));
         btnCrearCoche.setFont(new Font("Tahoma", Font.BOLD, 15));
         btnCrearCoche.setBounds(469, 473, 497, 35);
@@ -302,11 +312,21 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
                 }
             }
         });
+        
+        txtBuscadorMecanicos.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    //System.out.println("Enter presionado");
+                    buscarMecanicos();
+                }
+            }
+        });
 
-        // Configurar el ícono
-
-        // Crear un panel para el JTextField con el ícono
-        JPanel searchPanel3 = new JPanel(new BorderLayout());
+        
+        
+        
+        searchPanel3 = new JPanel(new BorderLayout());
         searchPanel3.setBounds(469, 26, 497, 24);
         searchPanel3.add(txtBuscadorMecanicos, BorderLayout.CENTER);
 
@@ -315,10 +335,13 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 
         
         tblTablaMecanicos = new JTable();
-        tblTablaMecanicos.setBounds(469, 61, 497, 153);
-        jpClientes.add(tblTablaMecanicos);
+        scrollPaneMecanicos = new JScrollPane(tblTablaMecanicos);
+        scrollPaneMecanicos.setBounds(469, 61, 497, 153);
+        jpClientes.add(scrollPaneMecanicos);
+     // Configurar la tabla para que no sea editable
+        tblTablaMecanicos.setDefaultEditor(Object.class, null);
         
-        btnCrearMecanicos = new JButton("+");
+        btnCrearMecanicos = new JButton("Añadir/Editar");
         btnCrearMecanicos.addActionListener(this);
         btnCrearMecanicos.setBackground(new Color(170, 255, 0));
         btnCrearMecanicos.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -355,7 +378,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         // Configurar el ícono
 
         // Crear un panel para el JTextField con el ícono
-        JPanel searchPanel4 = new JPanel(new BorderLayout());
+        searchPanel4 = new JPanel(new BorderLayout());
         searchPanel4.setBounds(469, 26, 497, 24);
         searchPanel4.add(txtBuscadorProveedor, BorderLayout.CENTER);
 
@@ -364,10 +387,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 
         
         tblTablaProveedores = new JTable();
-        tblTablaProveedores.setBounds(469, 61, 497, 153);
-        jpClientes.add(tblTablaProveedores);
+        scrollPaneProveedores = new JScrollPane(tblTablaProveedores); 
+        scrollPaneProveedores.setBounds(469, 61, 497, 153); 
+        jpClientes.add(scrollPaneProveedores);
+
         
-        btnCrearProveedores = new JButton("+");
+        btnCrearProveedores = new JButton("Añadir/Editar");
         btnCrearProveedores.addActionListener(this);
         btnCrearProveedores.setBackground(new Color(170, 255, 0));
         btnCrearProveedores.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -377,181 +402,154 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
         btnLogout = new JButton("Cerrar Sesión");
         btnLogout.addActionListener(this);
-        btnLogout.setBounds(917, 11, 119, 23);
+        btnLogout.setBounds(989, 2, 119, 23);
         fondoPantalla.add(btnLogout);
         
-        txtBuscadorClientes.setVisible(false);
-		tblTablaClientes.setVisible(false);
-		btnCrearCliente.setVisible(false);
-		txtBuscadorCoches.setVisible(false);
-		tblTablaCoches.setVisible(false);
-		btnCrearCoche.setVisible(false);
-		
-		txtBuscadorMecanicos.setVisible(false);
-		tblTablaMecanicos.setVisible(false);
-		btnCrearMecanicos.setVisible(false);
-		
-		txtBuscadorProveedor.setVisible(false);
-		tblTablaProveedores.setVisible(false);
-		btnCrearProveedores.setVisible(false);
         
         //ACTION PERFORMED_____________________________________________________________
         
 	}
 	
+	private void actualizarVisibilidad(String grupo) {
+	    
+	    txtBuscadorClientes.setVisible(false);
+	    tblTablaClientes.setVisible(false);
+	    btnCrearCliente.setVisible(false);
+	    txtBuscadorCoches.setVisible(false);
+	    tblTablaCoches.setVisible(false);
+	    btnCrearCoche.setVisible(false);
+	    scrollPaneClientes.setVisible(false);
+	    scrollPaneCoches.setVisible(false);
+	    searchPanel.setVisible(false);
+	    searchPanel2.setVisible(false);
+
+	    txtBuscadorMecanicos.setVisible(false);
+	    tblTablaMecanicos.setVisible(false);
+	    btnCrearMecanicos.setVisible(false);
+	    scrollPaneMecanicos.setVisible(false);
+	    searchPanel3.setVisible(false);
+
+	    txtBuscadorProveedor.setVisible(false);
+	    tblTablaProveedores.setVisible(false);
+	    btnCrearProveedores.setVisible(false);
+	    scrollPaneProveedores.setVisible(false);
+	    searchPanel4.setVisible(false);
+
+	    
+	    switch(grupo) {
+	        case "clientes":
+	            txtBuscadorClientes.setVisible(true);
+	            tblTablaClientes.setVisible(true);
+	            btnCrearCliente.setVisible(true);
+	            txtBuscadorCoches.setVisible(true);
+	            tblTablaCoches.setVisible(true);
+	            btnCrearCoche.setVisible(true);
+	            scrollPaneClientes.setVisible(true);
+	            scrollPaneCoches.setVisible(true);
+	            searchPanel.setVisible(true);
+	            searchPanel2.setVisible(true);
+	            
+
+	            break;
+	        case "mecanicos":
+	            txtBuscadorMecanicos.setVisible(true);
+	            tblTablaMecanicos.setVisible(true);
+	            btnCrearMecanicos.setVisible(true);
+	            scrollPaneMecanicos.setVisible(true);
+	            searchPanel3.setVisible(true);
+	            
+
+	            break;
+	        case "proveedores":
+	            txtBuscadorProveedor.setVisible(true);
+	            tblTablaProveedores.setVisible(true);
+	            btnCrearProveedores.setVisible(true);
+	            scrollPaneProveedores.setVisible(true);
+	            searchPanel4.setVisible(true);
+	            
+
+	            break;
+	    }
+	}
+
+
+
+	
 	 public void actionPerformed(ActionEvent e) {
 	         if(e.getSource() == btnLogout) {
         		logout();
+        		
+        		
         	} else if(e.getSource() == btnImprimir) {
-        		System.out.println("adasdasds");
+        		System.out.println("Imprimiendo");
+        		
+        		
         	} else if(e.getSource() == btnClientes) {
-        		txtBuscadorClientes.setVisible(true);
-        		tblTablaClientes.setVisible(true);
-        		btnCrearCliente.setVisible(true);
-        		txtBuscadorCoches.setVisible(true);
-        		tblTablaCoches.setVisible(true);
-        		btnCrearCoche.setVisible(true);
+        		actualizarVisibilidad("clientes");
         		
-        		txtBuscadorMecanicos.setVisible(false);
-        		tblTablaMecanicos.setVisible(false);
-        		btnCrearMecanicos.setVisible(false);
+        		
+
         	} else if (e.getSource() == btnMecanicos) {
-        		txtBuscadorMecanicos.setVisible(true);
-        		tblTablaMecanicos.setVisible(true);
-        		btnCrearMecanicos.setVisible(true);
-        		
-        		txtBuscadorClientes.setVisible(false);
-        		tblTablaClientes.setVisible(false);
-        		btnCrearCliente.setVisible(false);
-        		txtBuscadorCoches.setVisible(false);
-        		tblTablaCoches.setVisible(false);
-        		btnCrearCoche.setVisible(false);
+        		actualizarVisibilidad("mecanicos");
+
+
         	} else if (e.getSource() == btnProveedores) {
-        		txtBuscadorProveedor.setVisible(true);
-        		tblTablaProveedores.setVisible(true);
-        		btnCrearProveedores.setVisible(true);
-        		
-        		txtBuscadorMecanicos.setVisible(false);
-        		tblTablaMecanicos.setVisible(false);
-        		btnCrearMecanicos.setVisible(false);
-        		
-        		txtBuscadorClientes.setVisible(false);
-        		tblTablaClientes.setVisible(false);
-        		btnCrearCliente.setVisible(false);
-        		txtBuscadorCoches.setVisible(false);
-        		tblTablaCoches.setVisible(false);
-        		btnCrearCoche.setVisible(false);
+        		actualizarVisibilidad("proveedores");
+
+
         	} else if (e.getSource() == btnCrearMecanicos) {
         		vtnmecanico.setVisible(true);
                 
         	}
 	 }
-	 
-	 public void registroAdmin() {
-		String dniAdmin = txtusuarioAdmin.getText();
-		String patronDNI = "[0-9]{8}[A-Z a-z]";
-		String validarPass = txtpasswordAdmin.getText();
-		String nombreAdmin = txtnombreAdmin.getText();
-		String apellidosAdmin = txtapellidosAdmin.getText();
-		 
-		 
-		 Pattern patron_dni_admin = Pattern.compile(patronDNI);
- 		 Matcher mat_dni_admin = patron_dni_admin.matcher(dniAdmin);
- 		 
- 		 if(mat_dni_admin.matches()) {
- 			 if(validarPass.isEmpty()) {
- 				JOptionPane.showMessageDialog(this, "Introduzca una contraseña","Error de registro", JOptionPane.WARNING_MESSAGE);
- 			 }
- 			else {
-				 cn = conexion.conexion_correcta();
-				 if(cn!=null) {
-					 String sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES (?, ?, ?, ?, 'Administrador')";
-					 try(PreparedStatement stmt = cn.prepareStatement(sql)){
-						 stmt.setString(1, dniAdmin);
-						 stmt.setString(2, validarPass);
-						 stmt.setString(3, nombreAdmin);
-						 stmt.setString(4, apellidosAdmin);
-						 
-						 int filasAfectadas = stmt.executeUpdate();
-						 
-						 if(filasAfectadas > 0) {
-							 JOptionPane.showMessageDialog(this, "Registro exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
-						 } 
-						 
-						 else {
-							 JOptionPane.showMessageDialog(this, "Error al insertar el registro", "Error", JOptionPane.ERROR_MESSAGE);
-						 }
-					 } catch (SQLException e) {
-						 JOptionPane.showMessageDialog(this, "Error al registrar el mecánico", "Error", JOptionPane.ERROR_MESSAGE);
-		                 e.printStackTrace();
-					 }
-				 } 
-				 
-				 else {
-					 JOptionPane.showMessageDialog(this, "No se pudo establecer la conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-				 }
-				 
-			 }
- 		 }
- 		 else {
- 			JOptionPane.showMessageDialog(this, "El usuario introducido no es válido. Solo se permite usar un DNI como nombre de usuario","Error de autenticación", JOptionPane.WARNING_MESSAGE);
- 		 }
-	 }
-	 
-	 public void registroMecanico(){
-		String dniMecanico = txtusuarioMecanico.getText();
-		String patronDNI = "[0-9]{8}[A-Z a-z]";
-		String validarPass = txtpasswordMecanico.getText();
-		String nombreMecanico = txtnombreMecanico.getText();
-		String apellidosMecanico = txtapellidosMecanico.getText();
-		
-		Pattern patron_dni_mecanico = Pattern.compile(patronDNI);
-		Matcher mat_dni_mecanico = patron_dni_mecanico.matcher(dniMecanico);
-		 
-		 if(mat_dni_mecanico.matches()) {
-			 if(validarPass.isEmpty()) {
-				 JOptionPane.showMessageDialog(this, "Introduzca una contraseña","Error de registro", JOptionPane.WARNING_MESSAGE);
-			 }
-			 else {
-				 cn = conexion.conexion_correcta();
-				 if(cn!=null) {
-					 String sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES (?, ?, ?, ?, 'Mecanico')";
-					 try(PreparedStatement stmt = cn.prepareStatement(sql)){
-						 stmt.setString(1, dniMecanico);
-						 stmt.setString(2, validarPass);
-						 stmt.setString(3, nombreMecanico);
-						 stmt.setString(4, apellidosMecanico);
-						 
-						 int filasAfectadas = stmt.executeUpdate();
-						 
-						 if(filasAfectadas > 0) {
-							 JOptionPane.showMessageDialog(this, "Registro exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
-						 } 
-						 
-						 else {
-							 JOptionPane.showMessageDialog(this, "Error al insertar el registro", "Error", JOptionPane.ERROR_MESSAGE);
-						 }
-					 } catch (SQLException e) {
-						 JOptionPane.showMessageDialog(this, "Error al registrar el mecánico", "Error", JOptionPane.ERROR_MESSAGE);
-		                 e.printStackTrace();
-					 }
-				 } 
-				 
-				 else {
-					 JOptionPane.showMessageDialog(this, "No se pudo establecer la conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-				 }
-				 
-			 }
-		 }
-		 else {
-	 			JOptionPane.showMessageDialog(this, "El usuario introducido no es válido. Solo se permite usar un DNI como nombre de usuario","Error de autenticación", JOptionPane.WARNING_MESSAGE);
-	 		 }
-	 }
-	 
+
 	 public void logout() {
 		 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
 		 JFrameLogin JFLogin = new JFrameLogin();
 		 JFLogin.setVisible(true);
          dispose();
 	 }
+	 
+	 private void buscarMecanicos() {
+		    String nombreMecanico = txtBuscadorMecanicos.getText().trim();
+		    //System.out.println("Buscando mecánico: " + nombreMecanico);
+
+		    // Definir los nombres de las columnas
+		    String[] columnNames = {"Nombre", "Apellidos", "DNI", "Contraseña", "Rol", "Estado"};
+		    
+		    // Crear un modelo de tabla vacío
+		    DefaultTableModel modelTabla = new DefaultTableModel(columnNames, 0); 
+		    
+		    // Asignar el modelo de la tabla
+		    tblTablaMecanicos.setModel(modelTabla);
+
+		    // Consulta SQL para buscar mecánicos
+		    String selectBuscador = "SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE ?";
+
+		    try (Connection cn = conexion.conexion_correcta(); PreparedStatement pst = cn.prepareStatement(selectBuscador)) {
+		        pst.setString(1, "%" + nombreMecanico + "%"); // Reemplazar el parámetro de la consulta con el nombre buscado
+		        
+		        // Ejecutar la consulta y procesar los resultados
+		        try (ResultSet rset = pst.executeQuery()) {
+		            while (rset.next()) {
+		                // Obtener cada campo del ResultSet y añadir la fila a la tabla
+		                Object[] fila = new Object[6];
+		                fila[0] = rset.getString("nombre");       // Nombre
+		                fila[1] = rset.getString("apellidos");    // Apellidos
+		                fila[2] = rset.getString("DNI");          // DNI
+		                fila[3] = rset.getString("contrasenia");  // Contraseña
+		                fila[4] = rset.getString("rol");          // Rol
+		                fila[5] = rset.getString("estado");       // Estado
+		                modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
+		            }
+		        }
+		    } catch (SQLException e) {
+		        JOptionPane.showMessageDialog(this, "Error al buscar mecánicos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		    }
+		}
+
+
+
+	 
+
 }
