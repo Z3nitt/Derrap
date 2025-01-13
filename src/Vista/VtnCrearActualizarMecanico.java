@@ -156,37 +156,26 @@ public class VtnCrearActualizarMecanico extends JFrame implements ActionListener
 			 }
 			 else {
 				 conexion.conectar();
-				 if(cn!=null) {
-					 String sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES (?, ?, ?, ?, 'Mecanico')";
-					 try(PreparedStatement stmt = cn.prepareStatement(sql)){
-						 stmt.setString(1, dniMecanico);
-						 stmt.setString(2, validarPass);
-						 stmt.setString(3, nombreMecanico);
-						 stmt.setString(4, apellidosMecanico);
-
-						 int filasAfectadas = stmt.executeUpdate();
-
-						 if(filasAfectadas > 0) {
-							 JOptionPane.showMessageDialog(this, "Registro exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
-							 txtapellidosMecanico.setText("");
-							 txtnombreMecanico.setText("");
-							 txtpasswordMecanico.setText("");
-							 txtusuarioMecanico.setText("");
-						 }
-
-						 else {
-							 JOptionPane.showMessageDialog(this, "Error al insertar el registro", "Error", JOptionPane.ERROR_MESSAGE);
-						 }
-					 } catch (SQLException e) {
-						 JOptionPane.showMessageDialog(this, "Error al registrar el mecánico", "Error", JOptionPane.ERROR_MESSAGE);
-		                 e.printStackTrace();
+				 String sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES ('"+dniMecanico+"', '"+validarPass+"', '"+nombreMecanico+"', '"+apellidosMecanico+"', 'Mecanico')";
+				 try {
+					int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sql);
+					
+					if(filasAfectadas > 0) {
+						 JOptionPane.showMessageDialog(this, "Registro exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
+						 txtapellidosMecanico.setText("");
+						 txtnombreMecanico.setText("");
+						 txtpasswordMecanico.setText("");
+						 txtusuarioMecanico.setText("");
 					 }
+					else {
+						 JOptionPane.showMessageDialog(this, "Error al insertar el registro", "Error", JOptionPane.ERROR_MESSAGE);
+					 }
+					
+				 } catch (SQLException e) {
+					 JOptionPane.showMessageDialog(this, "Error al registrar el mecánico", "Error", JOptionPane.ERROR_MESSAGE);
+	                 e.printStackTrace();
 				 }
-
-				 else {
-					 JOptionPane.showMessageDialog(this, "No se pudo establecer la conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-				 }
-
+				 
 			 }
 		 }
 		 else {
