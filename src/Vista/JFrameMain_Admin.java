@@ -1,4 +1,4 @@
-package package_main;
+package Vista;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -18,7 +18,9 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import ventana_emergente.VtnCrearActualizarMecanico;
+import Controlador.Conector_BBDD;
+import Vista.VtnCrearActualizarMecanico;
+import package_main.Background;
 
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -526,7 +528,9 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 		    // Consulta SQL para buscar mecánicos
 		    String selectBuscador = "SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE ?";
 
-		    try (Connection cn = conexion.conexion_correcta(); PreparedStatement pst = cn.prepareStatement(selectBuscador)) {
+		    try {
+		    	conexion.conectar();
+		    	PreparedStatement pst = cn.prepareStatement(selectBuscador);
 		        pst.setString(1, "%" + nombreMecanico + "%"); // Reemplazar el parámetro de la consulta con el nombre buscado
 		        
 		        // Ejecutar la consulta y procesar los resultados

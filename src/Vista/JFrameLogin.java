@@ -1,31 +1,32 @@
-package package_main;
+package Vista;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
+
+import Controlador.Conector_BBDD;
 
 public class JFrameLogin extends JFrame implements ActionListener {
 
@@ -43,7 +44,8 @@ public class JFrameLogin extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 try {
                     JFrameLogin frame = new JFrameLogin();
                     frame.setVisible(true);
@@ -55,7 +57,7 @@ public class JFrameLogin extends JFrame implements ActionListener {
     }
 
     public JFrameLogin() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100, 100, 1083, 626);
         contentPane = new FondoPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,13 +74,13 @@ public class JFrameLogin extends JFrame implements ActionListener {
 
         setSize(910, 622);
         setLocationRelativeTo(null);
-        
+
         lblUsuario = new JLabel("Usuario: ");
         lblUsuario.setBounds(383, 105, 155, 30);
         lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(lblUsuario);
-        
+
         lblPass = new JLabel("Contraseña: ");
         lblPass.setBounds(383, 250, 155, 30);
         lblPass.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -154,20 +156,20 @@ public class JFrameLogin extends JFrame implements ActionListener {
             String password = new String (jpassword.getPassword());
             String admin = "Administrador";
             String mecanico = "Mecanico";
-            cn = conexion.conexion_correcta();
+            conexion.conectar();
             try {
             	ResultSet rset=conexion.ejecutarSelect("SELECT contrasenia,rol FROM usuario WHERE DNI = '" + usuario + "' ;");
-                
+
             	if(!rset.next()) {
             		JOptionPane.showMessageDialog(this, "No se encontraron resultados para el usuario ingresado.", "Error de autenticación", JOptionPane.WARNING_MESSAGE);
             		return;
             	}
-            	
+
             	//rset.next();
-            	
+
             	String contraseniaBD = rset.getString("contrasenia");
             	String rol = rset.getString("rol");
-                
+
                 if(contraseniaBD.equals(password) && rol.equals(admin)){
                 	JOptionPane.showMessageDialog(rootPane, "Identificado como administrador");
                     JFrameMain_Admin JFrameMain_Admin = new JFrameMain_Admin();
@@ -181,8 +183,8 @@ public class JFrameLogin extends JFrame implements ActionListener {
                 }else {
                 	JOptionPane.showMessageDialog(this, "Contraseña incorrecta.", "Error de autenticación", JOptionPane.WARNING_MESSAGE);
                 }
-                
-                
+
+
 
             }
             catch (SQLException ex) {
