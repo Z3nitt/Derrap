@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +30,7 @@ import javax.swing.border.EmptyBorder;
 
 import Controlador.Conector_BBDD;
 
-public class JFrameLogin extends JFrame implements ActionListener {
+public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
 
     Conector_BBDD conexion = new Conector_BBDD();
     Connection cn = null;
@@ -74,6 +76,9 @@ public class JFrameLogin extends JFrame implements ActionListener {
 
         setSize(910, 622);
         setLocationRelativeTo(null);
+        contentPane.setFocusable(true);
+	    contentPane.requestFocusInWindow();
+	    contentPane.addKeyListener(this);
 
         lblUsuario = new JLabel("Usuario: ");
         lblUsuario.setBounds(383, 105, 155, 30);
@@ -90,6 +95,7 @@ public class JFrameLogin extends JFrame implements ActionListener {
         jpassword = new JPasswordField();
         jpassword.setBounds(383, 275, 155, 30);
         jpassword.setHorizontalAlignment(SwingConstants.CENTER);
+        jpassword.addKeyListener(this);
         addPlaceholder(jpassword, "Contraseña");
         contentPane.add(jpassword);
 
@@ -97,6 +103,7 @@ public class JFrameLogin extends JFrame implements ActionListener {
         txtUsuario.setBounds(383, 129, 155, 30);
         txtUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         addPlaceholder(txtUsuario, "Usuario");
+        txtUsuario.addKeyListener(this);
         contentPane.add(txtUsuario);
 
         btnLogin = new JButton("Acceder");
@@ -192,4 +199,25 @@ public class JFrameLogin extends JFrame implements ActionListener {
             }
         }
     }
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		//Cuando el usuario toca el Enter, presiona el boton "Acceder"
+		int keyCode = e.getKeyCode();
+		if(keyCode == 10) {
+			btnLogin.doClick();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
