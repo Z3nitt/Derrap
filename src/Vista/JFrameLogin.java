@@ -31,7 +31,7 @@ import javax.swing.border.EmptyBorder;
 import Controlador.Conector_BBDD;
 
 public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
-//SEXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+
     Conector_BBDD conexion = new Conector_BBDD();
     Connection cn = null;
     Statement stm = null;
