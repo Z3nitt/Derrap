@@ -16,6 +16,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import Controlador.Conector_BBDD;
+import java.awt.Color;
 
 public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 	Conector_BBDD conexion = new Conector_BBDD();
@@ -54,17 +55,28 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(204, 204, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setTitle("Mecánico | Derrap");
         setIconImage(new ImageIcon(getClass().getResource("/package_assets/icon.png")).getImage());
         setResizable(false);
         //fondoPantalla.setLayout(null);
 		setContentPane(contentPane);
-
-		btnLogout = new JButton("Cerrar Sesión");
-		btnLogout.addActionListener(this);
-		btnLogout.setBounds(969, 10, 129, 38);
-		contentPane.add(btnLogout);
+		contentPane.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
+		panel.setBounds(10, 11, 1086, 674);
+		contentPane.add(panel);
+				panel.setLayout(null);
+		
+				btnLogout = new JButton("Cerrar Sesión");
+				btnLogout.setForeground(new Color(255, 255, 255));
+				btnLogout.setBackground(new Color(0, 0, 0));
+				btnLogout.setBounds(956, 11, 120, 23);
+				panel.add(btnLogout);
+				btnLogout.addActionListener(this);
+				btnLogout.setFocusable(false);
 
 
 
@@ -88,6 +100,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 		JFrameLogin JFLogin = new JFrameLogin();
 		JFLogin.setVisible(true);
         dispose();
+        
 
 	}
 }
