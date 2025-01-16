@@ -14,6 +14,7 @@ import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLNonTransientConnectionException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -163,8 +164,8 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
             String password = new String (jpassword.getPassword());
             String admin = "Administrador";
             String mecanico = "Mecanico";
-            conexion.conectar();
             try {
+            	conexion.conectar();
             	ResultSet rset=conexion.ejecutarSelect("SELECT contrasenia,rol FROM usuario WHERE DNI = '" + usuario + "' ;");
 
             	if(!rset.next()) {
@@ -191,10 +192,8 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
                 	JOptionPane.showMessageDialog(this, "Contraseña incorrecta.", "Error de autenticación", JOptionPane.WARNING_MESSAGE);
                 }
 
-
-
             }
-            catch (SQLException ex) {
+            catch (Exception ex) {
             	JOptionPane.showMessageDialog(this, "Error al conectar con la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }

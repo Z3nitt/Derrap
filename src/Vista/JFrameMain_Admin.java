@@ -59,6 +59,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
     private JTextField txtBuscadorCoches;
     private JScrollPane scrollPaneClientes, scrollPaneCoches, scrollPaneMecanicos, scrollPaneProveedores;
     private JPanel searchPanel, searchPanel2, searchPanel3, searchPanel4;
+    private DefaultTableModel modelTabla;
 
     // Llamada principal para ejecutar la aplicación
     public static void main(String[] args) {
@@ -340,8 +341,19 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         scrollPaneMecanicos = new JScrollPane(tblTablaMecanicos);
         scrollPaneMecanicos.setBounds(469, 61, 497, 153);
         jpClientes.add(scrollPaneMecanicos);
-     // Configurar la tabla para que no sea editable
+        // Configurar la tabla para que no sea editable
         tblTablaMecanicos.setDefaultEditor(Object.class, null);
+        
+        // Definir los nombres de las columnas
+	    String[] columnNames = {"Nombre", "Apellidos", "DNI", "Contraseña", "Estado"};
+	    
+	    // Crear un modelo de tabla vacío
+	    modelTabla = new DefaultTableModel(columnNames, 0); 
+	    
+	    // Asignar el modelo de la tabla
+	    tblTablaMecanicos.setModel(modelTabla);
+        
+        
         
         btnCrearMecanicos = new JButton("Añadir/Editar");
         btnCrearMecanicos.addActionListener(this);
@@ -409,7 +421,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
         
         //ACTION PERFORMED_____________________________________________________________
-        
+        actualizarTablaMecanicos();
 	}
 	
 	private void actualizarVisibilidad(String grupo) {
@@ -514,43 +526,54 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	 
 	 private void buscarMecanicos() {
 		    String nombreMecanico = txtBuscadorMecanicos.getText().trim();
-		    //System.out.println("Buscando mecánico: " + nombreMecanico);
-
-		    // Definir los nombres de las columnas
-		    String[] columnNames = {"Nombre", "Apellidos", "DNI", "Contraseña", "Rol", "Estado"};
-		    
-		    // Crear un modelo de tabla vacío
-		    DefaultTableModel modelTabla = new DefaultTableModel(columnNames, 0); 
-		    
-		    // Asignar el modelo de la tabla
-		    tblTablaMecanicos.setModel(modelTabla);
-
+		 
 		    // Consulta SQL para buscar mecánicos
-		    String selectBuscador = "SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE ?";
+		    String selectBuscador = "SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE '%" + nombreMecanico + "%'";
 
 		    try {
-		    	conexion.conectar();
-		    	PreparedStatement pst = cn.prepareStatement(selectBuscador);
-		        pst.setString(1, "%" + nombreMecanico + "%"); // Reemplazar el parámetro de la consulta con el nombre buscado
 		        
-		        // Ejecutar la consulta y procesar los resultados
-		        try (ResultSet rset = pst.executeQuery()) {
-		            while (rset.next()) {
-		                // Obtener cada campo del ResultSet y añadir la fila a la tabla
-		                Object[] fila = new Object[6];
-		                fila[0] = rset.getString("nombre");       // Nombre
-		                fila[1] = rset.getString("apellidos");    // Apellidos
-		                fila[2] = rset.getString("DNI");          // DNI
-		                fila[3] = rset.getString("contrasenia");  // Contraseña
-		                fila[4] = rset.getString("rol");          // Rol
-		                fila[5] = rset.getString("estado");       // Estado
-		                modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
-		            }
+		        ResultSet rset = conexion.ejecutarSelect(selectBuscador);
+		        
+		        //Vacia la tabla
+		        modelTabla.setRowCount(0);
+		        
+		        // Procesar los resultados
+		        while (rset.next()) {
+		            // Obtener cada campo del ResultSet y añadir la fila a la tabla
+		            Object[] fila = new Object[5];
+		            fila[0] = rset.getString("nombre");
+		            fila[1] = rset.getString("apellidos");
+		            fila[2] = rset.getString("DNI");
+		            fila[3] = rset.getString("contrasenia");
+		            fila[4] = rset.getString("estado");
+		            modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
 		        }
 		    } catch (SQLException e) {
 		        JOptionPane.showMessageDialog(this, "Error al buscar mecánicos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		    }
 		}
+	 
+	 private void actualizarTablaMecanicos() {
+		 try {
+			 conexion.conectar();
+			 
+			 ResultSet rset = conexion.ejecutarSelect("SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario where rol = 'Mecanico' ");
+			 while (rset.next()) {
+	                // Obtener cada campo del ResultSet y añadir la fila a la tabla
+	                Object[] fila = new Object[5];
+	                fila[0] = rset.getString("nombre");       
+	                fila[1] = rset.getString("apellidos");    
+	                fila[2] = rset.getString("DNI");          
+	                fila[3] = rset.getString("contrasenia");           
+	                fila[4] = rset.getString("estado");       
+	                
+	                modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
+	            }
+			 
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	 }
 
 
 
