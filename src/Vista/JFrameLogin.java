@@ -47,6 +47,7 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
     private JPasswordField jpassword;
     private JSeparator separator_1;
     private JLabel lblPassIcon;
+    private JLabel lblFondo2;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -95,23 +96,24 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
         
         JSeparator separator = new JSeparator();
         separator.setForeground(new Color(0, 0, 0));
-        separator.setBounds(108, 117, 241, 2);
+        separator.setBounds(53, 117, 318, 2);
         panel.add(separator);
         
         separator_1 = new JSeparator();
         separator_1.setForeground(new Color(0, 0, 0));
-        separator_1.setBounds(108, 220, 241, 2);
+        separator_1.setBounds(53, 220, 318, 2);
         panel.add(separator_1);
         
         JLabel lblIconoUser = new JLabel();
+        lblIconoUser.setBackground(new Color(255, 255, 255));
         lblIconoUser.setHorizontalAlignment(SwingConstants.CENTER);
-        lblIconoUser.setBounds(41, 87, 45, 36);
+        lblIconoUser.setBounds(53, 83, 45, 36);
         ImageIcon iconoUsuario = new ImageIcon(getClass().getResource("/package_assets/user.png"));
         lblIconoUser.setIcon(iconoUsuario);
         panel.add(lblIconoUser);
         
                 txtUsuario = new JTextField();
-                txtUsuario.setBounds(108, 87, 241, 30);
+                txtUsuario.setBounds(108, 87, 263, 30);
                 panel.add(txtUsuario);
                 txtUsuario.setBackground(new Color(255, 255, 255));
                 txtUsuario.setBorder(null);
@@ -125,7 +127,7 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
                         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
                         
                                 btnLogin = new JButton("Acceder");
-                                btnLogin.setBounds(108, 271, 241, 30);
+                                btnLogin.setBounds(83, 270, 241, 30);
                                 panel.add(btnLogin);
                                 btnLogin.addActionListener(this);
                                 btnLogin.setBackground(new Color(0, 0, 0));
@@ -133,7 +135,7 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
                                 
                                         jpassword = new JPasswordField();
                                         jpassword.setBorder(null);
-                                        jpassword.setBounds(108, 190, 241, 30);
+                                        jpassword.setBounds(108, 190, 263, 30);
                                         panel.add(jpassword);
                                         jpassword.setHorizontalAlignment(SwingConstants.LEFT);
                                         jpassword.addKeyListener(this);
@@ -146,11 +148,26 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
                                                 lblPass.setHorizontalAlignment(SwingConstants.CENTER);
                                                 
                                                 lblPassIcon = new JLabel();
+                                                lblPassIcon.setBackground(new Color(255, 255, 255));
                                                 lblPassIcon.setHorizontalAlignment(SwingConstants.CENTER);
-                                                lblPassIcon.setBounds(41, 186, 45, 36);
+                                                lblPassIcon.setBounds(53, 186, 45, 36);
                                                 ImageIcon iconoPass = new ImageIcon(getClass().getResource("/package_assets/pass.png"));
                                                 lblPassIcon.setIcon(iconoPass);
                                                 panel.add(lblPassIcon);
+                                                
+                                                JLabel lblFondo1 = new JLabel();
+                                                lblFondo1.setOpaque(true);
+                                                lblFondo1.setBackground(new Color(255, 255, 255, 255));
+                                                lblFondo1.setForeground(new Color(255, 255, 255));
+                                                lblFondo1.setBounds(53, 83, 318, 36);
+                                                panel.add(lblFondo1);
+                                                
+                                                lblFondo2 = new JLabel();
+                                                lblFondo2.setOpaque(true);
+                                                lblFondo2.setBackground(new Color(255, 255, 255));
+                                                lblFondo2.setForeground(new Color(255, 255, 255));
+                                                lblFondo2.setBounds(53, 190, 318, 32);
+                                                panel.add(lblFondo2);
                 txtUsuario.addKeyListener(this);
     }
 
