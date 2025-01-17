@@ -347,7 +347,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         tblTablaMecanicos.setDefaultEditor(Object.class, null);
         
         // Definir los nombres de las columnas
-	    String[] columnNames = {"Nombre", "Apellidos", "DNI", "Contraseña", "Estado"};
+	    String[] columnNames = {"DNI", "Nombre", "Apellidos", "Contraseña", "Estado"};
 	    
 	    // Crear un modelo de tabla vacío
 	    modelTabla = new DefaultTableModel(columnNames, 0); 
@@ -435,6 +435,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         btnBorrarMecanicos = new JButton("Borrar");
         btnBorrarMecanicos.setBounds(976, 231, 89, 23);
         btnBorrarMecanicos.setEnabled(false);
+        btnBorrarMecanicos.addActionListener(this);
         jpClientes.add(btnBorrarMecanicos);
         
         
@@ -541,10 +542,14 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         	} else if (e.getSource() == btnCrearMecanicos) {
         		vtnmecanico.setVisible(true);
                 
+        	} else if(e.getSource() == btnBorrarMecanicos) {
+        		borrarMecanico();
         	}
 	 }
 
-	 public void logout() {
+	 
+
+	public void logout() {
 		 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
 		 JFrameLogin JFLogin = new JFrameLogin();
 		 JFLogin.setVisible(true);
@@ -555,7 +560,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 		    String nombreMecanico = txtBuscadorMecanicos.getText().trim();
 		 
 		    // Consulta SQL para buscar mecánicos
-		    String selectBuscador = "SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE '%" + nombreMecanico + "%'";
+		    String selectBuscador = "SELECT DNI, nombre, apellidos, contrasenia, rol, estado FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE '%" + nombreMecanico + "%'";
 
 		    try {
 		        
@@ -568,9 +573,9 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 		        while (rset.next()) {
 		            // Obtener cada campo del ResultSet y añadir la fila a la tabla
 		            Object[] fila = new Object[5];
-		            fila[0] = rset.getString("nombre");
-		            fila[1] = rset.getString("apellidos");
-		            fila[2] = rset.getString("DNI");
+		            fila[0] = rset.getString("DNI");
+		            fila[1] = rset.getString("nombre");
+		            fila[2] = rset.getString("apellidos");
 		            fila[3] = rset.getString("contrasenia");
 		            fila[4] = rset.getString("estado");
 		            modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
@@ -588,9 +593,9 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 			 while (rset.next()) {
 	                // Obtener cada campo del ResultSet y añadir la fila a la tabla
 	                Object[] fila = new Object[5];
-	                fila[0] = rset.getString("nombre");       
-	                fila[1] = rset.getString("apellidos");    
-	                fila[2] = rset.getString("DNI");          
+	                fila[0] = rset.getString("DNI");       
+	                fila[1] = rset.getString("nombre");    
+	                fila[2] = rset.getString("apellidos");          
 	                fila[3] = rset.getString("contrasenia");           
 	                fila[4] = rset.getString("estado");       
 	                
@@ -601,4 +606,32 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 			System.out.println(e);
 		}
 	 }
+	 
+	 private void borrarMecanico() {
+		int registroSeleccionado = tblTablaMecanicos.getSelectedRow();
+		
+		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta fila?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+		
+		Object dniUsuario = tblTablaMecanicos.getValueAt(registroSeleccionado, 0);
+		System.out.println(dniUsuario);
+		if(confirmacion == JOptionPane.YES_OPTION) {
+			modelTabla.removeRow(registroSeleccionado);
+			
+			try {
+				conexion.conectar();
+				int filasAfectadas = conexion.ejecutarInsertDeleteUpdate("DELETE FROM usuario WHERE DNI = '" + dniUsuario +"'");
+				
+				if(filasAfectadas == 0) {
+					JOptionPane.showMessageDialog(this, "Error al borrar el registro", "Error", JOptionPane.ERROR_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(this, "Usuario borrado ", "Borrado exitoso", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			
+		}
+		
+	}
 }
