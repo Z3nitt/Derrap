@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
@@ -52,7 +54,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
     
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JButton btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores;
+    private JButton btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores, btnBorrarMecanicos;
     private JPanel jpClientes, jpMaterial, jpServicios, jpEconomia;
     private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorProveedor;
     private JTable tblTablaClientes, tblTablaCoches, tblTablaMecanicos, tblTablaProveedores;
@@ -352,6 +354,23 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	    
 	    // Asignar el modelo de la tabla
 	    tblTablaMecanicos.setModel(modelTabla);
+	    
+	    //Verifica si hay una fila seleccionada y habilita o deshabilita el boton de borrar mecanico
+	    tblTablaMecanicos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				
+                if (tblTablaMecanicos.getSelectedRow() != -1) {
+                    
+                    btnBorrarMecanicos.setEnabled(true);
+                } else {
+                    
+                	btnBorrarMecanicos.setEnabled(false);
+                }
+				
+			}
+		});
         
         
         
@@ -413,14 +432,19 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         btnCrearProveedores.setBounds(469, 226, 497, 35);
         jpClientes.add(btnCrearProveedores);
         
+        btnBorrarMecanicos = new JButton("Borrar");
+        btnBorrarMecanicos.setBounds(976, 231, 89, 23);
+        btnBorrarMecanicos.setEnabled(false);
+        jpClientes.add(btnBorrarMecanicos);
+        
         
         btnLogout = new JButton("Cerrar Sesión");
         btnLogout.addActionListener(this);
         btnLogout.setBounds(989, 2, 119, 23);
         fondoPantalla.add(btnLogout);
         
-        
-        //ACTION PERFORMED_____________________________________________________________
+        //Al iniciar
+        actualizarVisibilidad("clientes");
         actualizarTablaMecanicos();
 	}
 	
@@ -447,7 +471,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	    tblTablaProveedores.setVisible(false);
 	    btnCrearProveedores.setVisible(false);
 	    scrollPaneProveedores.setVisible(false);
-	    searchPanel4.setVisible(false);
+	    searchPanel4.setVisible(false);	
+	    btnBorrarMecanicos.setVisible(false);
 
 	    
 	    switch(grupo) {
@@ -471,6 +496,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	            btnCrearMecanicos.setVisible(true);
 	            scrollPaneMecanicos.setVisible(true);
 	            searchPanel3.setVisible(true);
+	            btnBorrarMecanicos.setVisible(true);
+	            
 	            
 
 	            break;
@@ -568,15 +595,10 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	                fila[4] = rset.getString("estado");       
 	                
 	                modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
-	            }
+            }
 			 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 	 }
-
-
-
-	 
-
 }

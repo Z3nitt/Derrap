@@ -143,7 +143,7 @@ public class VtnCrearActualizarMecanico extends JFrame implements ActionListener
 	 public void registroMecanico(){
 		String dniMecanico = txtusuarioMecanico.getText();
 		String patronDNI = "[0-9]{8}[A-Z a-z]";
-		String validarPass = txtpasswordMecanico.getText();
+		String password = txtpasswordMecanico.getText();
 		String nombreMecanico = txtnombreMecanico.getText();
 		String apellidosMecanico = txtapellidosMecanico.getText();
 
@@ -151,12 +151,12 @@ public class VtnCrearActualizarMecanico extends JFrame implements ActionListener
 		Matcher mat_dni_mecanico = patron_dni_mecanico.matcher(dniMecanico);
 
 		 if(mat_dni_mecanico.matches()) {
-			 if(validarPass.isEmpty()) {
+			 if(password.isEmpty()) {
 				 JOptionPane.showMessageDialog(this, "Introduzca una contraseña","Error de registro", JOptionPane.WARNING_MESSAGE);
 			 }
 			 else {
 				 conexion.conectar();
-				 String sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES ('"+dniMecanico+"', '"+validarPass+"', '"+nombreMecanico+"', '"+apellidosMecanico+"', 'Mecanico')";
+				 String sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES ('"+dniMecanico+"', '"+password+"', '"+nombreMecanico+"', '"+apellidosMecanico+"', 'Mecanico')";
 				 try {
 					int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sql);
 					
@@ -182,11 +182,51 @@ public class VtnCrearActualizarMecanico extends JFrame implements ActionListener
 	 			JOptionPane.showMessageDialog(this, "El usuario introducido no es válido. Solo se permite usar un DNI como nombre de usuario","Error de autenticación", JOptionPane.WARNING_MESSAGE);
 	 		 }
 	 }
+	 
+	 
+	 public void actualizarMecanico() {
+		 String dniMecanico = txtusuarioMecanico.getText();
+		 String nombreMecanico = txtnombreMecanico.getText();
+		 String apellidosMecanico = txtapellidosMecanico.getText();
+		 String password = txtpasswordMecanico.getText();
+		 
+		 if(dniMecanico.isEmpty() || nombreMecanico.isEmpty() || apellidosMecanico.isEmpty() || password.isEmpty()) {
+			 JOptionPane.showMessageDialog(this, "Completa todos los campos","Error de actualizacion", JOptionPane.WARNING_MESSAGE);
+		 }else {
+			 conexion.conectar();
+			 String sql = "UPDATE usuario SET nombre = '" + nombreMecanico + "', apellidos = '" + apellidosMecanico + "', contrasenia = '" + password + "' WHERE DNI = '" + dniMecanico + "'";
+			 
+			 try {
+					int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sql);
+					
+					if(filasAfectadas > 0) {
+						 JOptionPane.showMessageDialog(this, "Actualizacion exitosa", "Información", JOptionPane.INFORMATION_MESSAGE);
+						 txtapellidosMecanico.setText("");
+						 txtnombreMecanico.setText("");
+						 txtpasswordMecanico.setText("");
+						 txtusuarioMecanico.setText("");
+					 }
+					else {
+						 JOptionPane.showMessageDialog(this, "Error al actualizar el registro", "Error", JOptionPane.ERROR_MESSAGE);
+					 }
+					
+				 } catch (SQLException e) {
+					 JOptionPane.showMessageDialog(this, "Error al actualizar el mecánico", "Error", JOptionPane.ERROR_MESSAGE);
+	                 e.printStackTrace();
+				 }
+			 
+		 }
+		 
+	 }
+	 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnInsert) {
 			registroMecanico();
+		}
+		else if(e.getSource() == btnUpdate) {
+			actualizarMecanico();
 		}
 
 	}

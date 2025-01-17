@@ -173,7 +173,6 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
             		return;
             	}
 
-            	//rset.next();
 
             	String contraseniaBD = rset.getString("contrasenia");
             	String rol = rset.getString("rol");
