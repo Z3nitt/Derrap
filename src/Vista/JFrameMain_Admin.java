@@ -51,7 +51,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
     Statement stm = null;
     ResultSet rsetresultado = null;
     VtnCrearMecanico vtnmecanico = new VtnCrearMecanico();
-    VtnActualizarMecanico vtnActualizarMecanico = new VtnActualizarMecanico();
+    VtnActualizarMecanico vtnActualizarMecanico;
     
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
@@ -63,6 +63,9 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
     private JScrollPane scrollPaneClientes, scrollPaneCoches, scrollPaneMecanicos, scrollPaneProveedores;
     private JPanel searchPanel, searchPanel2, searchPanel3, searchPanel4;
     private DefaultTableModel modelTabla;
+    
+    //Valores de las columnas de cada tabla
+    String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Contraseña", "Estado"};
 
     // Llamada principal para ejecutar la aplicación
     public static void main(String[] args) {
@@ -347,11 +350,9 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         // Configurar la tabla para que no sea editable
         tblTablaMecanicos.setDefaultEditor(Object.class, null);
         
-        // Definir los nombres de las columnas
-	    String[] columnNames = {"DNI", "Nombre", "Apellidos", "Contraseña", "Estado"};
 	    
 	    // Crear un modelo de tabla vacío
-	    modelTabla = new DefaultTableModel(columnNames, 0); 
+	    modelTabla = new DefaultTableModel(columnasMecanico, 0); 
 	    
 	    // Asignar el modelo de la tabla
 	    tblTablaMecanicos.setModel(modelTabla);
@@ -367,7 +368,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
                     btnBorrarMecanicos.setEnabled(true);
                     btnActualizarMecanico.setEnabled(true);
                 } else {
-                    
+                    btnActualizarMecanico.setEnabled(false);
                 	btnBorrarMecanicos.setEnabled(false);
                 }
 				
@@ -554,6 +555,19 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         	} else if(e.getSource() == btnBorrarMecanicos) {
         		borrarMecanico();
         	} else if(e.getSource() == btnActualizarMecanico) {
+        		
+        		int registroSeleccionado = tblTablaMecanicos.getSelectedRow();
+        		
+        		//Obtengo todos los valores del registro seleccionado
+        		String dniUsuario = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 0);
+        	    String nombre = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 1);
+        	    String apellidos = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 2);
+        	    String contrasena = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 3);
+        	    String estado = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 4);  
+        		
+        	    String[] valoresActuales = {dniUsuario, nombre, apellidos, contrasena, estado};
+        		
+        		vtnActualizarMecanico = new VtnActualizarMecanico(columnasMecanico, valoresActuales);
         		vtnActualizarMecanico.setVisible(true);
         	}
 	 }

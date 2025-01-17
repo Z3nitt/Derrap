@@ -1,14 +1,9 @@
 package Vista;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,9 +24,6 @@ import package_main.Background;
 public class VtnCrearMecanico extends JFrame implements ActionListener{
 	Conector_BBDD conexion = new Conector_BBDD();
 	Background fondoPantalla = new Background();
-	Connection cn = null;
-    Statement stm = null;
-    ResultSet rsetresultado = null;
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -39,28 +31,9 @@ public class VtnCrearMecanico extends JFrame implements ActionListener{
 	private JTextField txtapellidosMecanico;
 	private JTextField txtusuarioMecanico;
 	private JTextField txtpasswordMecanico;
-	private JButton btnInsert, btnUpdate;
+	private JButton btnInsert;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					VtnCrearMecanico frame = new VtnCrearMecanico();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public VtnCrearMecanico() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
@@ -118,11 +91,6 @@ public class VtnCrearMecanico extends JFrame implements ActionListener{
 		lblNewLabel_4.setBounds(124, 143, 86, 14);
 		fondoPantalla.add(lblNewLabel_4);
 
-		btnUpdate = new JButton("ACTUALIZAR");
-		btnUpdate.addActionListener(this);
-		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnUpdate.setBounds(76, 481, 164, 70);
-		fondoPantalla.add(btnUpdate);
 
 		btnInsert = new JButton("AÑADIR");
 		btnInsert.addActionListener(this);
@@ -130,9 +98,6 @@ public class VtnCrearMecanico extends JFrame implements ActionListener{
 		btnInsert.setBounds(488, 481, 164, 70);
 		fondoPantalla.add(btnInsert);
 
-		//Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        //int height = pantalla.height;
-        //int width = pantalla.width;
 
         setSize(746, 619);
         setLocationRelativeTo(null);
@@ -214,7 +179,6 @@ public class VtnCrearMecanico extends JFrame implements ActionListener{
 					 JOptionPane.showMessageDialog(this, "Error al actualizar el mecánico", "Error", JOptionPane.ERROR_MESSAGE);
 	                 e.printStackTrace();
 				 }
-			 
 		 }
 		 
 	 }
@@ -225,9 +189,5 @@ public class VtnCrearMecanico extends JFrame implements ActionListener{
 		if(e.getSource() == btnInsert) {
 			registroMecanico();
 		}
-		else if(e.getSource() == btnUpdate) {
-			actualizarMecanico();
-		}
-
 	}
 }
