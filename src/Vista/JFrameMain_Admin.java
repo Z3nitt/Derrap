@@ -21,7 +21,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
-import Vista.VtnCrearMecanico;
+import Vista.VtnCrearNuevoRegistro;
 import package_main.Background;
 
 import java.awt.*;
@@ -50,12 +50,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     Connection cn = null;
     Statement stm = null;
     ResultSet rsetresultado = null;
-    VtnCrearMecanico vtnmecanico = new VtnCrearMecanico();
+    VtnCrearNuevoRegistro vtnCrearNuevoRegistro;
     VtnActualizarMecanico vtnActualizarMecanico;
     
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JButton btnActualizarMecanico, btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores, btnBorrarMecanicos;
+    private JButton btnActualizarMecanico, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores, btnBorrarMecanicos;
     private JPanel jpClientes, jpMaterial, jpServicios, jpEconomia;
     private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorProveedor;
     private JTable tblTablaClientes, tblTablaCoches, tblTablaMecanicos, tblTablaProveedores;
@@ -69,6 +69,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Contraseña", "Estado"};
     String[] columnasVehiculos = {"Matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI cliente"};
 
+    String grupo = "clientes";
+    
     // Llamada principal para ejecutar la aplicación
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -195,13 +197,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         scrollPaneClientes = new JScrollPane(tblTablaClientes); 
         scrollPaneClientes.setBounds(469, 61, 497, 153); 
         jpClientes.add(scrollPaneClientes);
-        
-        btnCrearCliente = new JButton("Añadir/Editar");
-        btnCrearCliente.addActionListener(this);
-        btnCrearCliente.setBackground(new Color(170, 255, 0));
-        btnCrearCliente.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btnCrearCliente.setBounds(469, 226, 497, 35);
-        jpClientes.add(btnCrearCliente);
         
         // Cambia el botón btnImprimir para que sea redondo y tenga un ícono
         btnImprimir = new JButton() {
@@ -353,12 +348,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jpClientes.add(scrollPaneMecanicos);
         
         
-        btnCrearMecanicos = new JButton("Añadir");
-        btnCrearMecanicos.addActionListener(this);
-        btnCrearMecanicos.setBackground(new Color(170, 255, 0));
-        btnCrearMecanicos.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btnCrearMecanicos.setBounds(469, 226, 497, 35);
-        jpClientes.add(btnCrearMecanicos);
+        btnCrearRegistro = new JButton("Añadir");
+        btnCrearRegistro.addActionListener(this);
+        btnCrearRegistro.setBackground(new Color(170, 255, 0));
+        btnCrearRegistro.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnCrearRegistro.setBounds(469, 226, 497, 35);
+        jpClientes.add(btnCrearRegistro);
         
         txtBuscadorProveedor = new JTextField();
         txtBuscadorProveedor.setColumns(10); // Ajusta el ancho
@@ -431,14 +426,13 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         //Al iniciar
         actualizarVisibilidad("clientes");
-        actualizarTablaMecanicos();
+        actualizarTablas(grupo);
 	}
 	
 	private void actualizarVisibilidad(String grupo) {
 	    
 	    txtBuscadorClientes.setVisible(false);
 	    tblTablaClientes.setVisible(false);
-	    btnCrearCliente.setVisible(false);
 	    txtBuscadorCoches.setVisible(false);
 	    tblTablaCoches.setVisible(false);
 	    btnCrearCoche.setVisible(false);
@@ -449,7 +443,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 
 	    txtBuscadorMecanicos.setVisible(false);
 	    tblTablaMecanicos.setVisible(false);
-	    btnCrearMecanicos.setVisible(false);
+	    btnCrearRegistro.setVisible(false);
 	    scrollPaneMecanicos.setVisible(false);
 	    searchPanel3.setVisible(false);
 
@@ -465,7 +459,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	        case "clientes":
 	            txtBuscadorClientes.setVisible(true);
 	            tblTablaClientes.setVisible(true);
-	            btnCrearCliente.setVisible(true);
 	            txtBuscadorCoches.setVisible(true);
 	            tblTablaCoches.setVisible(true);
 	            btnCrearCoche.setVisible(true);
@@ -473,12 +466,13 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	            scrollPaneCoches.setVisible(true);
 	            searchPanel.setVisible(true);
 	            searchPanel2.setVisible(true);
+	            btnCrearRegistro.setVisible(true);
 	            
 	            break;
 	        case "mecanicos":
 	            txtBuscadorMecanicos.setVisible(true);
 	            tblTablaMecanicos.setVisible(true);
-	            btnCrearMecanicos.setVisible(true);
+	            btnCrearRegistro.setVisible(true);
 	            scrollPaneMecanicos.setVisible(true);
 	            searchPanel3.setVisible(true);
 	            btnBorrarMecanicos.setVisible(true);
@@ -502,13 +496,23 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         	} else if(e.getSource() == btnImprimir) {
         		System.out.println("Imprimiendo");
         	} else if(e.getSource() == btnClientes) {
+        		grupo = "clientes";
         		actualizarVisibilidad("clientes");
+        		actualizarTablas("clientes");
         	} else if (e.getSource() == btnMecanicos) {
+        		grupo = "mecanicos";
         		actualizarVisibilidad("mecanicos");
+        		actualizarTablas("mecanicos");
         	} else if (e.getSource() == btnProveedores) {
+        		grupo = "proveedores";
         		actualizarVisibilidad("proveedores");
-        	} else if (e.getSource() == btnCrearMecanicos) {
-        		vtnmecanico.setVisible(true);
+        		actualizarTablas("proveedores");
+        	} else if (e.getSource() == btnCrearRegistro) {
+        		
+        		//Pasa el grupo actual a la ventana de crear nuevo registro
+        		vtnCrearNuevoRegistro = new VtnCrearNuevoRegistro(grupo);
+        		vtnCrearNuevoRegistro.setVisible(true);
+        		
         	} else if(e.getSource() == btnBorrarMecanicos) {
         		borrarMecanico();
         	} else if(e.getSource() == btnActualizarMecanico) {
@@ -552,26 +556,47 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		    }
 		}
 	 
-	private void actualizarTablaMecanicos() {
-		 try {
-			 conexion.conectar();
-			 
-			 ResultSet rset = conexion.ejecutarSelect("SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario where rol = 'Mecanico' ");
-			 while (rset.next()) {
-	                // Obtener cada campo del ResultSet y añadir la fila a la tabla
-	                Object[] fila = new Object[5];
-	                fila[0] = rset.getString("DNI");       
-	                fila[1] = rset.getString("nombre");    
-	                fila[2] = rset.getString("apellidos");          
-	                fila[3] = rset.getString("contrasenia");           
-	                fila[4] = rset.getString("estado");       
-	                
-	                modelTablaMecanicos.addRow(fila); // Agregar fila al modelo de la tabla
-	        }
-			 
-		} catch (Exception e) {
+	private void actualizarTablas(String grupo) {
+		
+		conexion.conectar();
+		try {
+			switch (grupo) {
+			
+				case "clientes":
+					modelTablaClientes.setRowCount(0);
+					ResultSet rsetCliente = conexion.ejecutarSelect("SELECT DNI, nombre, apellidos, telefono FROM cliente");
+					while (rsetCliente.next()) {
+		                
+		                Object[] fila = new Object[4];
+		                fila[0] = rsetCliente.getString("DNI");
+		                fila[1] = rsetCliente.getString("nombre");
+		                fila[2] = rsetCliente.getString("apellidos");
+		                fila[3] = rsetCliente.getString("telefono");
+		                
+		                modelTablaClientes.addRow(fila); 
+					}
+					break;
+				case "mecanicos":
+					modelTablaMecanicos.setRowCount(0);
+					ResultSet rsetMecanico = conexion.ejecutarSelect("SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario where rol = 'Mecanico' ");
+					 while (rsetMecanico.next()) {
+			                // Obtener cada campo del ResultSet y añadir la fila a la tabla
+			                Object[] fila = new Object[5];
+			                fila[0] = rsetMecanico.getString("DNI");       
+			                fila[1] = rsetMecanico.getString("nombre");    
+			                fila[2] = rsetMecanico.getString("apellidos");          
+			                fila[3] = rsetMecanico.getString("contrasenia");           
+			                fila[4] = rsetMecanico.getString("estado");       
+			                
+			                modelTablaMecanicos.addRow(fila); // Agregar fila al modelo de la tabla
+			        }
+					break;
+			}
+			
+		}catch(Exception e) {
 			System.out.println(e);
 		}
+		
 	 }
 	 
 	private void borrarMecanico() {
