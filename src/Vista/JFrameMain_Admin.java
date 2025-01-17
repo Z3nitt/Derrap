@@ -21,7 +21,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
-import Vista.VtnCrearActualizarMecanico;
+import Vista.VtnCrearMecanico;
 import package_main.Background;
 
 import java.awt.*;
@@ -50,11 +50,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
     Connection cn = null;
     Statement stm = null;
     ResultSet rsetresultado = null;
-    VtnCrearActualizarMecanico vtnmecanico = new VtnCrearActualizarMecanico();
+    VtnCrearMecanico vtnmecanico = new VtnCrearMecanico();
+    VtnActualizarMecanico vtnActualizarMecanico = new VtnActualizarMecanico();
     
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JButton btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores, btnBorrarMecanicos;
+    private JButton btnActualizarMecanico, btnCrearMecanicos, btnLogout, btnImprimir, btnClientes, btnCrearCliente, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores, btnBorrarMecanicos;
     private JPanel jpClientes, jpMaterial, jpServicios, jpEconomia;
     private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorProveedor;
     private JTable tblTablaClientes, tblTablaCoches, tblTablaMecanicos, tblTablaProveedores;
@@ -364,6 +365,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
                 if (tblTablaMecanicos.getSelectedRow() != -1) {
                     
                     btnBorrarMecanicos.setEnabled(true);
+                    btnActualizarMecanico.setEnabled(true);
                 } else {
                     
                 	btnBorrarMecanicos.setEnabled(false);
@@ -374,7 +376,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
         
         
-        btnCrearMecanicos = new JButton("Añadir/Editar");
+        btnCrearMecanicos = new JButton("Añadir");
         btnCrearMecanicos.addActionListener(this);
         btnCrearMecanicos.setBackground(new Color(170, 255, 0));
         btnCrearMecanicos.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -438,6 +440,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         btnBorrarMecanicos.addActionListener(this);
         jpClientes.add(btnBorrarMecanicos);
         
+        btnActualizarMecanico = new JButton("Editar");
+        btnActualizarMecanico.setBounds(976, 199, 89, 23);
+        jpClientes.add(btnActualizarMecanico);
+        btnActualizarMecanico.addActionListener(this);
+        btnActualizarMecanico.setEnabled(false);
+        
         
         btnLogout = new JButton("Cerrar Sesión");
         btnLogout.addActionListener(this);
@@ -474,7 +482,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	    scrollPaneProveedores.setVisible(false);
 	    searchPanel4.setVisible(false);	
 	    btnBorrarMecanicos.setVisible(false);
-
+	    btnActualizarMecanico.setVisible(false);
 	    
 	    switch(grupo) {
 	        case "clientes":
@@ -498,6 +506,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	            scrollPaneMecanicos.setVisible(true);
 	            searchPanel3.setVisible(true);
 	            btnBorrarMecanicos.setVisible(true);
+	            btnActualizarMecanico.setVisible(true);
 	            
 	            
 
@@ -544,10 +553,11 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
                 
         	} else if(e.getSource() == btnBorrarMecanicos) {
         		borrarMecanico();
+        	} else if(e.getSource() == btnActualizarMecanico) {
+        		vtnActualizarMecanico.setVisible(true);
         	}
 	 }
 
-	 
 
 	public void logout() {
 		 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -613,7 +623,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta fila?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 		
 		Object dniUsuario = tblTablaMecanicos.getValueAt(registroSeleccionado, 0);
-		System.out.println(dniUsuario);
+		
 		if(confirmacion == JOptionPane.YES_OPTION) {
 			modelTabla.removeRow(registroSeleccionado);
 			
@@ -625,6 +635,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this, "Error al borrar el registro", "Error", JOptionPane.ERROR_MESSAGE);
 				}else {
 					JOptionPane.showMessageDialog(this, "Usuario borrado ", "Borrado exitoso", JOptionPane.INFORMATION_MESSAGE);
+					btnActualizarMecanico.setEnabled(false);
 				}
 				
 			} catch (Exception e) {
@@ -634,4 +645,5 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 		}
 		
 	}
+	 
 }

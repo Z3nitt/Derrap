@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
 import Controlador.Conector_BBDD;
 import package_main.Background;
 
-public class VtnCrearActualizarMecanico extends JFrame implements ActionListener{
+public class VtnCrearMecanico extends JFrame implements ActionListener{
 	Conector_BBDD conexion = new Conector_BBDD();
 	Background fondoPantalla = new Background();
 	Connection cn = null;
@@ -49,7 +49,7 @@ public class VtnCrearActualizarMecanico extends JFrame implements ActionListener
 			@Override
 			public void run() {
 				try {
-					VtnCrearActualizarMecanico frame = new VtnCrearActualizarMecanico();
+					VtnCrearMecanico frame = new VtnCrearMecanico();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +61,7 @@ public class VtnCrearActualizarMecanico extends JFrame implements ActionListener
 	/**
 	 * Create the frame.
 	 */
-	public VtnCrearActualizarMecanico() {
+	public VtnCrearMecanico() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
 		contentPane = new JPanel();
