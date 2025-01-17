@@ -44,7 +44,7 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTable;
 
-public class JFrameMain_Admin extends JFrame implements ActionListener {
+public class JFrameMain_Admin extends JFrame implements ActionListener, ListSelectionListener {
     Conector_BBDD conexion = new Conector_BBDD();
     Background fondoPantalla = new Background();
     Connection cn = null;
@@ -62,10 +62,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
     private JTextField txtBuscadorCoches;
     private JScrollPane scrollPaneClientes, scrollPaneCoches, scrollPaneMecanicos, scrollPaneProveedores;
     private JPanel searchPanel, searchPanel2, searchPanel3, searchPanel4;
-    private DefaultTableModel modelTabla;
+    private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos;
     
     //Valores de las columnas de cada tabla
+    String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
     String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Contraseña", "Estado"};
+    String[] columnasVehiculos = {"Matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI cliente"};
 
     // Llamada principal para ejecutar la aplicación
     public static void main(String[] args) {
@@ -92,10 +94,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         setResizable(false);
         fondoPantalla.setLayout(null);
         setContentPane(fondoPantalla);
-        
-        //Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        //int height = pantalla.height;
-        //int width = pantalla.width;
 
         setSize(1122, 735);
         setLocationRelativeTo(null);
@@ -125,7 +123,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
 
         
-        //CREAR MECANICOS
+        //BOTON MECANICOS
         btnMecanicos = new JButton("MECÁNICOS");
         btnMecanicos.setFont(new Font("Tahoma", Font.BOLD, 13));
         btnMecanicos.setBounds(21, 226, 150, 30);
@@ -150,11 +148,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         btnProveedores.setBounds(21, 356, 150, 30);
         jpClientes.add(btnProveedores);
         
-
         
-        
-        
-     // Crear el JTextField con ícono y hint
+    	// Crear el JTextField con ícono y hint
         txtBuscadorClientes = new JTextField();
         txtBuscadorClientes.setColumns(10); // Ajusta el ancho
         txtBuscadorClientes.setText("Buscar clientes..."); // Placeholder
@@ -182,8 +177,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
             }
         });
 
-        // Configurar el ícono
-
         // Crear un panel para el JTextField con el ícono
         searchPanel = new JPanel(new BorderLayout());
         searchPanel.setBounds(469, 26, 497, 24);
@@ -192,8 +185,13 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
         jpClientes.add(searchPanel);
 
-        
+        //TABLA CLIENTES
         tblTablaClientes = new JTable();
+        tblTablaClientes.setDefaultEditor(Object.class, null);
+        tblTablaClientes.getSelectionModel().addListSelectionListener(this);
+        modelTablaClientes = new DefaultTableModel(columnasCliente,0);
+        tblTablaClientes.setModel(modelTablaClientes);
+        
         scrollPaneClientes = new JScrollPane(tblTablaClientes); 
         scrollPaneClientes.setBounds(469, 61, 497, 153); 
         jpClientes.add(scrollPaneClientes);
@@ -205,7 +203,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         btnCrearCliente.setBounds(469, 226, 497, 35);
         jpClientes.add(btnCrearCliente);
         
-     // Cambia el botón btnImprimir para que sea redondo y tenga un ícono
+        // Cambia el botón btnImprimir para que sea redondo y tenga un ícono
         btnImprimir = new JButton() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -279,6 +277,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         
 
         tblTablaCoches = new JTable();
+        tblTablaCoches.setDefaultEditor(Object.class, null);
+        tblTablaCoches.getSelectionModel().addListSelectionListener(this);
         scrollPaneCoches = new JScrollPane(tblTablaCoches); 
         scrollPaneCoches.setBounds(469, 331, 497, 127); 
         jpClientes.add(scrollPaneCoches);
@@ -331,9 +331,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
                 }
             }
         });
-
-        
-        
         
         searchPanel3 = new JPanel(new BorderLayout());
         searchPanel3.setBounds(469, 26, 497, 24);
@@ -343,38 +340,17 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
         jpClientes.add(searchPanel3);
 
         
+        //TABLA MECANICOS
         tblTablaMecanicos = new JTable();
+        tblTablaMecanicos.setDefaultEditor(Object.class, null);
+        tblTablaMecanicos.getSelectionModel().addListSelectionListener(this);
+        
+	    modelTablaMecanicos = new DefaultTableModel(columnasMecanico, 0); 
+	    tblTablaMecanicos.setModel(modelTablaMecanicos);
+	    
         scrollPaneMecanicos = new JScrollPane(tblTablaMecanicos);
         scrollPaneMecanicos.setBounds(469, 61, 497, 153);
         jpClientes.add(scrollPaneMecanicos);
-        // Configurar la tabla para que no sea editable
-        tblTablaMecanicos.setDefaultEditor(Object.class, null);
-        
-	    
-	    // Crear un modelo de tabla vacío
-	    modelTabla = new DefaultTableModel(columnasMecanico, 0); 
-	    
-	    // Asignar el modelo de la tabla
-	    tblTablaMecanicos.setModel(modelTabla);
-	    
-	    //Verifica si hay una fila seleccionada y habilita o deshabilita el boton de borrar mecanico
-	    tblTablaMecanicos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				
-                if (tblTablaMecanicos.getSelectedRow() != -1) {
-                    
-                    btnBorrarMecanicos.setEnabled(true);
-                    btnActualizarMecanico.setEnabled(true);
-                } else {
-                    btnActualizarMecanico.setEnabled(false);
-                	btnBorrarMecanicos.setEnabled(false);
-                }
-				
-			}
-		});
-        
         
         
         btnCrearMecanicos = new JButton("Añadir");
@@ -411,8 +387,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
             }
         });
 
-        // Configurar el ícono
-
         // Crear un panel para el JTextField con el ícono
         searchPanel4 = new JPanel(new BorderLayout());
         searchPanel4.setBounds(469, 26, 497, 24);
@@ -423,6 +397,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 
         
         tblTablaProveedores = new JTable();
+        tblTablaProveedores.setDefaultEditor(Object.class, null);
+        tblTablaProveedores.getSelectionModel().addListSelectionListener(this);
         scrollPaneProveedores = new JScrollPane(tblTablaProveedores); 
         scrollPaneProveedores.setBounds(469, 61, 497, 153); 
         jpClientes.add(scrollPaneProveedores);
@@ -498,7 +474,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	            searchPanel.setVisible(true);
 	            searchPanel2.setVisible(true);
 	            
-
 	            break;
 	        case "mecanicos":
 	            txtBuscadorMecanicos.setVisible(true);
@@ -509,8 +484,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	            btnBorrarMecanicos.setVisible(true);
 	            btnActualizarMecanico.setVisible(true);
 	            
-	            
-
 	            break;
 	        case "proveedores":
 	            txtBuscadorProveedor.setVisible(true);
@@ -519,59 +492,29 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	            scrollPaneProveedores.setVisible(true);
 	            searchPanel4.setVisible(true);
 	            
-
 	            break;
 	    }
 	}
-
-
-
 	
-	 public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 	         if(e.getSource() == btnLogout) {
         		logout();
-        		
-        		
         	} else if(e.getSource() == btnImprimir) {
         		System.out.println("Imprimiendo");
-        		
-        		
         	} else if(e.getSource() == btnClientes) {
         		actualizarVisibilidad("clientes");
-        		
-        		
-
         	} else if (e.getSource() == btnMecanicos) {
         		actualizarVisibilidad("mecanicos");
-
-
         	} else if (e.getSource() == btnProveedores) {
         		actualizarVisibilidad("proveedores");
-
-
         	} else if (e.getSource() == btnCrearMecanicos) {
         		vtnmecanico.setVisible(true);
-                
         	} else if(e.getSource() == btnBorrarMecanicos) {
         		borrarMecanico();
         	} else if(e.getSource() == btnActualizarMecanico) {
-        		
-        		int registroSeleccionado = tblTablaMecanicos.getSelectedRow();
-        		
-        		//Obtengo todos los valores del registro seleccionado
-        		String dniUsuario = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 0);
-        	    String nombre = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 1);
-        	    String apellidos = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 2);
-        	    String contrasena = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 3);
-        	    String estado = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 4);  
-        		
-        	    String[] valoresActuales = {dniUsuario, nombre, apellidos, contrasena, estado};
-        		
-        		vtnActualizarMecanico = new VtnActualizarMecanico(columnasMecanico, valoresActuales);
-        		vtnActualizarMecanico.setVisible(true);
+        		actualizarMecanico();
         	}
 	 }
-
 
 	public void logout() {
 		 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -580,18 +523,18 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
          dispose();
 	 }
 	 
-	 private void buscarMecanicos() {
+	private void buscarMecanicos() {
 		    String nombreMecanico = txtBuscadorMecanicos.getText().trim();
 		 
 		    // Consulta SQL para buscar mecánicos
 		    String selectBuscador = "SELECT DNI, nombre, apellidos, contrasenia, rol, estado FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE '%" + nombreMecanico + "%'";
-
+	
 		    try {
 		        
 		        ResultSet rset = conexion.ejecutarSelect(selectBuscador);
 		        
 		        //Vacia la tabla
-		        modelTabla.setRowCount(0);
+		        modelTablaMecanicos.setRowCount(0);
 		        
 		        // Procesar los resultados
 		        while (rset.next()) {
@@ -602,14 +545,14 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 		            fila[2] = rset.getString("apellidos");
 		            fila[3] = rset.getString("contrasenia");
 		            fila[4] = rset.getString("estado");
-		            modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
+		            modelTablaMecanicos.addRow(fila); // Agregar fila al modelo de la tabla
 		        }
 		    } catch (SQLException e) {
 		        JOptionPane.showMessageDialog(this, "Error al buscar mecánicos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		    }
 		}
 	 
-	 private void actualizarTablaMecanicos() {
+	private void actualizarTablaMecanicos() {
 		 try {
 			 conexion.conectar();
 			 
@@ -623,15 +566,16 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 	                fila[3] = rset.getString("contrasenia");           
 	                fila[4] = rset.getString("estado");       
 	                
-	                modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
-            }
+	                modelTablaMecanicos.addRow(fila); // Agregar fila al modelo de la tabla
+	        }
 			 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 	 }
 	 
-	 private void borrarMecanico() {
+	private void borrarMecanico() {
+	
 		int registroSeleccionado = tblTablaMecanicos.getSelectedRow();
 		
 		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta fila?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
@@ -639,7 +583,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 		Object dniUsuario = tblTablaMecanicos.getValueAt(registroSeleccionado, 0);
 		
 		if(confirmacion == JOptionPane.YES_OPTION) {
-			modelTabla.removeRow(registroSeleccionado);
+			modelTablaMecanicos.removeRow(registroSeleccionado);
 			
 			try {
 				conexion.conectar();
@@ -656,6 +600,40 @@ public class JFrameMain_Admin extends JFrame implements ActionListener {
 				System.out.println(e);
 			}
 			
+		}
+		
+	}
+	 
+	private void actualizarMecanico() {
+			int registroSeleccionado = tblTablaMecanicos.getSelectedRow();
+			
+			//Obtengo todos los valores del registro seleccionado
+			String dniUsuario = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 0);
+		    String nombre = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 1);
+		    String apellidos = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 2);
+		    String contrasena = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 3);
+		    String estado = (String) tblTablaMecanicos.getValueAt(registroSeleccionado, 4);  
+			
+		    String[] valoresActuales = {dniUsuario, nombre, apellidos, contrasena, estado};
+			
+			vtnActualizarMecanico = new VtnActualizarMecanico(columnasMecanico, valoresActuales);
+			vtnActualizarMecanico.setVisible(true);
+			
+		}
+
+	//Detecta el cambio en las tablas
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		if(e.getSource() == tblTablaMecanicos.getSelectionModel()) {
+			//Verifica si hay una fila seleccionada y habilita o deshabilita el boton de borrar mecanico
+			if (tblTablaMecanicos.getSelectedRow() != -1) {
+                
+                btnBorrarMecanicos.setEnabled(true);
+                btnActualizarMecanico.setEnabled(true);
+            } else {
+                btnActualizarMecanico.setEnabled(false);
+            	btnBorrarMecanicos.setEnabled(false);
+            }
 		}
 		
 	}
