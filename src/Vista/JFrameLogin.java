@@ -30,6 +30,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import Controlador.Conector_BBDD;
+import javax.swing.JSeparator;
 
 public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
 
@@ -44,6 +45,8 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
     private JLabel lblUsuario, lblPass;
     private JButton btnLogin;
     private JPasswordField jpassword;
+    private JSeparator separator_1;
+    private JLabel lblPassIcon;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -63,6 +66,7 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
     public JFrameLogin() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100, 100, 1083, 626);
+        //CAMBIAR PARA EL DISEÑO
         contentPane = new FondoPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setTitle("Login | Derrap");
@@ -81,39 +85,73 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
         contentPane.setFocusable(true);
 	    contentPane.requestFocusInWindow();
 	    contentPane.addKeyListener(this);
-
-        lblUsuario = new JLabel("Usuario: ");
-        lblUsuario.setBounds(383, 105, 155, 30);
-        lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
-        lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        contentPane.add(lblUsuario);
-
-        lblPass = new JLabel("Contraseña: ");
-        lblPass.setBounds(383, 250, 155, 30);
-        lblPass.setFont(new Font("Tahoma", Font.BOLD, 15));
-        lblPass.setHorizontalAlignment(SwingConstants.CENTER);
-        contentPane.add(lblPass);
-
-        jpassword = new JPasswordField();
-        jpassword.setBounds(383, 275, 155, 30);
-        jpassword.setHorizontalAlignment(SwingConstants.CENTER);
-        jpassword.addKeyListener(this);
-        addPlaceholder(jpassword, "Contraseña");
-        contentPane.add(jpassword);
-
-        txtUsuario = new JTextField();
-        txtUsuario.setBounds(383, 129, 155, 30);
-        txtUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        addPlaceholder(txtUsuario, "Usuario");
-        txtUsuario.addKeyListener(this);
-        contentPane.add(txtUsuario);
-
-        btnLogin = new JButton("Acceder");
-        btnLogin.setBounds(404, 374, 114, 40);
-        btnLogin.addActionListener(this);
-        btnLogin.setBackground(new Color(0, 0, 0));
-        btnLogin.setForeground(new Color(207, 249, 252));
-        contentPane.add(btnLogin);
+        
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(255, 255, 255, 100));
+        //panel.setOpaque(false);
+        panel.setBounds(232, 109, 425, 360);
+        contentPane.add(panel);
+        panel.setLayout(null);
+        
+        JSeparator separator = new JSeparator();
+        separator.setForeground(new Color(0, 0, 0));
+        separator.setBounds(108, 117, 241, 2);
+        panel.add(separator);
+        
+        separator_1 = new JSeparator();
+        separator_1.setForeground(new Color(0, 0, 0));
+        separator_1.setBounds(108, 220, 241, 2);
+        panel.add(separator_1);
+        
+        JLabel lblIconoUser = new JLabel();
+        lblIconoUser.setHorizontalAlignment(SwingConstants.CENTER);
+        lblIconoUser.setBounds(41, 87, 45, 36);
+        ImageIcon iconoUsuario = new ImageIcon(getClass().getResource("/package_assets/user.png"));
+        lblIconoUser.setIcon(iconoUsuario);
+        panel.add(lblIconoUser);
+        
+                txtUsuario = new JTextField();
+                txtUsuario.setBounds(108, 87, 241, 30);
+                panel.add(txtUsuario);
+                txtUsuario.setBackground(new Color(255, 255, 255));
+                txtUsuario.setBorder(null);
+                txtUsuario.setHorizontalAlignment(SwingConstants.LEFT);
+                addPlaceholder(txtUsuario, "Usuario");
+                
+                        lblUsuario = new JLabel("Usuario: ");
+                        lblUsuario.setBounds(154, 47, 155, 30);
+                        panel.add(lblUsuario);
+                        lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
+                        lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+                        
+                                btnLogin = new JButton("Acceder");
+                                btnLogin.setBounds(108, 271, 241, 30);
+                                panel.add(btnLogin);
+                                btnLogin.addActionListener(this);
+                                btnLogin.setBackground(new Color(0, 0, 0));
+                                btnLogin.setForeground(new Color(207, 249, 252));
+                                
+                                        jpassword = new JPasswordField();
+                                        jpassword.setBorder(null);
+                                        jpassword.setBounds(108, 190, 241, 30);
+                                        panel.add(jpassword);
+                                        jpassword.setHorizontalAlignment(SwingConstants.LEFT);
+                                        jpassword.addKeyListener(this);
+                                        addPlaceholder(jpassword, "Contraseña");
+                                        
+                                                lblPass = new JLabel("Contraseña: ");
+                                                lblPass.setBounds(154, 150, 155, 30);
+                                                panel.add(lblPass);
+                                                lblPass.setFont(new Font("Tahoma", Font.BOLD, 15));
+                                                lblPass.setHorizontalAlignment(SwingConstants.CENTER);
+                                                
+                                                lblPassIcon = new JLabel();
+                                                lblPassIcon.setHorizontalAlignment(SwingConstants.CENTER);
+                                                lblPassIcon.setBounds(41, 186, 45, 36);
+                                                ImageIcon iconoPass = new ImageIcon(getClass().getResource("/package_assets/pass.png"));
+                                                lblPassIcon.setIcon(iconoPass);
+                                                panel.add(lblPassIcon);
+                txtUsuario.addKeyListener(this);
     }
 
     // Método para agregar un placeholder a un JTextField
@@ -142,22 +180,17 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
     }
 
     // Clase personalizada para el fondo con imagen
-    class FondoPanel extends JPanel {
-        private Image imagenFondo;
-
-        public FondoPanel() {
-            imagenFondo = new ImageIcon(getClass().getResource("/package_assets/bckLogin.png")).getImage();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (imagenFondo != null) {
-                g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
-            }
-        }
-    }
-
+	
+	  class FondoPanel extends JPanel { private Image imagenFondo;
+	  
+	  public FondoPanel() { imagenFondo = new
+	  ImageIcon(getClass().getResource("/package_assets/bckLogin.png")).getImage();
+	  }
+	  
+	  @Override protected void paintComponent(Graphics g) {
+	  super.paintComponent(g); if (imagenFondo != null) { g.drawImage(imagenFondo,
+	  0, 0, getWidth(), getHeight(), this); } } }
+	 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnLogin) {
