@@ -77,8 +77,13 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 		
 				btnLogout = new JButton("Cerrar Sesión");
 				btnLogout.setForeground(new Color(255, 255, 255));
-				btnLogout.setBackground(new Color(0, 0, 0));
+				btnLogout.setBackground(new Color(102, 153, 204));
 				btnLogout.setBounds(956, 640, 120, 23);
+				btnLogout.addMouseListener(new MouseAdapter() {
+				    public void mouseEntered(MouseEvent e) {
+				    	btnLogout.setBackground(Color.BLACK);}
+				    public void mouseExited(MouseEvent e) {
+				    	btnLogout.setBackground(new Color(102, 153, 204));;}});
 				panel.add(btnLogout);
 				btnLogout.addActionListener(this);
 				btnLogout.setFocusable(false);
@@ -140,9 +145,14 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 				
 				JButton btnabrirorden_1 = new JButton("Abrir orden");
 			    btnabrirorden_1.setFocusable(false);
-				btnabrirorden_1.setBackground(new Color(0, 0, 0));
+				btnabrirorden_1.setBackground(new Color(102, 153, 204));
 				btnabrirorden_1.setForeground(new Color(255, 255, 255));
 				btnabrirorden_1.setBounds(30, 227, 108, 50);
+				btnabrirorden_1.addMouseListener(new MouseAdapter() {
+				    public void mouseEntered(MouseEvent e) {
+						btnabrirorden_1.setBackground(Color.BLACK);}
+				    public void mouseExited(MouseEvent e) {
+						btnabrirorden_1.setBackground(new Color(102, 153, 204));;}});
 				Orden_1.add(btnabrirorden_1);
 				
 				JLabel lblrdenesAsignadas = new JLabel("Órdenes asignadas");
@@ -209,8 +219,13 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 				JButton btnabrirorden_2 = new JButton("Abrir orden");
 			    btnabrirorden_2.setFocusable(false);
 				btnabrirorden_2.setForeground(Color.WHITE);
-				btnabrirorden_2.setBackground(Color.BLACK);
+				btnabrirorden_2.setBackground(new Color(102, 153, 204));
 				btnabrirorden_2.setBounds(30, 227, 108, 50);
+				btnabrirorden_2.addMouseListener(new MouseAdapter() {
+				    public void mouseEntered(MouseEvent e) {
+						btnabrirorden_2.setBackground(Color.BLACK);}
+				    public void mouseExited(MouseEvent e) {
+						btnabrirorden_2.setBackground(new Color(102, 153, 204));;}});
 				Orden_1_1.add(btnabrirorden_2);
 				
 				JPanel Orden_1_2 = new JPanel();
@@ -272,8 +287,13 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 				JButton btnabrirorden_3 = new JButton("Abrir orden");
 			    btnabrirorden_3.setFocusable(false);
 				btnabrirorden_3.setForeground(Color.WHITE);
-				btnabrirorden_3.setBackground(Color.BLACK);
+				btnabrirorden_3.setBackground(new Color(102, 153, 204));
 				btnabrirorden_3.setBounds(30, 227, 108, 50);
+				btnabrirorden_3.addMouseListener(new MouseAdapter() {
+				    public void mouseEntered(MouseEvent e) {
+						btnabrirorden_3.setBackground(Color.BLACK);}
+				    public void mouseExited(MouseEvent e) {
+						btnabrirorden_3.setBackground(new Color(102, 153, 204));;}});
 				Orden_1_2.add(btnabrirorden_3);
 				
 				JPanel barra = new JPanel();
@@ -362,8 +382,8 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 				lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
 				
 				JLabel lblNewLabel_4 = new JLabel("");
-				lblNewLabel_4.setIcon(new ImageIcon(JFrameMain_Mecanico.class.getResource("/package_assets/derraplogochikito.png")));
-				lblNewLabel_4.setBounds(22, 445, 155, 163);
+				lblNewLabel_4.setIcon(new ImageIcon(JFrameMain_Mecanico.class.getResource("/package_assets/derrapchicodefinitovo.png")));
+				lblNewLabel_4.setBounds(23, 458, 155, 163);
 				barra.add(lblNewLabel_4);
 
 
