@@ -25,7 +25,7 @@ import javax.swing.WindowConstants;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-public class VtnActualizarMecanico extends JFrame implements ActionListener {
+public class VtnActualizarRegistro extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -33,9 +33,10 @@ public class VtnActualizarMecanico extends JFrame implements ActionListener {
 	private JButton btnAceptar;
 	private JComboBox comboBox;
 	String [] valoresActuales;
+	String grupo;
 	Conector_BBDD conexion = new Conector_BBDD();
 	
-	public VtnActualizarMecanico(String [] columnasTabla, String [] valoresActuales) {
+	public VtnActualizarRegistro(String [] columnasTabla, String [] valoresActuales, String grupo) {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
 		setResizable(false);
@@ -45,6 +46,7 @@ public class VtnActualizarMecanico extends JFrame implements ActionListener {
 		getContentPane().setLayout(null);
 		
 		this.valoresActuales = valoresActuales;
+		this.grupo = grupo;
 		
 		JLabel lblIndicadorDNI = new JLabel("DNI usuario: ");
 		lblIndicadorDNI.setFont(new Font("Dialog", Font.BOLD, 18));
@@ -124,40 +126,45 @@ public class VtnActualizarMecanico extends JFrame implements ActionListener {
 		getContentPane().add(lblIndicadorActual);
 		
 		
-		
-		
-		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		 if(e.getSource() == btnAceptar) {
-     		String valorIntroducido = txtNuevoValor.getText();
-     		
-     		String itemSeleccionado = (String) comboBox.getSelectedItem();
-     		
-     		if(itemSeleccionado.equalsIgnoreCase("Contraseña")) {
-     			itemSeleccionado = "contrasenia";
-     		}
-     		
-     		conexion.conectar();
-     		try {
-				int filasAfectadas = conexion.ejecutarInsertDeleteUpdate("UPDATE usuario SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE DNI = '" + valoresActuales[0] + "'");
-				
-				if(filasAfectadas == 0) {
-					JOptionPane.showMessageDialog(this, "Error al actualizar el registro", "Error", JOptionPane.ERROR_MESSAGE);
-				}else {
-					JOptionPane.showMessageDialog(this, "Actualizacion exitosa ", "Actualizacion exitoso", JOptionPane.INFORMATION_MESSAGE);
-					txtNuevoValor.setText("");
-				}
-				
-			} catch (SQLSyntaxErrorException e2) {
-				JOptionPane.showMessageDialog(this, e2, "Error", JOptionPane.ERROR_MESSAGE);
-			}catch(Exception e3) {
-				System.out.println(e3);
-			}
-     		
-     	}
 		
-	}
+		try {
+			if(e.getSource() == btnAceptar) {
+	     		String valorIntroducido = txtNuevoValor.getText();
+	     		String itemSeleccionado = (String) comboBox.getSelectedItem();
+	     		String sqlActualizar="";
+	     		conexion.conectar();
+	     		switch (grupo) {
+					case "clientes":
+						sqlActualizar="UPDATE cliente SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE DNI = '" + valoresActuales[0] + "'";
+						break;
+					case "mecanicos":
+						//Corrige diferencias entre la bd y la tabla
+			     		if(itemSeleccionado.equalsIgnoreCase("Contraseña")) {
+			     			itemSeleccionado = "contrasenia";
+			     		}
+			     		sqlActualizar="UPDATE usuario SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE DNI = '" + valoresActuales[0] + "'";		     		
+			     		break;
+					case "vehiculos":
+						break;
+				
+	     		}
+	     		int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sqlActualizar);
+	     		if(filasAfectadas == 0) {
+	    			JOptionPane.showMessageDialog(this, "Error al actualizar el registro", "Error", JOptionPane.ERROR_MESSAGE);
+	    		}else {
+	    			JOptionPane.showMessageDialog(this, "Actualizacion exitosa ", "Actualizacion exitoso", JOptionPane.INFORMATION_MESSAGE);
+	    			txtNuevoValor.setText("");
+	    		}
+			}
+		 }catch(SQLSyntaxErrorException e2) {
+			 JOptionPane.showMessageDialog(this, e2, "Error", JOptionPane.ERROR_MESSAGE);
+		 }catch(Exception e3) {
+			 System.out.println(e3);
+		}
+ 	}
+		
 }
