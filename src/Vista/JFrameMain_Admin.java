@@ -2,26 +2,19 @@ package Vista;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
-import Vista.VtnCrearNuevoRegistro;
 import package_main.Background;
 
 import java.awt.*;
@@ -38,7 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Color;
@@ -55,13 +47,13 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnCrearCoche, btnProveedores, btnMecanicos, btnCrearProveedores, btnBorrarRegistro;
+    private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnProveedores, btnMecanicos, btnVehiculos, btnCrearProveedores, btnBorrarRegistro;
     private JPanel jpClientes, jpMaterial, jpServicios, jpEconomia;
     private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorProveedor;
-    private JTable tblTablaClientes, tblTablaCoches, tblTablaMecanicos, tblTablaProveedores;
-    private JTextField txtBuscadorCoches;
-    private JScrollPane scrollPaneClientes, scrollPaneCoches, scrollPaneMecanicos, scrollPaneProveedores;
-    private JPanel searchPanel, searchPanel2, searchPanel3, searchPanel4;
+    private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaProveedores;
+    private JTextField txtBuscadorVehiculos;
+    private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneProveedores;
+    private JPanel searchPanelClientes, searchPanelVehiculos, searchPanelMecanicos, searchPanelProveedores;
     private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos;
     
     //Valores de las columnas de cada tabla
@@ -128,7 +120,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         //BOTON MECANICOS
         btnMecanicos = new JButton("MECÁNICOS");
         btnMecanicos.setFont(new Font("Tahoma", Font.BOLD, 13));
-        btnMecanicos.setBounds(21, 226, 150, 30);
+        btnMecanicos.setBounds(21, 323, 150, 30);
         btnMecanicos.addActionListener(this);
         jpClientes.add(btnMecanicos);
         
@@ -147,7 +139,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         btnProveedores = new JButton("PROVEEDORES");
         btnProveedores.addActionListener(this);
         btnProveedores.setFont(new Font("Tahoma", Font.BOLD, 13));
-        btnProveedores.setBounds(21, 356, 150, 30);
+        btnProveedores.setBounds(21, 428, 150, 30);
         jpClientes.add(btnProveedores);
         
         
@@ -189,12 +181,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		});
 
         // Crear un panel para el JTextField con el ícono
-        searchPanel = new JPanel(new BorderLayout());
-        searchPanel.setBounds(469, 26, 497, 24);
-        searchPanel.add(txtBuscadorClientes, BorderLayout.CENTER);
+        searchPanelClientes = new JPanel(new BorderLayout());
+        searchPanelClientes.setBounds(469, 26, 497, 24);
+        searchPanelClientes.add(txtBuscadorClientes, BorderLayout.CENTER);
 
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanel);
+        jpClientes.add(searchPanelClientes);
 
         //TABLA CLIENTES
         tblTablaClientes = new JTable();
@@ -244,59 +236,51 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jpClientes.add(btnImprimir);
 
         
-        txtBuscadorCoches = new JTextField();
-        txtBuscadorCoches.setColumns(10); // Ajusta el ancho
-        txtBuscadorCoches.setText("Buscar coches..."); // Placeholder
-        txtBuscadorCoches.setForeground(Color.GRAY);
+        txtBuscadorVehiculos = new JTextField();
+        txtBuscadorVehiculos.setColumns(10); // Ajusta el ancho
+        txtBuscadorVehiculos.setText("Buscar vehiculos..."); // Placeholder
+        txtBuscadorVehiculos.setForeground(Color.GRAY);
         
-        String hint2 = "Buscar coches...";
-        txtBuscadorCoches.setText(hint2);
-        txtBuscadorCoches.setForeground(Color.GRAY);
-        txtBuscadorCoches.addFocusListener(new FocusAdapter() {
+        String hint2 = "Buscar vehiculos...";
+        txtBuscadorVehiculos.setText(hint2);
+        txtBuscadorVehiculos.setForeground(Color.GRAY);
+        txtBuscadorVehiculos.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (txtBuscadorCoches.getText().equals(hint2)) {
-                	txtBuscadorCoches.setText("");
-                	txtBuscadorCoches.setForeground(Color.BLACK);
+                if (txtBuscadorVehiculos.getText().equals(hint2)) {
+                	txtBuscadorVehiculos.setText("");
+                	txtBuscadorVehiculos.setForeground(Color.BLACK);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (txtBuscadorCoches.getText().isEmpty()) {
-                	txtBuscadorCoches.setText(hint2);
-                	txtBuscadorCoches.setForeground(Color.GRAY);
+                if (txtBuscadorVehiculos.getText().isEmpty()) {
+                	txtBuscadorVehiculos.setText(hint2);
+                	txtBuscadorVehiculos.setForeground(Color.GRAY);
                 }
             }
         });
 
 
         // Crear un panel para el JTextField con el ícono
-        searchPanel2 = new JPanel(new BorderLayout());
-        searchPanel2.setBounds(469, 288, 497, 24);
-        searchPanel2.add(txtBuscadorCoches, BorderLayout.CENTER);
+        searchPanelVehiculos = new JPanel(new BorderLayout());
+        searchPanelVehiculos.setBounds(469, 26, 497, 24);
+        searchPanelVehiculos.add(txtBuscadorVehiculos, BorderLayout.CENTER);
 
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanel2);
-        
+        jpClientes.add(searchPanelVehiculos);
 
-        tblTablaCoches = new JTable();
-        tblTablaCoches.setDefaultEditor(Object.class, null);
-        tblTablaCoches.getSelectionModel().addListSelectionListener(this);
-        scrollPaneCoches = new JScrollPane(tblTablaCoches); 
-        scrollPaneCoches.setBounds(469, 331, 497, 127); 
-        jpClientes.add(scrollPaneCoches);
-
+        //TABLA VEHICULOS
+        tblTablaVehiculos = new JTable();
+        tblTablaVehiculos.setDefaultEditor(Object.class, null);
+        tblTablaVehiculos.getSelectionModel().addListSelectionListener(this);
+        modelTablaVehiculos = new DefaultTableModel(columnasVehiculos,0);
+        tblTablaVehiculos.setModel(modelTablaVehiculos);
         
-        btnCrearCoche = new JButton("Añadir/Editar");
-        btnCrearCoche.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
-        btnCrearCoche.setBackground(new Color(170, 255, 0));
-        btnCrearCoche.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btnCrearCoche.setBounds(469, 473, 497, 35);
-        jpClientes.add(btnCrearCoche);
+        scrollPaneVehiculos = new JScrollPane(tblTablaVehiculos); 
+        scrollPaneVehiculos.setBounds(469, 61, 497, 153);
+        jpClientes.add(scrollPaneVehiculos);
         
         
         txtBuscadorMecanicos = new JTextField();
@@ -335,12 +319,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             }
         });
         
-        searchPanel3 = new JPanel(new BorderLayout());
-        searchPanel3.setBounds(469, 26, 497, 24);
-        searchPanel3.add(txtBuscadorMecanicos, BorderLayout.CENTER);
+        searchPanelMecanicos = new JPanel(new BorderLayout());
+        searchPanelMecanicos.setBounds(469, 26, 497, 24);
+        searchPanelMecanicos.add(txtBuscadorMecanicos, BorderLayout.CENTER);
 
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanel3);
+        jpClientes.add(searchPanelMecanicos);
 
         
         //TABLA MECANICOS
@@ -391,12 +375,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         });
 
         // Crear un panel para el JTextField con el ícono
-        searchPanel4 = new JPanel(new BorderLayout());
-        searchPanel4.setBounds(469, 26, 497, 24);
-        searchPanel4.add(txtBuscadorProveedor, BorderLayout.CENTER);
+        searchPanelProveedores = new JPanel(new BorderLayout());
+        searchPanelProveedores.setBounds(469, 26, 497, 24);
+        searchPanelProveedores.add(txtBuscadorProveedor, BorderLayout.CENTER);
 
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanel4);
+        jpClientes.add(searchPanelProveedores);
 
         
         tblTablaProveedores = new JTable();
@@ -426,6 +410,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         btnActualizarRegistro.addActionListener(this);
         btnActualizarRegistro.setEnabled(false);
         
+        btnVehiculos = new JButton("VEHÍCULOS");
+        btnVehiculos.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnVehiculos.setBounds(21, 210, 150, 30);
+        btnVehiculos.addActionListener(this);
+        jpClientes.add(btnVehiculos);
+        
         
         btnLogout = new JButton("Cerrar Sesión");
         btnLogout.addActionListener(this);
@@ -441,44 +431,42 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	    
 	    txtBuscadorClientes.setVisible(false);
 	    tblTablaClientes.setVisible(false);
-	    txtBuscadorCoches.setVisible(false);
-	    tblTablaCoches.setVisible(false);
-	    btnCrearCoche.setVisible(false);
+	    txtBuscadorVehiculos.setVisible(false);
+	    tblTablaVehiculos.setVisible(false);
 	    scrollPaneClientes.setVisible(false);
-	    scrollPaneCoches.setVisible(false);
-	    searchPanel.setVisible(false);
-	    searchPanel2.setVisible(false);
+	    scrollPaneVehiculos.setVisible(false);
+	    searchPanelClientes.setVisible(false);
+	    searchPanelVehiculos.setVisible(false);
 
 	    txtBuscadorMecanicos.setVisible(false);
 	    tblTablaMecanicos.setVisible(false);
 	    btnCrearRegistro.setVisible(false);
 	    scrollPaneMecanicos.setVisible(false);
-	    searchPanel3.setVisible(false);
+	    searchPanelMecanicos.setVisible(false);
 
 	    txtBuscadorProveedor.setVisible(false);
 	    tblTablaProveedores.setVisible(false);
 	    btnCrearProveedores.setVisible(false);
 	    scrollPaneProveedores.setVisible(false);
-	    searchPanel4.setVisible(false);	
+	    searchPanelProveedores.setVisible(false);	
 	    btnBorrarRegistro.setVisible(false);
 	    btnActualizarRegistro.setVisible(false);
 	    
 	    //Limpiar las tablas
 	    tblTablaClientes.clearSelection();
 	    tblTablaMecanicos.clearSelection();
-	    tblTablaCoches.clearSelection();
+	    tblTablaVehiculos.clearSelection();
 	    
 	    switch(grupo) {
 	        case "clientes":
 	            txtBuscadorClientes.setVisible(true);
 	            tblTablaClientes.setVisible(true);
-	            txtBuscadorCoches.setVisible(true);
-	            tblTablaCoches.setVisible(true);
-	            btnCrearCoche.setVisible(true);
+	            txtBuscadorVehiculos.setVisible(true);
+	            tblTablaVehiculos.setVisible(true);
 	            scrollPaneClientes.setVisible(true);
-	            scrollPaneCoches.setVisible(true);
-	            searchPanel.setVisible(true);
-	            searchPanel2.setVisible(true);
+	            scrollPaneVehiculos.setVisible(true);
+	            searchPanelClientes.setVisible(true);
+	            searchPanelVehiculos.setVisible(true);
 	            btnCrearRegistro.setVisible(true);
 	            btnBorrarRegistro.setVisible(true);
 	            btnActualizarRegistro.setVisible(true);
@@ -489,48 +477,61 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	            tblTablaMecanicos.setVisible(true);
 	            btnCrearRegistro.setVisible(true);
 	            scrollPaneMecanicos.setVisible(true);
-	            searchPanel3.setVisible(true);
+	            searchPanelMecanicos.setVisible(true);
 	            btnBorrarRegistro.setVisible(true);
 	            btnActualizarRegistro.setVisible(true);
 	            
 	            break;
+	        case "vehiculos":
+	        	txtBuscadorVehiculos.setVisible(true);
+	        	tblTablaVehiculos.setVisible(true);
+	        	btnCrearRegistro.setVisible(true);
+	        	scrollPaneVehiculos.setVisible(true);
+	        	searchPanelVehiculos.setVisible(true);
+	        	btnBorrarRegistro.setVisible(true);
+	        	btnActualizarRegistro.setVisible(true);
+	        	break;
 	        case "proveedores":
 	            txtBuscadorProveedor.setVisible(true);
 	            tblTablaProveedores.setVisible(true);
 	            btnCrearProveedores.setVisible(true);
 	            scrollPaneProveedores.setVisible(true);
-	            searchPanel4.setVisible(true);
+	            searchPanelProveedores.setVisible(true);
 	            
 	            break;
 	    }
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-	         if(e.getSource() == btnLogout) {
-        		logout();
-        	} else if(e.getSource() == btnImprimir) {
-        		System.out.println("Imprimiendo");
-        	} else if(e.getSource() == btnClientes) {
-        		grupo = "clientes";
-        		actualizarVisibilidad("clientes");
-        		actualizarTablas("clientes");
-        	} else if (e.getSource() == btnMecanicos) {
-        		grupo = "mecanicos";
-        		actualizarVisibilidad("mecanicos");
-        		actualizarTablas("mecanicos");
-        	} else if (e.getSource() == btnProveedores) {
-        		grupo = "proveedores";
-        		actualizarVisibilidad("proveedores");
-        		actualizarTablas("proveedores");
-        	} else if (e.getSource() == btnCrearRegistro) {
-        		//Pasa el grupo actual a la ventana de crear nuevo registro
-        		vtnCrearNuevoRegistro = new VtnCrearNuevoRegistro(grupo);
-        		vtnCrearNuevoRegistro.setVisible(true);
-        	} else if(e.getSource() == btnBorrarRegistro) {
-        		borrarRegistro(grupo);
-        	} else if(e.getSource() == btnActualizarRegistro) {
-        		actualizarRegistro(grupo);
-        	}
+     	if(e.getSource() == btnLogout) {
+    		logout();
+    	} else if(e.getSource() == btnImprimir) {
+    		System.out.println("Imprimiendo");
+    	} else if(e.getSource() == btnClientes) {
+    		grupo = "clientes";
+    		actualizarVisibilidad("clientes");
+    		actualizarTablas("clientes");
+    	} else if (e.getSource() == btnMecanicos) {
+    		grupo = "mecanicos";
+    		actualizarVisibilidad("mecanicos");
+    		actualizarTablas("mecanicos");
+    	} else if (e.getSource() == btnVehiculos) {
+    		grupo = "vehiculos";
+    		actualizarVisibilidad("vehiculos");
+    		actualizarTablas("vehiculos");
+    	} else if (e.getSource() == btnProveedores) {
+    		grupo = "proveedores";
+    		actualizarVisibilidad("proveedores");
+    		actualizarTablas("proveedores");
+    	} else if (e.getSource() == btnCrearRegistro) {
+    		//Pasa el grupo actual a la ventana de crear nuevo registro
+    		vtnCrearNuevoRegistro = new VtnCrearNuevoRegistro(grupo);
+    		vtnCrearNuevoRegistro.setVisible(true);
+    	} else if(e.getSource() == btnBorrarRegistro) {
+    		borrarRegistro(grupo);
+    	} else if(e.getSource() == btnActualizarRegistro) {
+    		actualizarRegistro(grupo);
+    	}
 	 }
 	
 
@@ -589,16 +590,16 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			JOptionPane.showMessageDialog(this, "Error al buscar mecánicos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} 
 	}
+	
 	 
 	private void actualizarTablas(String grupo) {
 		
 		conexion.conectar();
 		try {
 			switch (grupo) {
-			
 				case "clientes":
 					modelTablaClientes.setRowCount(0);
-					ResultSet rsetCliente = conexion.ejecutarSelect("SELECT DNI, nombre, apellidos, telefono FROM cliente");
+					ResultSet rsetCliente = conexion.ejecutarSelect("SELECT * FROM cliente");
 					while (rsetCliente.next()) {
 						// Obtener cada campo del ResultSet y añadir la fila a la tabla
 		                Object[] fila = new Object[4];
@@ -612,8 +613,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 					break;
 				case "mecanicos":
 					modelTablaMecanicos.setRowCount(0);
-					ResultSet rsetMecanico = conexion.ejecutarSelect("SELECT nombre, apellidos, DNI, contrasenia, rol, estado FROM usuario where rol = 'Mecanico' ");
-					 while (rsetMecanico.next()) {
+					ResultSet rsetMecanico = conexion.ejecutarSelect("SELECT * FROM usuario where rol = 'Mecanico' ");
+					while (rsetMecanico.next()) {
 			                
 			                Object[] fila = new Object[5];
 			                fila[0] = rsetMecanico.getString("DNI");       
@@ -625,13 +626,31 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			                modelTablaMecanicos.addRow(fila); 
 			        }
 					break;
+				case "vehiculos":
+					modelTablaVehiculos.setRowCount(0);
+					ResultSet rsetVehiculos = conexion.ejecutarSelect("SELECT * FROM vehiculo");
+					while (rsetVehiculos.next()) {
+		                Object[] fila = new Object[8];
+		                fila[0] = rsetVehiculos.getString("matricula");       
+		                fila[1] = rsetVehiculos.getString("marca");    
+		                fila[2] = rsetVehiculos.getString("modelo");          
+		                fila[3] = rsetVehiculos.getString("color");           
+		                fila[4] = rsetVehiculos.getString("combustible");     
+		                fila[5] = rsetVehiculos.getString("kilometros");           
+		                fila[6] = rsetVehiculos.getString("anio");  
+		                fila[7] = rsetVehiculos.getString("Cliente_DNI");             
+		                
+		                modelTablaVehiculos.addRow(fila); 
+					}
+					break;
 			}
 			
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 		
-	 }
+	}
+	
 	 
 	private void borrarRegistro(String grupo) {
 		DefaultTableModel modelTablaSeleccionada=new DefaultTableModel();
@@ -654,7 +673,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 				break;
 			case "vehiculos":
 				modelTablaSeleccionada=modelTablaVehiculos;
-				registroSeleccionado = tblTablaCoches.getSelectedRow();
+				registroSeleccionado = tblTablaVehiculos.getSelectedRow();
 				break;
 		}
 		
@@ -678,7 +697,8 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			
 		}
 		
-	}
+	} 
+	
 	 
 	private void actualizarRegistro(String grupo) {
 
@@ -718,7 +738,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		//Verifica si hay una fila seleccionada y habilita o deshabilita el boton de borrar mecanico
-		if(tblTablaClientes.getSelectedRow() != -1 || tblTablaMecanicos.getSelectedRow() != -1 || tblTablaCoches.getSelectedRow() != -1) {
+		if(tblTablaClientes.getSelectedRow() != -1 || tblTablaMecanicos.getSelectedRow() != -1 || tblTablaVehiculos.getSelectedRow() != -1) {
 			btnBorrarRegistro.setEnabled(true);
 			btnActualizarRegistro.setEnabled(true);
 		}else {
@@ -727,5 +747,4 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		}
 
 	}
-	 
 }

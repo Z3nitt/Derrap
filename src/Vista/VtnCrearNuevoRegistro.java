@@ -27,10 +27,13 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel lblTitulo, lblApellidos, lblDNI, lblPassword, lblNombre, lblTelefono;
+	private JLabel lblTitulo, lblApellidos, lblDNI, lblPassword, lblNombre, lblTelefono, lblKilometros, lblAnio, lblDniCliente;
 	private JTextField txtNombre, txtApellidos, txtDNI, txtPassword, txtTelefono;
 	private JButton btnCrear;
 	String grupo;
+	private JTextField txtKilometros;
+	private JTextField txtAnio;
+	private JTextField txtDniCliente;
 	
 	public VtnCrearNuevoRegistro(String grupo) {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -103,58 +106,88 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener{
 		
 		lblTelefono = new JLabel("Telefono: ");
 		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTelefono.setBounds(416, 144, 66, 13);
+		lblTelefono.setBounds(405, 144, 77, 13);
 		fondoPantalla.add(lblTelefono);
 		
 		txtTelefono = new JTextField();
 		txtTelefono.setColumns(10);
 		txtTelefono.setBounds(492, 137, 207, 29);
 		fondoPantalla.add(txtTelefono);
+		
+		txtKilometros = new JTextField();
+		txtKilometros.setBounds(492, 197, 207, 29);
+		fondoPantalla.add(txtKilometros);
+		txtKilometros.setColumns(10);
+		
+		txtAnio = new JTextField();
+		txtAnio.setColumns(10);
+		txtAnio.setBounds(492, 260, 207, 29);
+		fondoPantalla.add(txtAnio);
+		
+		txtDniCliente = new JTextField();
+		txtDniCliente.setColumns(10);
+		txtDniCliente.setBounds(492, 317, 207, 29);
+		fondoPantalla.add(txtDniCliente);
+		
+		lblKilometros = new JLabel("Kilometros: ");
+		lblKilometros.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblKilometros.setBounds(405, 204, 79, 13);
+		fondoPantalla.add(lblKilometros);
+		
+		lblAnio = new JLabel("Año: ");
+		lblAnio.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblAnio.setBounds(403, 268, 79, 13);
+		fondoPantalla.add(lblAnio);
+		
+		lblDniCliente = new JLabel("DNI cliente:");
+		lblDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDniCliente.setBounds(403, 326, 79, 13);
+		fondoPantalla.add(lblDniCliente);
 
 		actualizarVisibilidad(grupo);
 	}
 	
 	private void actualizarVisibilidad(String grupo) {
-		lblDNI.setVisible(false);
-		lblNombre.setVisible(false);
-		lblApellidos.setVisible(false);
 		lblPassword.setVisible(false);
-		lblTelefono.setVisible(false);
-		txtDNI.setVisible(false);
-		txtNombre.setVisible(false);
-		txtApellidos.setVisible(false);
 		txtPassword.setVisible(false);
+		lblTelefono.setVisible(false);
 		txtTelefono.setVisible(false);
+		lblKilometros.setVisible(false);
+		txtKilometros.setVisible(false);
+		lblAnio.setVisible(false);
+		txtAnio.setVisible(false);
+		lblDniCliente.setVisible(false);
+		txtDniCliente.setVisible(false);
+		
 		
 		switch (grupo) {
 		case "clientes":
 			lblTitulo.setText("CREAR NUEVO CLIENTE");
-			lblDNI.setVisible(true);
-			lblNombre.setVisible(true);
-			lblApellidos.setVisible(true);
-			lblPassword.setVisible(false);
 			lblTelefono.setVisible(true);
-			txtDNI.setVisible(true);
-			txtNombre.setVisible(true);
-			txtApellidos.setVisible(true);
-			txtPassword.setVisible(false);
 			txtTelefono.setVisible(true);
 			break;
 		case "mecanicos":
 			lblTitulo.setText("CREAR NUEVO MECANICO");
-			lblDNI.setVisible(true);
-			lblNombre.setVisible(true);
-			lblApellidos.setVisible(true);
 			lblPassword.setVisible(true);
-			lblTelefono.setVisible(false);
-			txtDNI.setVisible(true);
-			txtNombre.setVisible(true);
-			txtApellidos.setVisible(true);
 			txtPassword.setVisible(true);
-			txtTelefono.setVisible(false);
 			break;
 		case "vehiculos":
 			lblTitulo.setText("CREAR NUEVO VEHICULO");
+			lblDNI.setText("Matricula:");
+			lblNombre.setText("Marca:");
+			lblApellidos.setText("Modelo:");
+			lblPassword.setText("Color:");
+			lblTelefono.setText("Combustible:");
+			lblPassword.setVisible(true);
+			txtPassword.setVisible(true);
+			lblTelefono.setVisible(true);
+			txtTelefono.setVisible(true);
+			lblKilometros.setVisible(true);
+			txtKilometros.setVisible(true);
+			lblAnio.setVisible(true);
+			txtAnio.setVisible(true);
+			lblDniCliente.setVisible(true);
+			txtDniCliente.setVisible(true);
 			break;
 		}
 	}
@@ -170,6 +203,9 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener{
 		Matcher matcherDni = patternDni.matcher(dniRegistro);
 		
 		String telefonoRegistro = txtTelefono.getText();
+		String kilometros = txtKilometros.getText();
+		String anio = txtAnio.getText();
+		String dniCliente = txtDniCliente.getText();
 		
 		conexion.conectar();
 		switch (grupo) {
@@ -225,8 +261,33 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener{
 				
 				break;
 			case "vehiculos":
+				//Utilizo los otros campos de mecanico y cliente para vehiculo (dni,nombre,etc)
+				String sqlVehiculos = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, anio, Cliente_DNI) VALUES"
+						+ " ('"+dniRegistro+"', '"+nombreRegistro+"', '"+apellidosRegistro+"', '"+password+"', '"+telefonoRegistro+"', '"+kilometros+"', '"+anio+"', '"+dniCliente+"')";
+
+				try {
+					int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sqlVehiculos);
+				
+					if(filasAfectadas > 0) {
+						 JOptionPane.showMessageDialog(this, "Registro de vehiculo exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
+						 txtDNI.setText("");
+						 txtNombre.setText("");
+						 txtApellidos.setText("");
+						 txtPassword.setText("");
+						 txtTelefono.setText("");
+						 txtKilometros.setText("");
+						 txtAnio.setText("");
+						 txtDniCliente.setText("");
+					}
+					else {
+						 JOptionPane.showMessageDialog(this, "Error al crear el vehiculo", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				
+				 } catch (SQLException e) {
+					 JOptionPane.showMessageDialog(this, "Error al crear el vehiculo", "Error", JOptionPane.ERROR_MESSAGE);
+	                 e.printStackTrace();
+				 }
 				break;
-		
 		}
 		
 	 }
