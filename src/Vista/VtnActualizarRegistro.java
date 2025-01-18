@@ -67,7 +67,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 		
 		//Añade cada campo de la tabla seleccionada al combo box
 		for (String campo : columnasTabla) {
-			if(!campo.equals("DNI")) {
+			if(!campo.equals("DNI") && !campo.equals("Matricula")) {
 				comboBox.addItem(campo);  
 			}
         }
@@ -149,6 +149,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 			     		sqlActualizar="UPDATE usuario SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE DNI = '" + valoresActuales[0] + "'";		     		
 			     		break;
 					case "vehiculos":
+			     		sqlActualizar="UPDATE vehiculo SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE matricula = '" + valoresActuales[0] + "'";		     		
 						break;
 				
 	     		}

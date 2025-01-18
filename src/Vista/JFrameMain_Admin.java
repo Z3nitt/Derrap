@@ -261,6 +261,15 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
                 }
             }
         });
+        
+        txtBuscadorVehiculos.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                	buscarRegistros("vehiculos");
+                }
+            }
+        });
 
 
         // Crear un panel para el JTextField con el ícono
@@ -584,6 +593,24 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 					
 					break;
 				case "vehiculos":
+					String matriculaVehiculo = txtBuscadorVehiculos.getText().trim();
+					String selectVehiculos = "SELECT * FROM vehiculo WHERE matricula LIKE '%" + matriculaVehiculo + "%'";
+					ResultSet rsetVehiculos = conexion.ejecutarSelect(selectVehiculos);
+					modelTablaVehiculos.setRowCount(0);
+					
+					while (rsetVehiculos.next()) {
+			            Object[] fila = new Object[8];
+			            fila[0] = rsetVehiculos.getString("matricula");
+			            fila[1] = rsetVehiculos.getString("marca");
+			            fila[2] = rsetVehiculos.getString("modelo");
+			            fila[3] = rsetVehiculos.getString("color");
+			            fila[4] = rsetVehiculos.getString("combustible");
+			            fila[5] = rsetVehiculos.getString("kilometros");
+			            fila[6] = rsetVehiculos.getString("anio");
+			            fila[7] = rsetVehiculos.getString("Cliente_DNI");
+			            modelTablaVehiculos.addRow(fila);
+			        }
+					
 					break;
 			}
 		} catch (Exception e) {
@@ -672,8 +699,10 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 				sqlBorrar="DELETE FROM usuario WHERE DNI = '" + dniMecanico +"'";
 				break;
 			case "vehiculos":
-				modelTablaSeleccionada=modelTablaVehiculos;
 				registroSeleccionado = tblTablaVehiculos.getSelectedRow();
+				Object matriculaVehiculo = tblTablaVehiculos.getValueAt(registroSeleccionado, 0);
+				modelTablaSeleccionada=modelTablaVehiculos;
+				sqlBorrar="DELETE FROM vehiculo WHERE matricula = '" + matriculaVehiculo+ "'";
 				break;
 		}
 		
@@ -727,6 +756,20 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasMecanico, valoresActualesMecanico, grupo);
 				break;
 			case "vehiculos":
+				int vehiculoSeleccionado = tblTablaVehiculos.getSelectedRow();
+				//Obtengo todos los valores del registro seleccionado
+				String matricula = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 0);
+			    String marca = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 1);
+			    String modelo = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 2);
+			    String color = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 3);
+			    String combustible = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 4);  
+			    String kilometros = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 5);
+			    String anio = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 6);
+			    String cliente_dni = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 7);
+			    
+			    String[] valoresActualesVehiculos = {matricula, marca, modelo, color, combustible,kilometros, anio, cliente_dni};
+			    
+			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasVehiculos, valoresActualesVehiculos, grupo);
 				break;
 		}
 	
