@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Controlador.Conector_BBDD;
+import package_main.Background;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,6 +27,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 public class VtnActualizarRegistro extends JFrame implements ActionListener {
+	Background fondoPantalla = new Background();
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -41,6 +43,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 		setBounds(100, 100, 1083, 626);
 		setResizable(false);
 		setIconImage(new ImageIcon(getClass().getResource("/package_assets/icon.png")).getImage());
+		setTitle(" Actualizar registro | Derrap");
 		setSize(875, 527);
         setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
@@ -48,22 +51,29 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 		this.valoresActuales = valoresActuales;
 		this.grupo = grupo;
 		
-		JLabel lblIndicadorDNI = new JLabel("DNI usuario: ");
-		lblIndicadorDNI.setFont(new Font("Dialog", Font.BOLD, 18));
-		lblIndicadorDNI.setBounds(24, 37, 181, 54);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		fondoPantalla.setLayout(null);
+		setContentPane(fondoPantalla);
+		
+		JLabel lblIndicadorDNI = new JLabel("DNI Del Usuario: ");
+		lblIndicadorDNI.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblIndicadorDNI.setBounds(39, 137, 127, 45);
 		getContentPane().add(lblIndicadorDNI);
 		
-		JLabel lblEleccionCampo = new JLabel("Campo a actualizar:");
-		lblEleccionCampo.setFont(new Font("Dialog", Font.BOLD, 18));
-		lblEleccionCampo.setBounds(430, 46, 181, 36);
+		JLabel lblEleccionCampo = new JLabel("Dato a actualizar:");
+		lblEleccionCampo.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblEleccionCampo.setBounds(431, 141, 144, 36);
 		getContentPane().add(lblEleccionCampo);
 		
 		JLabel lblValorActual = new JLabel("a");
-		lblValorActual.setBounds(206, 165, 201, 16);
+		lblValorActual.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblValorActual.setBounds(219, 282, 170, 16);
 		getContentPane().add(lblValorActual);
 		
 		comboBox = new JComboBox();
-		comboBox.setBounds(659, 54, 175, 25);
+		comboBox.setFont(new Font("Tahoma", Font.BOLD, 11));
+		comboBox.setBounds(610, 148, 175, 25);
 		
 		//Añade cada campo de la tabla seleccionada al combo box
 		for (String campo : columnasTabla) {
@@ -98,32 +108,38 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 		getContentPane().add(comboBox);
 		
 		txtNuevoValor = new JTextField();
-		txtNuevoValor.setBounds(206, 239, 337, 36);
+		txtNuevoValor.setBounds(610, 283, 175, 25);
 		getContentPane().add(txtNuevoValor);
 		txtNuevoValor.setColumns(10);
 		
 		JLabel lblNuevoValor = new JLabel("Nuevo valor:");
-		lblNuevoValor.setFont(new Font("Dialog", Font.BOLD, 18));
-		lblNuevoValor.setBounds(24, 237, 181, 36);
+		lblNuevoValor.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNuevoValor.setBounds(431, 271, 144, 36);
 		getContentPane().add(lblNuevoValor);
 		
 		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setFont(new Font("Dialog", Font.BOLD, 18));
-		btnAceptar.setBounds(653, 394, 181, 63);
+		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnAceptar.setBounds(679, 421, 156, 45);
 		btnAceptar.addActionListener(this);
 		getContentPane().add(btnAceptar);
 		
 		JLabel lblDNIUsuario = new JLabel("dniusuario");
 		lblDNIUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDNIUsuario.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 16));
-		lblDNIUsuario.setBounds(170, 46, 181, 36);
+		lblDNIUsuario.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDNIUsuario.setBounds(165, 141, 181, 36);
 		lblDNIUsuario.setText(valoresActuales[0]);
 		getContentPane().add(lblDNIUsuario);
 		
 		JLabel lblIndicadorActual = new JLabel("Valor actual: ");
-		lblIndicadorActual.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblIndicadorActual.setBounds(24, 164, 170, 16);
+		lblIndicadorActual.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblIndicadorActual.setBounds(39, 280, 127, 16);
 		getContentPane().add(lblIndicadorActual);
+		
+		JLabel lblTitulo = new JLabel("ACTUALIZAR REGISTRO");
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lblTitulo.setBounds(39, 27, 280, 36);
+		getContentPane().add(lblTitulo);
 		
 		
 	}
@@ -167,5 +183,4 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 			 System.out.println(e3);
 		}
  	}
-		
 }

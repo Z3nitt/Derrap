@@ -1,6 +1,7 @@
 package Vista;
 
 import java.awt.Font;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -58,43 +59,43 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener{
 		fondoPantalla.add(lblTitulo);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(164, 197, 207, 29);
+		txtNombre.setBounds(137, 197, 207, 29);
 		fondoPantalla.add(txtNombre);
 		txtNombre.setColumns(10);
 
 		txtApellidos = new JTextField();
-		txtApellidos.setBounds(164, 260, 207, 29);
+		txtApellidos.setBounds(137, 260, 207, 29);
 		fondoPantalla.add(txtApellidos);
 		txtApellidos.setColumns(10);
 
 		txtDNI = new JTextField();
-		txtDNI.setBounds(164, 137, 207, 29);
+		txtDNI.setBounds(137, 137, 207, 29);
 		fondoPantalla.add(txtDNI);
 		txtDNI.setColumns(10);
 
 		txtPassword = new JTextField();
-		txtPassword.setBounds(164, 326, 207, 29);
+		txtPassword.setBounds(137, 326, 207, 29);
 		fondoPantalla.add(txtPassword);
 		txtPassword.setColumns(10);
 
 		lblApellidos = new JLabel("Apellidos:");
 		lblApellidos.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblApellidos.setBounds(51, 266, 66, 15);
+		lblApellidos.setBounds(24, 266, 66, 15);
 		fondoPantalla.add(lblApellidos);
 
 		lblDNI = new JLabel("DNI:");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblDNI.setBounds(51, 143, 99, 14);
+		lblDNI.setBounds(24, 143, 99, 14);
 		fondoPantalla.add(lblDNI);
 
 		lblPassword = new JLabel("Contraseña:");
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPassword.setBounds(51, 332, 99, 14);
+		lblPassword.setBounds(24, 332, 99, 14);
 		fondoPantalla.add(lblPassword);
 
 		lblNombre = new JLabel("Nombre:");
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNombre.setBounds(51, 203, 86, 14);
+		lblNombre.setBounds(24, 203, 86, 14);
 		fondoPantalla.add(lblNombre);
 
 
@@ -106,7 +107,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener{
 		
 		lblTelefono = new JLabel("Telefono: ");
 		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTelefono.setBounds(405, 144, 77, 13);
+		lblTelefono.setBounds(383, 144, 99, 13);
 		fondoPantalla.add(lblTelefono);
 		
 		txtTelefono = new JTextField();
@@ -121,27 +122,27 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener{
 		
 		txtAnio = new JTextField();
 		txtAnio.setColumns(10);
-		txtAnio.setBounds(492, 260, 207, 29);
+		txtAnio.setBounds(488, 260, 207, 29);
 		fondoPantalla.add(txtAnio);
 		
 		txtDniCliente = new JTextField();
 		txtDniCliente.setColumns(10);
-		txtDniCliente.setBounds(492, 317, 207, 29);
+		txtDniCliente.setBounds(488, 326, 207, 29);
 		fondoPantalla.add(txtDniCliente);
 		
 		lblKilometros = new JLabel("Kilometros: ");
 		lblKilometros.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblKilometros.setBounds(405, 204, 79, 13);
+		lblKilometros.setBounds(383, 204, 101, 13);
 		fondoPantalla.add(lblKilometros);
 		
 		lblAnio = new JLabel("Año: ");
 		lblAnio.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblAnio.setBounds(403, 268, 79, 13);
+		lblAnio.setBounds(383, 268, 99, 13);
 		fondoPantalla.add(lblAnio);
 		
 		lblDniCliente = new JLabel("DNI cliente:");
 		lblDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblDniCliente.setBounds(403, 326, 79, 13);
+		lblDniCliente.setBounds(383, 333, 99, 13);
 		fondoPantalla.add(lblDniCliente);
 
 		actualizarVisibilidad(grupo);
