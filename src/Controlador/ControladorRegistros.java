@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 
 import javax.swing.table.DefaultTableModel;
 
+import Vista.VtnCrearNuevoRegistro;
+
 //Clase que contiene todos los metodos necesarios para utilizar las tablas
 public class ControladorRegistros {
 	
@@ -64,6 +66,12 @@ public class ControladorRegistros {
 			System.out.println(e);
 		}
 		
+	}
+	
+	public static void crearRegistro(String grupo, DefaultTableModel modelTabla) {
+		//Pasa el grupo actual y el modelo de la tabla a la ventana de crear nuevo registro
+		VtnCrearNuevoRegistro vtnCrearNuevoRegistro = new VtnCrearNuevoRegistro(grupo, modelTabla);
+		vtnCrearNuevoRegistro.setVisible(true);
 	}
 	
 }

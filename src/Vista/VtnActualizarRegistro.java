@@ -6,8 +6,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
+import Controlador.ControladorRegistros;
 import package_main.Background;
 
 import javax.swing.JLabel;
@@ -34,11 +36,13 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 	private JTextField txtNuevoValor;
 	private JButton btnAceptar;
 	private JComboBox comboBox;
-	String [] valoresActuales;
-	String grupo;
+	private DefaultTableModel modelTabla;
+	private String [] valoresActuales;
+	private String grupo;
+	
 	Conector_BBDD conexion = new Conector_BBDD();
 	
-	public VtnActualizarRegistro(String [] columnasTabla, String [] valoresActuales, String grupo) {
+	public VtnActualizarRegistro(String [] columnasTabla, String [] valoresActuales, String grupo, DefaultTableModel modelTabla) {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
 		setResizable(false);
@@ -50,6 +54,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 		
 		this.valoresActuales = valoresActuales;
 		this.grupo = grupo;
+		this.modelTabla = modelTabla;
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -173,8 +178,9 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 	     		if(filasAfectadas == 0) {
 	    			JOptionPane.showMessageDialog(this, "Error al actualizar el registro", "Error", JOptionPane.ERROR_MESSAGE);
 	    		}else {
+	    			ControladorRegistros.actualizarTablas(grupo, modelTabla);
 	    			JOptionPane.showMessageDialog(this, "Actualizacion exitosa ", "Actualizacion exitoso", JOptionPane.INFORMATION_MESSAGE);
-	    			txtNuevoValor.setText("");
+	    			dispose();
 	    		}
 			}
 		 }catch(SQLSyntaxErrorException e2) {
