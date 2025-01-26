@@ -35,10 +35,6 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 	JButton btnLogout;
 
 
-
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -53,9 +49,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
 	public JFrameMain_Mecanico() {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
@@ -403,12 +397,16 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
         }
  }
 
-	private void logout() {
-		JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
-		JFrameLogin JFLogin = new JFrameLogin();
-		JFLogin.setVisible(true);
-        dispose();
-        
+	public void logout() {
+		// Pide confirmacion para cerrar sesion
+		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar cerrar sesión?",
+				"Confirmar cerrar sesión", JOptionPane.YES_NO_OPTION);
 
+		if (confirmacion == JOptionPane.YES_OPTION) {
+			JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
+			JFrameLogin JFLogin = new JFrameLogin();
+			JFLogin.setVisible(true);
+			dispose();
+		}
 	}
 }

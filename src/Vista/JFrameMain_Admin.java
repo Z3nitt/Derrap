@@ -547,13 +547,17 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     	}
 	 }
 	
-	
 
 	public void logout() {
-		 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
-		 JFrameLogin JFLogin = new JFrameLogin();
-		 JFLogin.setVisible(true);
-         dispose();
+		//Pide confirmacion para cerrar sesion
+		 int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar cerrar sesión?", "Confirmar cerrar sesión", JOptionPane.YES_NO_OPTION);
+		 
+		 if(confirmacion == JOptionPane.YES_OPTION) {
+			 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
+			 JFrameLogin JFLogin = new JFrameLogin();
+			 JFLogin.setVisible(true);
+		     dispose();
+		 }
 	 }
 	 
 	private void buscarRegistros(String grupo) {
