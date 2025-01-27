@@ -22,6 +22,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -62,6 +64,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     String[] columnasVehiculos = {"Matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI cliente"};
 
     String grupo = "clientes";
+    private JPanel panel;
     
     // Llamada principal para ejecutar la aplicación
     public static void main(String[] args) {
@@ -86,13 +89,15 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         setTitle("Administrador | Derrap");
         setIconImage(new ImageIcon(getClass().getResource("/package_assets/icon.png")).getImage());
         setResizable(false);
+        fondoPantalla.setBackground(new Color(102, 153, 204));
         fondoPantalla.setLayout(null);
-        setContentPane(fondoPantalla);
+       // setContentPane(fondoPantalla);
 
-        setSize(1122, 735);
+        setSize(1122, 706);
         setLocationRelativeTo(null);
         
         jpClientes = new JPanel();
+        jpClientes.setBackground(new Color(255, 255, 255));
         jpClientes.setLayout(null);
         
         jpMaterial = new JPanel();
@@ -105,6 +110,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jpEconomia.setLayout(null);
         
         JTabbedPane jtpmenuPrincipal = new JTabbedPane();
+        jtpmenuPrincipal.setBackground(new Color(102, 153, 204));
         jtpmenuPrincipal.setBounds(10, 26, 1088, 662);
         jtpmenuPrincipal.setFont(new Font("Tahoma", Font.BOLD, 15));
         
@@ -114,33 +120,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jtpmenuPrincipal.add("Economía", jpEconomia);
         
         getContentPane().add(jtpmenuPrincipal);
-        
-
-        
-        //BOTON MECANICOS
-        btnMecanicos = new JButton("MECÁNICOS");
-        btnMecanicos.setFont(new Font("Tahoma", Font.BOLD, 13));
-        btnMecanicos.setBounds(21, 323, 150, 30);
-        btnMecanicos.addActionListener(this);
-        jpClientes.add(btnMecanicos);
-        
-        JLabel lblTitulo = new JLabel("GESTIÓN");
-        lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
-        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitulo.setBounds(21, 26, 150, 24);
-        jpClientes.add(lblTitulo);
-        
-        btnClientes = new JButton("CLIENTES");
-        btnClientes.addActionListener(this);
-        btnClientes.setFont(new Font("Tahoma", Font.BOLD, 13));
-        btnClientes.setBounds(21, 105, 150, 30);
-        jpClientes.add(btnClientes);
-        
-        btnProveedores = new JButton("PROVEEDORES");
-        btnProveedores.addActionListener(this);
-        btnProveedores.setFont(new Font("Tahoma", Font.BOLD, 13));
-        btnProveedores.setBounds(21, 428, 150, 30);
-        jpClientes.add(btnProveedores);
         
         
     	// Crear el JTextField con ícono y hint
@@ -198,42 +177,9 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         scrollPaneClientes = new JScrollPane(tblTablaClientes); 
         scrollPaneClientes.setBounds(469, 61, 497, 153); 
         jpClientes.add(scrollPaneClientes);
-        
-        // Cambia el botón btnImprimir para que sea redondo y tenga un ícono
-        btnImprimir = new JButton() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                if (isOpaque()) {
-                    // Dibujar el fondo en forma de círculo
-                    Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2.setColor(getBackground());
-                    g2.fillOval(0, 0, getWidth(), getHeight());
-                    g2.dispose();
-                }
-                super.paintComponent(g);
-            }
-
-            @Override
-            public Dimension getPreferredSize() {
-                // Define dimensiones iguales para mantener el botón redondo
-                return new Dimension(50, 50); // Tamaño personalizado para el botón
-            }
-        };
-        btnImprimir.setContentAreaFilled(false);
-        btnImprimir.setFocusPainted(false);
-        btnImprimir.setBorderPainted(false);
-        btnImprimir.setOpaque(false);
-        btnImprimir.addActionListener(this);
 
         // Coloca un ícono en el botón redondo
         Icon icon3 = new ImageIcon(getClass().getResource("/package_assets/printicon.png")); // Ruta del ícono
-        btnImprimir.setIcon(icon3);
-        btnImprimir.setBackground(new Color(255, 87, 34)); // Color de fondo del botón
-
-        // Añade el botón a tu panel
-        btnImprimir.setBounds(10, 506, 150, 45); // Ajusta la posición y tamaño
-        jpClientes.add(btnImprimir);
 
         
         txtBuscadorVehiculos = new JTextField();
@@ -351,7 +297,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         btnCrearRegistro = new JButton("Añadir");
         btnCrearRegistro.addActionListener(this);
-        btnCrearRegistro.setBackground(new Color(170, 255, 0));
+        btnCrearRegistro.setBackground(new Color(102, 153, 204));
         btnCrearRegistro.setFont(new Font("Tahoma", Font.BOLD, 15));
         btnCrearRegistro.setBounds(469, 226, 497, 35);
         jpClientes.add(btnCrearRegistro);
@@ -419,17 +365,132 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         btnActualizarRegistro.addActionListener(this);
         btnActualizarRegistro.setEnabled(false);
         
-        btnVehiculos = new JButton("VEHÍCULOS");
+        panel = new JPanel();
+        panel.setBackground(new Color(102, 153, 204));
+        panel.setBounds(0, 0, 176, 634);
+        jpClientes.add(panel);
+        panel.setLayout(null);
+        
+        JLabel lblNewLabel_4 = new JLabel("");
+        lblNewLabel_4.setIcon(new ImageIcon(JFrameMain_Admin.class.getResource("/package_assets/derrapchicodefinitovo.png")));
+        lblNewLabel_4.setBounds(10, 469, 150, 143);
+        panel.add(lblNewLabel_4);
+        
+        btnProveedores = new JButton("PROVEEDORES ");
+        btnProveedores.setForeground(new Color(255, 255, 255));
+        btnProveedores.setBackground(new Color(102, 153, 204));
+        btnProveedores.setBounds(0, 346, 176, 30);
+        btnProveedores.setBorderPainted(false);
+        btnProveedores.setFocusable(false);
+        btnProveedores.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnProveedores.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnProveedores.setBackground(new Color(102, 153, 204));;}});
+        panel.add(btnProveedores);
+        btnProveedores.addActionListener(this);
+        btnProveedores.setFont(new Font("Tahoma", Font.BOLD, 13));
+        
+
+        
+        //BOTON MECANICOS
+        btnMecanicos = new JButton("MECÁNICOS ");
+        btnMecanicos.setForeground(new Color(255, 255, 255));
+        btnMecanicos.setBackground(new Color(102, 153, 204));
+        btnMecanicos.setBounds(0, 268, 176, 30);
+        btnMecanicos.setBorderPainted(false);
+        btnMecanicos.setFocusable(false);
+        btnMecanicos.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnMecanicos.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnMecanicos.setBackground(new Color(102, 153, 204));;}});
+        panel.add(btnMecanicos);
+        btnMecanicos.setFont(new Font("Tahoma", Font.BOLD, 13));
+        
+        JLabel lblTitulo = new JLabel("GESTIÓN");
+        lblTitulo.setForeground(new Color(255, 255, 255));
+        lblTitulo.setBounds(0, 25, 176, 24);
+        panel.add(lblTitulo);
+        lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        btnVehiculos = new JButton("VEHÍCULOS ");
+        btnVehiculos.setForeground(new Color(255, 255, 255));
+        btnVehiculos.setBackground(new Color(102, 153, 204));
+        btnVehiculos.setBounds(0, 188, 176, 30);
+        btnVehiculos.setBorderPainted(false);
+        btnVehiculos.setFocusable(false);
+        btnVehiculos.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnVehiculos.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnVehiculos.setBackground(new Color(102, 153, 204));;}});
+        panel.add(btnVehiculos);
         btnVehiculos.setFont(new Font("Tahoma", Font.BOLD, 13));
-        btnVehiculos.setBounds(21, 210, 150, 30);
+        
+        btnClientes = new JButton("CLIENTES ");
+        btnClientes.setForeground(new Color(255, 255, 255));
+        btnClientes.setBackground(new Color(102, 153, 204));
+        btnClientes.setBounds(0, 109, 176, 30);
+        btnClientes.setBorderPainted(false);
+        btnClientes.setFocusable(false);
+        btnClientes.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnClientes.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnClientes.setBackground(new Color(102, 153, 204));;}});
+        panel.add(btnClientes);
+        btnClientes.addActionListener(this);
+        btnClientes.setFont(new Font("Tahoma", Font.BOLD, 13));
         btnVehiculos.addActionListener(this);
-        jpClientes.add(btnVehiculos);
+        btnMecanicos.addActionListener(this);
+        
+        // Cambia el botón btnImprimir para que sea redondo y tenga un ícono
+        btnImprimir = new JButton() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                if (isOpaque()) {
+                    // Dibujar el fondo en forma de círculo
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.setColor(getBackground());
+                    g2.fillOval(0, 0, getWidth(), getHeight());
+                    g2.dispose();
+                }
+                super.paintComponent(g);
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+                // Define dimensiones iguales para mantener el botón redondo
+                return new Dimension(50, 50); // Tamaño personalizado para el botón
+            }
+        };
+        btnImprimir.setBounds(182, 579, 150, 45);
+        jpClientes.add(btnImprimir);
+        btnImprimir.setContentAreaFilled(false);
+        btnImprimir.setFocusPainted(false);
+        btnImprimir.setBorderPainted(false);
+        btnImprimir.setOpaque(false);
+        btnImprimir.addActionListener(this);
+        btnImprimir.setIcon(icon3);
+        btnImprimir.setBackground(new Color(255, 87, 34));
         
         
         btnLogout = new JButton("Cerrar Sesión");
+        btnLogout.setForeground(new Color(255, 255, 255));
+        btnLogout.setBackground(new Color(102, 153, 204));
         btnLogout.addActionListener(this);
-        btnLogout.setBounds(989, 2, 119, 23);
-        fondoPantalla.add(btnLogout);
+        btnLogout.setBounds(976, 600, 119, 23);
+        btnLogout.setFocusable(false);
+        btnLogout.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnLogout.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnLogout.setBackground(new Color(102, 153, 204));;}});
+        jpClientes.add(btnLogout);
+        
         
         //Al iniciar
         actualizarVisibilidad(grupo);
@@ -453,7 +514,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	    scrollPaneMecanicos.setVisible(false);
 	    searchPanelMecanicos.setVisible(false);
 
-	    txtBuscadorProveedor.setVisible(false);
+	    txtBuscadorProveedor.setVisible(false); 
 	    tblTablaProveedores.setVisible(false);
 	    btnCrearProveedores.setVisible(false);
 	    scrollPaneProveedores.setVisible(false);
