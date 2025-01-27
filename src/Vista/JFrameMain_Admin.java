@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
+import Controlador.ControladorRegistros;
 import package_main.Background;
 
 import java.awt.*;
@@ -56,7 +57,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     private JTextField txtBuscadorVehiculos;
     private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneProveedores;
     private JPanel searchPanelClientes, searchPanelVehiculos, searchPanelMecanicos, searchPanelProveedores;
-    private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos;
+    private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos, modelTablaProveedores, modelTabla;
     
     //Valores de las columnas de cada tabla
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
@@ -494,7 +495,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         //Al iniciar
         actualizarVisibilidad(grupo);
-        actualizarTablas(grupo);
+        ControladorRegistros.actualizarTablas("clientes", modelTablaClientes);
 	}
 	
 	private void actualizarVisibilidad(String grupo) {
@@ -579,24 +580,27 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     		System.out.println("Imprimiendo");
     	} else if(e.getSource() == btnClientes) {
     		grupo = "clientes";
-    		actualizarVisibilidad("clientes");
-    		actualizarTablas("clientes");
+    		modelTabla = modelTablaClientes;
+    		actualizarVisibilidad(grupo);
+    		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnMecanicos) {
     		grupo = "mecanicos";
-    		actualizarVisibilidad("mecanicos");
-    		actualizarTablas("mecanicos");
+    		modelTabla = modelTablaMecanicos;
+    		actualizarVisibilidad(grupo);
+    		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnVehiculos) {
     		grupo = "vehiculos";
-    		actualizarVisibilidad("vehiculos");
-    		actualizarTablas("vehiculos");
+    		modelTabla = modelTablaVehiculos;
+    		actualizarVisibilidad(grupo);
+    		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnProveedores) {
     		grupo = "proveedores";
-    		actualizarVisibilidad("proveedores");
-    		actualizarTablas("proveedores");
+    		modelTabla = modelTablaProveedores;
+    		actualizarVisibilidad(grupo);
+    		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnCrearRegistro) {
-    		//Pasa el grupo actual a la ventana de crear nuevo registro
-    		vtnCrearNuevoRegistro = new VtnCrearNuevoRegistro(grupo);
-    		vtnCrearNuevoRegistro.setVisible(true);
+    		//Al crear un registro, llama al metodo crearRegistro y le pasa el grupo y el modelo actual
+    		ControladorRegistros.crearRegistro(grupo, modelTabla);
     	} else if(e.getSource() == btnBorrarRegistro) {
     		borrarRegistro(grupo);
     	} else if(e.getSource() == btnActualizarRegistro) {
@@ -606,10 +610,15 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	
 
 	public void logout() {
-		 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
-		 JFrameLogin JFLogin = new JFrameLogin();
-		 JFLogin.setVisible(true);
-         dispose();
+		//Pide confirmacion para cerrar sesion
+		 int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar cerrar sesión?", "Confirmar cerrar sesión", JOptionPane.YES_NO_OPTION);
+		 
+		 if(confirmacion == JOptionPane.YES_OPTION) {
+			 JOptionPane.showMessageDialog(this, "Cerrando Sesión...", "Información", JOptionPane.INFORMATION_MESSAGE);
+			 JFrameLogin JFLogin = new JFrameLogin();
+			 JFLogin.setVisible(true);
+		     dispose();
+		 }
 	 }
 	 
 	private void buscarRegistros(String grupo) {
@@ -678,68 +687,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			JOptionPane.showMessageDialog(this, "Error al buscar mecánicos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} 
 	}
-	
-	 
-	private void actualizarTablas(String grupo) {
-		
-		conexion.conectar();
-		try {
-			switch (grupo) {
-				case "clientes":
-					modelTablaClientes.setRowCount(0);
-					ResultSet rsetCliente = conexion.ejecutarSelect("SELECT * FROM cliente");
-					while (rsetCliente.next()) {
-						// Obtener cada campo del ResultSet y añadir la fila a la tabla
-		                Object[] fila = new Object[4];
-		                fila[0] = rsetCliente.getString("DNI");
-		                fila[1] = rsetCliente.getString("nombre");
-		                fila[2] = rsetCliente.getString("apellidos");
-		                fila[3] = rsetCliente.getString("telefono");
-		                
-		                modelTablaClientes.addRow(fila); // Agregar fila al modelo de la tabla
-					}
-					break;
-				case "mecanicos":
-					modelTablaMecanicos.setRowCount(0);
-					ResultSet rsetMecanico = conexion.ejecutarSelect("SELECT * FROM usuario where rol = 'Mecanico' ");
-					while (rsetMecanico.next()) {
-			                
-			                Object[] fila = new Object[5];
-			                fila[0] = rsetMecanico.getString("DNI");       
-			                fila[1] = rsetMecanico.getString("nombre");    
-			                fila[2] = rsetMecanico.getString("apellidos");          
-			                fila[3] = rsetMecanico.getString("contrasenia");           
-			                fila[4] = rsetMecanico.getString("estado");       
-			                
-			                modelTablaMecanicos.addRow(fila); 
-			        }
-					break;
-				case "vehiculos":
-					modelTablaVehiculos.setRowCount(0);
-					ResultSet rsetVehiculos = conexion.ejecutarSelect("SELECT * FROM vehiculo");
-					while (rsetVehiculos.next()) {
-		                Object[] fila = new Object[8];
-		                fila[0] = rsetVehiculos.getString("matricula");       
-		                fila[1] = rsetVehiculos.getString("marca");    
-		                fila[2] = rsetVehiculos.getString("modelo");          
-		                fila[3] = rsetVehiculos.getString("color");           
-		                fila[4] = rsetVehiculos.getString("combustible");     
-		                fila[5] = rsetVehiculos.getString("kilometros");           
-		                fila[6] = rsetVehiculos.getString("anio");  
-		                fila[7] = rsetVehiculos.getString("Cliente_DNI");             
-		                
-		                modelTablaVehiculos.addRow(fila); 
-					}
-					break;
-			}
-			
-		}catch(Exception e) {
-			System.out.println(e);
-		}
-		
-	}
-	
-	 
+
 	private void borrarRegistro(String grupo) {
 		DefaultTableModel modelTablaSeleccionada=new DefaultTableModel();
 		int registroSeleccionado=0;
@@ -789,7 +737,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		
 	} 
 	
-	 
 	private void actualizarRegistro(String grupo) {
 
 		switch (grupo) {
@@ -802,7 +749,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			    String telefono = (String) tblTablaClientes.getValueAt(clienteSeleccionado, 3);
 			    String[] valoresActualesCliente = {dniCliente, nombreCliente, apellidosCliente, telefono};
 			    
-			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasCliente, valoresActualesCliente, grupo);
+			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasCliente, valoresActualesCliente, grupo, modelTabla);
 				break;
 			case "mecanicos":
 				int mecanicoSeleccionado = tblTablaMecanicos.getSelectedRow();
@@ -814,7 +761,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			    String estado = (String) tblTablaMecanicos.getValueAt(mecanicoSeleccionado, 4);  
 			    String[] valoresActualesMecanico = {dniUsuario, nombre, apellidos, contrasena, estado};
 			    
-			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasMecanico, valoresActualesMecanico, grupo);
+			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasMecanico, valoresActualesMecanico, grupo, modelTabla);
 				break;
 			case "vehiculos":
 				int vehiculoSeleccionado = tblTablaVehiculos.getSelectedRow();
@@ -830,7 +777,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			    
 			    String[] valoresActualesVehiculos = {matricula, marca, modelo, color, combustible,kilometros, anio, cliente_dni};
 			    
-			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasVehiculos, valoresActualesVehiculos, grupo);
+			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasVehiculos, valoresActualesVehiculos, grupo, modelTabla);
 				break;
 		}
 	
@@ -838,7 +785,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			
 	}
 
-	//Detecta el cambio en las tablas
+	//Detecta el cambio en las tablas (cuando selecciona un campo)
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		//Verifica si hay una fila seleccionada y habilita o deshabilita el boton de borrar mecanico
