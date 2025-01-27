@@ -121,16 +121,24 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jtpmenuPrincipal.add("Economía", jpEconomia);
         
         getContentPane().add(jtpmenuPrincipal);
+
+        // Configurar el hint con el FocusListener
+        String hint = "Buscar clientes...";
+
+        // Crear un panel para el JTextField con el ícono
+        searchPanelClientes = new JPanel(new BorderLayout());
+        searchPanelClientes.setBounds(336, 47, 616, 24);
+
+        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
+        jpClientes.add(searchPanelClientes);
         
         
     	// Crear el JTextField con ícono y hint
         txtBuscadorClientes = new JTextField();
+        searchPanelClientes.add(txtBuscadorClientes, BorderLayout.CENTER);
         txtBuscadorClientes.setColumns(10); // Ajusta el ancho
         txtBuscadorClientes.setText("Buscar clientes..."); // Placeholder
         txtBuscadorClientes.setForeground(Color.GRAY);
-
-        // Configurar el hint con el FocusListener
-        String hint = "Buscar clientes...";
         txtBuscadorClientes.setText(hint);
         txtBuscadorClientes.setForeground(Color.GRAY);
         txtBuscadorClientes.addFocusListener(new FocusAdapter() {
@@ -160,14 +168,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             }
 		});
 
-        // Crear un panel para el JTextField con el ícono
-        searchPanelClientes = new JPanel(new BorderLayout());
-        searchPanelClientes.setBounds(469, 26, 497, 24);
-        searchPanelClientes.add(txtBuscadorClientes, BorderLayout.CENTER);
-
-        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanelClientes);
-
         //TABLA CLIENTES
         tblTablaClientes = new JTable();
         tblTablaClientes.setDefaultEditor(Object.class, null);
@@ -176,56 +176,56 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         tblTablaClientes.setModel(modelTablaClientes);
         
         scrollPaneClientes = new JScrollPane(tblTablaClientes); 
-        scrollPaneClientes.setBounds(469, 61, 497, 153); 
+        scrollPaneClientes.setBounds(336, 82, 616, 381); 
         jpClientes.add(scrollPaneClientes);
 
         // Coloca un ícono en el botón redondo
         Icon icon3 = new ImageIcon(getClass().getResource("/package_assets/printicon.png")); // Ruta del ícono
-
-        
-        txtBuscadorVehiculos = new JTextField();
-        txtBuscadorVehiculos.setColumns(10); // Ajusta el ancho
-        txtBuscadorVehiculos.setText("Buscar vehiculos..."); // Placeholder
-        txtBuscadorVehiculos.setForeground(Color.GRAY);
         
         String hint2 = "Buscar vehiculos...";
-        txtBuscadorVehiculos.setText(hint2);
-        txtBuscadorVehiculos.setForeground(Color.GRAY);
-        txtBuscadorVehiculos.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (txtBuscadorVehiculos.getText().equals(hint2)) {
-                	txtBuscadorVehiculos.setText("");
-                	txtBuscadorVehiculos.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (txtBuscadorVehiculos.getText().isEmpty()) {
-                	txtBuscadorVehiculos.setText(hint2);
-                	txtBuscadorVehiculos.setForeground(Color.GRAY);
-                }
-            }
-        });
-        
-        txtBuscadorVehiculos.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("vehiculos");
-                }
-            }
-        });
 
 
         // Crear un panel para el JTextField con el ícono
         searchPanelVehiculos = new JPanel(new BorderLayout());
-        searchPanelVehiculos.setBounds(469, 26, 497, 24);
-        searchPanelVehiculos.add(txtBuscadorVehiculos, BorderLayout.CENTER);
+        searchPanelVehiculos.setBounds(336, 47, 616, 24);
 
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
         jpClientes.add(searchPanelVehiculos);
+        
+                
+                txtBuscadorVehiculos = new JTextField();
+                searchPanelVehiculos.add(txtBuscadorVehiculos, BorderLayout.CENTER);
+                txtBuscadorVehiculos.setColumns(10); // Ajusta el ancho
+                txtBuscadorVehiculos.setText("Buscar vehiculos..."); // Placeholder
+                txtBuscadorVehiculos.setForeground(Color.GRAY);
+                txtBuscadorVehiculos.setText(hint2);
+                txtBuscadorVehiculos.setForeground(Color.GRAY);
+                txtBuscadorVehiculos.addFocusListener(new FocusAdapter() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        if (txtBuscadorVehiculos.getText().equals(hint2)) {
+                        	txtBuscadorVehiculos.setText("");
+                        	txtBuscadorVehiculos.setForeground(Color.BLACK);
+                        }
+                    }
+
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        if (txtBuscadorVehiculos.getText().isEmpty()) {
+                        	txtBuscadorVehiculos.setText(hint2);
+                        	txtBuscadorVehiculos.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+                
+                txtBuscadorVehiculos.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        	buscarRegistros("vehiculos");
+                        }
+                    }
+                });
 
         //TABLA VEHICULOS
         tblTablaVehiculos = new JTable();
@@ -235,17 +235,24 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         tblTablaVehiculos.setModel(modelTablaVehiculos);
         
         scrollPaneVehiculos = new JScrollPane(tblTablaVehiculos); 
-        scrollPaneVehiculos.setBounds(469, 61, 497, 153);
+        scrollPaneVehiculos.setBounds(336, 82, 616, 381);
         jpClientes.add(scrollPaneVehiculos);
-        
-        
-        txtBuscadorMecanicos = new JTextField();
-        txtBuscadorMecanicos.setColumns(10); // Ajusta el ancho
-        txtBuscadorMecanicos.setText("Buscar mecanicos..."); // Placeholder
-        txtBuscadorMecanicos.setForeground(Color.GRAY);
 
         // Configurar el hint con el FocusListener
         String hint3 = "Buscar mecanicos...";
+        
+        searchPanelMecanicos = new JPanel(new BorderLayout());
+        searchPanelMecanicos.setBounds(336, 47, 616, 24);
+
+        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
+        jpClientes.add(searchPanelMecanicos);
+        
+        
+        txtBuscadorMecanicos = new JTextField();
+        searchPanelMecanicos.add(txtBuscadorMecanicos, BorderLayout.CENTER);
+        txtBuscadorMecanicos.setColumns(10); // Ajusta el ancho
+        txtBuscadorMecanicos.setText("Buscar mecanicos..."); // Placeholder
+        txtBuscadorMecanicos.setForeground(Color.GRAY);
         txtBuscadorMecanicos.setText(hint3);
         txtBuscadorMecanicos.setForeground(Color.GRAY);
         txtBuscadorMecanicos.addFocusListener(new FocusAdapter() {
@@ -274,13 +281,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
                 }
             }
         });
-        
-        searchPanelMecanicos = new JPanel(new BorderLayout());
-        searchPanelMecanicos.setBounds(469, 26, 497, 24);
-        searchPanelMecanicos.add(txtBuscadorMecanicos, BorderLayout.CENTER);
-
-        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanelMecanicos);
 
         
         //TABLA MECANICOS
@@ -292,24 +292,39 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	    tblTablaMecanicos.setModel(modelTablaMecanicos);
 	    
         scrollPaneMecanicos = new JScrollPane(tblTablaMecanicos);
-        scrollPaneMecanicos.setBounds(469, 61, 497, 153);
+        scrollPaneMecanicos.setBounds(336, 82, 616, 381);
         jpClientes.add(scrollPaneMecanicos);
         
         
         btnCrearRegistro = new JButton("Añadir");
+        btnCrearRegistro.setForeground(new Color(255, 255, 255));
         btnCrearRegistro.addActionListener(this);
         btnCrearRegistro.setBackground(new Color(102, 153, 204));
         btnCrearRegistro.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btnCrearRegistro.setBounds(469, 226, 497, 35);
+        btnCrearRegistro.setBounds(336, 472, 196, 35);
+        btnCrearRegistro.setFocusable(false);
+        btnCrearRegistro.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnCrearRegistro.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnCrearRegistro.setBackground(new Color(102, 153, 204));;}});
         jpClientes.add(btnCrearRegistro);
-        
-        txtBuscadorProveedor = new JTextField();
-        txtBuscadorProveedor.setColumns(10); // Ajusta el ancho
-        txtBuscadorProveedor.setText("Buscar proveedor..."); // Placeholder
-        txtBuscadorProveedor.setForeground(Color.GRAY);
 
         // Configurar el hint con el FocusListener
         String hint4 = "Buscar proveedor...";
+
+        // Crear un panel para el JTextField con el ícono
+        searchPanelProveedores = new JPanel(new BorderLayout());
+        searchPanelProveedores.setBounds(336, 47, 616, 24);
+
+        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
+        jpClientes.add(searchPanelProveedores);
+        
+        txtBuscadorProveedor = new JTextField();
+        searchPanelProveedores.add(txtBuscadorProveedor, BorderLayout.CENTER);
+        txtBuscadorProveedor.setColumns(10); // Ajusta el ancho
+        txtBuscadorProveedor.setText("Buscar proveedor..."); // Placeholder
+        txtBuscadorProveedor.setForeground(Color.GRAY);
         txtBuscadorProveedor.setText(hint4);
         txtBuscadorProveedor.setForeground(Color.GRAY);
         txtBuscadorProveedor.addFocusListener(new FocusAdapter() {
@@ -330,20 +345,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             }
         });
 
-        // Crear un panel para el JTextField con el ícono
-        searchPanelProveedores = new JPanel(new BorderLayout());
-        searchPanelProveedores.setBounds(469, 26, 497, 24);
-        searchPanelProveedores.add(txtBuscadorProveedor, BorderLayout.CENTER);
-
-        // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanelProveedores);
-
         
         tblTablaProveedores = new JTable();
         tblTablaProveedores.setDefaultEditor(Object.class, null);
         tblTablaProveedores.getSelectionModel().addListSelectionListener(this);
         scrollPaneProveedores = new JScrollPane(tblTablaProveedores); 
-        scrollPaneProveedores.setBounds(469, 61, 497, 153); 
+        scrollPaneProveedores.setBounds(337, 82, 616, 381); 
         jpClientes.add(scrollPaneProveedores);
 
         
@@ -351,17 +358,35 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         btnCrearProveedores.addActionListener(this);
         btnCrearProveedores.setBackground(new Color(170, 255, 0));
         btnCrearProveedores.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btnCrearProveedores.setBounds(469, 226, 497, 35);
+        btnCrearProveedores.setBounds(409, 562, 497, 35);
         jpClientes.add(btnCrearProveedores);
         
         btnBorrarRegistro = new JButton("Borrar");
-        btnBorrarRegistro.setBounds(976, 231, 89, 23);
+        btnBorrarRegistro.setForeground(new Color(255, 255, 255));
+        btnBorrarRegistro.setBackground(new Color(102, 153, 204));
+        btnBorrarRegistro.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnBorrarRegistro.setBounds(756, 472, 196, 35);
         btnBorrarRegistro.setEnabled(false);
         btnBorrarRegistro.addActionListener(this);
+        btnBorrarRegistro.setFocusable(false);
+        btnBorrarRegistro.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnBorrarRegistro.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnBorrarRegistro.setBackground(new Color(102, 153, 204));;}});
         jpClientes.add(btnBorrarRegistro);
         
         btnActualizarRegistro = new JButton("Editar");
-        btnActualizarRegistro.setBounds(976, 199, 89, 23);
+        btnActualizarRegistro.setForeground(new Color(255, 255, 255));
+        btnActualizarRegistro.setBackground(new Color(102, 153, 204));
+        btnActualizarRegistro.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnActualizarRegistro.setBounds(542, 472, 204, 35);
+        btnActualizarRegistro.setFocusable(false);
+        btnActualizarRegistro.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnActualizarRegistro.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnActualizarRegistro.setBackground(new Color(102, 153, 204));;}});
         jpClientes.add(btnActualizarRegistro);
         btnActualizarRegistro.addActionListener(this);
         btnActualizarRegistro.setEnabled(false);

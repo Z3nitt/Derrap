@@ -4,6 +4,8 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import Controlador.Conector_BBDD;
 import Controlador.ControladorRegistros;
 import package_main.Background;
+import java.awt.Color;
 
 public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 	Conector_BBDD conexion = new Conector_BBDD();
@@ -39,6 +42,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 	private JTextField txtAnio;
 	private JTextField txtDniCliente;
 	private DefaultTableModel modelTabla;
+	private JPanel panel;
 
 	public VtnCrearNuevoRegistro(String grupo, DefaultTableModel modelTabla) {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -54,14 +58,9 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		fondoPantalla.setBackground(new Color(102, 153, 204));
 		fondoPantalla.setLayout(null);
 		setContentPane(fondoPantalla);
-
-		lblTitulo = new JLabel("CREAR NUEVO REGISTRO");
-		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 22));
-		lblTitulo.setBounds(39, 47, 332, 29);
-		fondoPantalla.add(lblTitulo);
 
 		txtNombre = new JTextField();
 		txtNombre.setBounds(137, 197, 207, 29);
@@ -84,45 +83,34 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 		txtPassword.setColumns(10);
 
 		lblApellidos = new JLabel("Apellidos:");
+		lblApellidos.setForeground(new Color(255, 255, 255));
 		lblApellidos.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblApellidos.setBounds(24, 266, 66, 15);
 		fondoPantalla.add(lblApellidos);
 
 		lblDNI = new JLabel("DNI:");
+		lblDNI.setForeground(new Color(255, 255, 255));
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDNI.setBounds(24, 143, 99, 14);
 		fondoPantalla.add(lblDNI);
 
 		lblPassword = new JLabel("Contraseña:");
+		lblPassword.setForeground(new Color(255, 255, 255));
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblPassword.setBounds(24, 332, 99, 14);
 		fondoPantalla.add(lblPassword);
 
 		lblNombre = new JLabel("Nombre:");
+		lblNombre.setForeground(new Color(255, 255, 255));
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNombre.setBounds(24, 203, 86, 14);
 		fondoPantalla.add(lblNombre);
 
-		btnCrear = new JButton("CREAR");
-		btnCrear.addActionListener(this);
-		btnCrear.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnCrear.setBounds(488, 481, 164, 70);
-		fondoPantalla.add(btnCrear);
-
 		lblTelefono = new JLabel("Telefono: ");
+		lblTelefono.setForeground(new Color(255, 255, 255));
 		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblTelefono.setBounds(383, 144, 99, 13);
 		fondoPantalla.add(lblTelefono);
-
-		txtTelefono = new JTextField();
-		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(492, 137, 207, 29);
-		fondoPantalla.add(txtTelefono);
-
-		txtKilometros = new JTextField();
-		txtKilometros.setBounds(492, 197, 207, 29);
-		fondoPantalla.add(txtKilometros);
-		txtKilometros.setColumns(10);
 
 		txtAnio = new JTextField();
 		txtAnio.setColumns(10);
@@ -135,19 +123,61 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 		fondoPantalla.add(txtDniCliente);
 
 		lblKilometros = new JLabel("Kilometros: ");
+		lblKilometros.setForeground(new Color(255, 255, 255));
 		lblKilometros.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblKilometros.setBounds(383, 204, 101, 13);
 		fondoPantalla.add(lblKilometros);
 
 		lblAnio = new JLabel("Año: ");
+		lblAnio.setForeground(new Color(255, 255, 255));
 		lblAnio.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblAnio.setBounds(383, 268, 99, 13);
 		fondoPantalla.add(lblAnio);
 
 		lblDniCliente = new JLabel("DNI cliente:");
+		lblDniCliente.setForeground(new Color(255, 255, 255));
 		lblDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDniCliente.setBounds(383, 333, 99, 13);
 		fondoPantalla.add(lblDniCliente);
+		
+		panel = new JPanel();
+		panel.setBackground(new Color(102, 153, 204));
+		panel.setBounds(0, 0, 730, 580);
+		fondoPantalla.add(panel);
+				panel.setLayout(null);
+		
+				lblTitulo = new JLabel("CREAR NUEVO REGISTRO");
+				lblTitulo.setBounds(212, 49, 284, 27);
+				panel.add(lblTitulo);
+				lblTitulo.setForeground(new Color(255, 255, 255));
+				lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+				lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 18));
+				
+						btnCrear = new JButton("CREAR");
+						btnCrear.setBounds(223, 458, 284, 42);
+						btnCrear.setFocusable(false);
+						btnCrear.addMouseListener(new MouseAdapter() {
+						    public void mouseEntered(MouseEvent e) {
+						    	btnCrear.setBackground(Color.BLACK);
+						    	btnCrear.setForeground(Color.WHITE);}
+						    public void mouseExited(MouseEvent e) {
+						    	btnCrear.setBackground(Color.WHITE);
+						    	btnCrear.setForeground(new Color(102, 153, 204));;}});
+						panel.add(btnCrear);
+						btnCrear.setForeground(new Color(102, 153, 204));
+						btnCrear.setBackground(new Color(255, 255, 255));
+						btnCrear.addActionListener(this);
+						btnCrear.setFont(new Font("Tahoma", Font.BOLD, 14));
+						
+								txtKilometros = new JTextField();
+								txtKilometros.setBounds(490, 197, 207, 29);
+								panel.add(txtKilometros);
+								txtKilometros.setColumns(10);
+								
+										txtTelefono = new JTextField();
+										txtTelefono.setBounds(490, 138, 207, 29);
+										panel.add(txtTelefono);
+										txtTelefono.setColumns(10);
 
 		actualizarVisibilidad(grupo);
 	}
