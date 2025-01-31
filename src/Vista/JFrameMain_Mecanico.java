@@ -365,10 +365,6 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 						JPanel PanelVehiculos = new JPanel();
 						panel.add(PanelVehiculos, "PanelVehiculos");
 						PanelVehiculos.setLayout(null);
-						
-						JButton btnNewButton = new JButton("New button");
-						btnNewButton.setBounds(252, 285, 192, 87);
-						PanelVehiculos.add(btnNewButton);
 
 
 

@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -50,14 +51,14 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnProveedores, btnMecanicos, btnVehiculos, btnCrearProveedores, btnBorrarRegistro;
+    private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnOrdenes, btnMecanicos, btnVehiculos, btnBorrarRegistro;
     private JPanel jpClientes, jpMaterial, jpServicios, jpEconomia;
-    private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorProveedor;
-    private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaProveedores;
+    private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorOrden;
+    private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaOrdenes;
     private JTextField txtBuscadorVehiculos;
-    private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneProveedores;
-    private JPanel searchPanelClientes, searchPanelVehiculos, searchPanelMecanicos, searchPanelProveedores;
-    private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos, modelTablaProveedores, modelTabla;
+    private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneOrdenes;
+    private JPanel searchPanelClientes, searchPanelVehiculos, searchPanelMecanicos, searchPanelOrdenes;
+    private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos, modelTablaOrdenes, modelTabla;
     
     //Valores de las columnas de cada tabla
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
@@ -297,6 +298,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         
         btnCrearRegistro = new JButton("Añadir");
+        btnCrearRegistro.setBorder(new LineBorder(new Color(0, 0, 0)));
         btnCrearRegistro.setForeground(new Color(255, 255, 255));
         btnCrearRegistro.addActionListener(this);
         btnCrearRegistro.setBackground(new Color(102, 153, 204));
@@ -314,54 +316,54 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         String hint4 = "Buscar proveedor...";
 
         // Crear un panel para el JTextField con el ícono
-        searchPanelProveedores = new JPanel(new BorderLayout());
-        searchPanelProveedores.setBounds(336, 47, 616, 24);
+        searchPanelOrdenes = new JPanel(new BorderLayout());
+        searchPanelOrdenes.setBounds(336, 47, 616, 24);
 
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
-        jpClientes.add(searchPanelProveedores);
+        jpClientes.add(searchPanelOrdenes);
         
-        txtBuscadorProveedor = new JTextField();
-        searchPanelProveedores.add(txtBuscadorProveedor, BorderLayout.CENTER);
-        txtBuscadorProveedor.setColumns(10); // Ajusta el ancho
-        txtBuscadorProveedor.setText("Buscar proveedor..."); // Placeholder
-        txtBuscadorProveedor.setForeground(Color.GRAY);
-        txtBuscadorProveedor.setText(hint4);
-        txtBuscadorProveedor.setForeground(Color.GRAY);
-        txtBuscadorProveedor.addFocusListener(new FocusAdapter() {
+        txtBuscadorOrden = new JTextField();
+        searchPanelOrdenes.add(txtBuscadorOrden, BorderLayout.CENTER);
+        txtBuscadorOrden.setColumns(10); // Ajusta el ancho
+        txtBuscadorOrden.setText("Buscar orden..."); // Placeholder
+        txtBuscadorOrden.setForeground(Color.GRAY);
+        txtBuscadorOrden.setText(hint4);
+        txtBuscadorOrden.setForeground(Color.GRAY);
+        txtBuscadorOrden.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (txtBuscadorProveedor.getText().equals(hint4)) {
-                	txtBuscadorProveedor.setText("");
-                	txtBuscadorProveedor.setForeground(Color.BLACK);
+                if (txtBuscadorOrden.getText().equals(hint4)) {
+                	txtBuscadorOrden.setText("");
+                	txtBuscadorOrden.setForeground(Color.BLACK);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (txtBuscadorProveedor.getText().isEmpty()) {
-                	txtBuscadorProveedor.setText(hint4);
-                	txtBuscadorProveedor.setForeground(Color.GRAY);
+                if (txtBuscadorOrden.getText().isEmpty()) {
+                	txtBuscadorOrden.setText(hint4);
+                	txtBuscadorOrden.setForeground(Color.GRAY);
                 }
             }
         });
 
         
-        tblTablaProveedores = new JTable();
-        tblTablaProveedores.setDefaultEditor(Object.class, null);
-        tblTablaProveedores.getSelectionModel().addListSelectionListener(this);
-        scrollPaneProveedores = new JScrollPane(tblTablaProveedores); 
-        scrollPaneProveedores.setBounds(337, 82, 616, 381); 
-        jpClientes.add(scrollPaneProveedores);
-
-        
-        btnCrearProveedores = new JButton("Añadir/Editar");
-        btnCrearProveedores.addActionListener(this);
-        btnCrearProveedores.setBackground(new Color(170, 255, 0));
-        btnCrearProveedores.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btnCrearProveedores.setBounds(409, 562, 497, 35);
-        jpClientes.add(btnCrearProveedores);
+        tblTablaOrdenes = new JTable();
+        tblTablaOrdenes.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"Cliente", "ID", "Veh\u00EDculo", "Matr\u00EDcula"
+        	}
+        ));
+        tblTablaOrdenes.setDefaultEditor(Object.class, null);
+        tblTablaOrdenes.getSelectionModel().addListSelectionListener(this);
+        scrollPaneOrdenes = new JScrollPane(tblTablaOrdenes); 
+        scrollPaneOrdenes.setBounds(337, 82, 616, 381); 
+        jpClientes.add(scrollPaneOrdenes);
         
         btnBorrarRegistro = new JButton("Borrar");
+        btnBorrarRegistro.setBorder(new LineBorder(new Color(0, 0, 0)));
         btnBorrarRegistro.setForeground(new Color(255, 255, 255));
         btnBorrarRegistro.setBackground(new Color(102, 153, 204));
         btnBorrarRegistro.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -377,6 +379,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jpClientes.add(btnBorrarRegistro);
         
         btnActualizarRegistro = new JButton("Editar");
+        btnActualizarRegistro.setBorder(new LineBorder(new Color(0, 0, 0)));
         btnActualizarRegistro.setForeground(new Color(255, 255, 255));
         btnActualizarRegistro.setBackground(new Color(102, 153, 204));
         btnActualizarRegistro.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -402,20 +405,20 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         lblNewLabel_4.setBounds(10, 469, 150, 143);
         panel.add(lblNewLabel_4);
         
-        btnProveedores = new JButton("PROVEEDORES ");
-        btnProveedores.setForeground(new Color(255, 255, 255));
-        btnProveedores.setBackground(new Color(102, 153, 204));
-        btnProveedores.setBounds(0, 346, 176, 30);
-        btnProveedores.setBorderPainted(false);
-        btnProveedores.setFocusable(false);
-        btnProveedores.addMouseListener(new MouseAdapter() {
+        btnOrdenes = new JButton("ÓRDENES  ");
+        btnOrdenes.setForeground(new Color(255, 255, 255));
+        btnOrdenes.setBackground(new Color(102, 153, 204));
+        btnOrdenes.setBounds(0, 346, 176, 30);
+        btnOrdenes.setBorderPainted(false);
+        btnOrdenes.setFocusable(false);
+        btnOrdenes.addMouseListener(new MouseAdapter() {
 		    public void mouseEntered(MouseEvent e) {
-		    	btnProveedores.setBackground(Color.BLACK);}
+		    	btnOrdenes.setBackground(Color.BLACK);}
 		    public void mouseExited(MouseEvent e) {
-		    	btnProveedores.setBackground(new Color(102, 153, 204));;}});
-        panel.add(btnProveedores);
-        btnProveedores.addActionListener(this);
-        btnProveedores.setFont(new Font("Tahoma", Font.BOLD, 13));
+		    	btnOrdenes.setBackground(new Color(102, 153, 204));;}});
+        panel.add(btnOrdenes);
+        btnOrdenes.addActionListener(this);
+        btnOrdenes.setFont(new Font("Tahoma", Font.BOLD, 13));
         
 
         
@@ -505,6 +508,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         
         btnLogout = new JButton("Cerrar Sesión");
+        btnLogout.setBorder(new LineBorder(new Color(0, 0, 0)));
         btnLogout.setForeground(new Color(255, 255, 255));
         btnLogout.setBackground(new Color(102, 153, 204));
         btnLogout.addActionListener(this);
@@ -540,11 +544,10 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	    scrollPaneMecanicos.setVisible(false);
 	    searchPanelMecanicos.setVisible(false);
 
-	    txtBuscadorProveedor.setVisible(false); 
-	    tblTablaProveedores.setVisible(false);
-	    btnCrearProveedores.setVisible(false);
-	    scrollPaneProveedores.setVisible(false);
-	    searchPanelProveedores.setVisible(false);	
+	    txtBuscadorOrden.setVisible(false); 
+	    tblTablaOrdenes.setVisible(false);
+	    scrollPaneOrdenes.setVisible(false);
+	    searchPanelOrdenes.setVisible(false);	
 	    btnBorrarRegistro.setVisible(false);
 	    btnActualizarRegistro.setVisible(false);
 	    
@@ -587,12 +590,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	        	btnBorrarRegistro.setVisible(true);
 	        	btnActualizarRegistro.setVisible(true);
 	        	break;
-	        case "proveedores":
-	            txtBuscadorProveedor.setVisible(true);
-	            tblTablaProveedores.setVisible(true);
-	            btnCrearProveedores.setVisible(true);
-	            scrollPaneProveedores.setVisible(true);
-	            searchPanelProveedores.setVisible(true);
+	        case "ordenes":
+	            txtBuscadorOrden.setVisible(true);
+	            tblTablaOrdenes.setVisible(true);
+	            btnOrdenes.setVisible(true);
+	            scrollPaneOrdenes.setVisible(true);
+	            searchPanelOrdenes.setVisible(true);
 	            
 	            break;
 	    }
@@ -618,9 +621,9 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     		modelTabla = modelTablaVehiculos;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
-    	} else if (e.getSource() == btnProveedores) {
-    		grupo = "proveedores";
-    		modelTabla = modelTablaProveedores;
+    	} else if (e.getSource() == btnOrdenes) {
+    		grupo = "ordenes";
+    		modelTabla = modelTablaOrdenes;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnCrearRegistro) {
