@@ -262,18 +262,18 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		String sql = "";
 		// Segun el grupo que sea, cambia el insert
 		switch (grupo) {
-		case "mecanicos":
+		case "mecanico":
 			if (matcherDni.matches()) {
 				sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES " + "('" + dniRegistro
 						+ "', '" + password + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', 'Mecanico')";
 			}
 			break;
-		case "clientes":
+		case "cliente":
 			sql = "INSERT INTO cliente (DNI, nombre, apellidos, telefono) VALUES ('" + dniRegistro + "', '"
 					+ nombreRegistro + "', '" + apellidosRegistro + "', '" + telefonoRegistro + "')";
 
 			break;
-		case "vehiculos":
+		case "vehiculo":
 			// Utilizo los otros campos de mecanico y cliente para vehiculo (dni,nombre,etc)
 			sql = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, anio, Cliente_DNI) VALUES"
 					+ " ('" + dniRegistro + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', '" + password

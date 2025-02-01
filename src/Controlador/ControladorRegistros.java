@@ -14,7 +14,7 @@ public class ControladorRegistros {
 		conexion.conectar();
 		try {
 			switch (grupo) {
-				case "clientes":
+				case "cliente":
 					modelTabla.setRowCount(0);
 					ResultSet rsetCliente = conexion.ejecutarSelect("SELECT * FROM cliente");
 					while (rsetCliente.next()) {
@@ -28,7 +28,7 @@ public class ControladorRegistros {
 		                modelTabla.addRow(fila); // Agregar fila al modelo de la tabla
 					}
 					break;
-				case "mecanicos":
+				case "mecanico":
 					modelTabla.setRowCount(0);
 					ResultSet rsetMecanico = conexion.ejecutarSelect("SELECT * FROM usuario where rol = 'Mecanico' ");
 					while (rsetMecanico.next()) {
@@ -43,7 +43,7 @@ public class ControladorRegistros {
 			                modelTabla.addRow(fila); 
 			        }
 					break;
-				case "vehiculos":
+				case "vehiculo":
 					modelTabla.setRowCount(0);
 					ResultSet rsetVehiculos = conexion.ejecutarSelect("SELECT * FROM vehiculo");
 					while (rsetVehiculos.next()) {

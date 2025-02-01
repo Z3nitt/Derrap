@@ -201,13 +201,15 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 		}
 		
 		
-		//Ahora oculto los labels y textField que no son usados
+		//Ahora oculto los labels y textField que no son necesarios
 		for (int i = 0; i < labels.size(); i++) {
 			if(labels.get(i).getText().isBlank()) {
 				labels.get(i).setVisible(false);
 			}
 		}
 		for (int i = 0; i < txtFields.size(); i++) {
+			//Agrego los keylisteners y oculto los textField que no son necesarios
+			txtFields.get(i).addKeyListener(this);
 			if(txtFields.get(i).getText().isBlank()) {
 				txtFields.get(i).setVisible(false);
 			}
@@ -218,44 +220,46 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		/*try {
+		try {
 			if(e.getSource() == btnAceptar) {
-	     		String valorIntroducido = txtNuevoValor.getText();
-	     		String itemSeleccionado = (String) comboBox.getSelectedItem();
-	     		String sqlActualizar="";
-	     		conexion.conectar();
-	     		switch (grupo) {
-					case "clientes":
-						sqlActualizar="UPDATE cliente SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE DNI = '" + valoresActuales[0] + "'";
-						break;
-					case "mecanicos":
-						//Corrige diferencias entre la bd y la tabla
-			     		if(itemSeleccionado.equalsIgnoreCase("Contraseña")) {
-			     			itemSeleccionado = "contrasenia";
-			     		}
-			     		sqlActualizar="UPDATE usuario SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE DNI = '" + valoresActuales[0] + "'";		     		
-			     		break;
-					case "vehiculos":
-			     		sqlActualizar="UPDATE vehiculo SET " + itemSeleccionado.toLowerCase() + " = '" + valorIntroducido + "' WHERE matricula = '" + valoresActuales[0] + "'";		     		
-						break;
-				
-	     		}
+	     		conexion.conectar();   
+	     		
+	     		//Guardo cada campo con su respectivo valor cambiado en un string
+	     		String campos = "";
+	     		for (int i = 1; i < columnasTablas.length; i++) {
+	     			if(columnasTablas[i].equals("Contraseña")) {
+	     				columnasTablas[i] = "contrasenia";
+	     			}else if(columnasTablas[i].equals("Año")) {
+	     				columnasTablas[i] = "anio";
+	     			}
+	     			
+	     			if(!columnasTablas[i].equals("DNI cliente")) {
+	     				campos+= columnasTablas[i].toLowerCase() + " = '" + txtFields.get(i).getText() + "'," ;
+	     			}
+					
+				}
+	     		
+	     		//elimino la ultima coma restante
+	     		String camposFinales = campos.substring(0, campos.length()-1);
+	     		
+	     		//Guardo en un string el sql , segun la tabla (grupo) y segun sus campos 
+	     		String sqlActualizar = "UPDATE "+ grupo + " SET " + camposFinales + " WHERE " +  columnasTablas[0] + " = '" + valoresActuales[0] + "'" ;
+
 	     		int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sqlActualizar);
+	     		
 	     		if(filasAfectadas == 0) {
 	    			JOptionPane.showMessageDialog(this, "Error al actualizar el registro", "Error", JOptionPane.ERROR_MESSAGE);
 	    		}else {
 	    			ControladorRegistros.actualizarTablas(grupo, modelTabla);
 	    			JOptionPane.showMessageDialog(this, "Actualizacion exitosa ", "Actualizacion exitoso", JOptionPane.INFORMATION_MESSAGE);
-	    			dispose();
+	    			dispose(); 
 	    		}
+	     		 		
 			}
-		 }catch(SQLSyntaxErrorException e2) {
+		 }catch(Exception e2) {
 			 JOptionPane.showMessageDialog(this, e2, "Error", JOptionPane.ERROR_MESSAGE);
-		 }catch(Exception e3) {
-			 JOptionPane.showMessageDialog(this, e3, "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		*/
+		
  	}
 
 	@Override
