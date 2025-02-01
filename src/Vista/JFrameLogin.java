@@ -76,10 +76,6 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		// Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		// int height = pantalla.height;
-		// int width = pantalla.width;
-
 		setSize(910, 622);
 		setLocationRelativeTo(null);
 		contentPane.setFocusable(true);
