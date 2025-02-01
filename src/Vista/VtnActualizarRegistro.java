@@ -20,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLSyntaxErrorException;
 
 import javax.swing.JComboBox;
@@ -28,7 +30,7 @@ import javax.swing.WindowConstants;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-public class VtnActualizarRegistro extends JFrame implements ActionListener {
+public class VtnActualizarRegistro extends JFrame implements ActionListener, KeyListener {
 	Background fondoPantalla = new Background();
 
 	private static final long serialVersionUID = 1L;
@@ -116,6 +118,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 		txtNuevoValor.setBounds(610, 283, 175, 25);
 		getContentPane().add(txtNuevoValor);
 		txtNuevoValor.setColumns(10);
+		txtNuevoValor.addKeyListener(this);
 		
 		JLabel lblNuevoValor = new JLabel("Nuevo valor:");
 		lblNuevoValor.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -186,7 +189,34 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener {
 		 }catch(SQLSyntaxErrorException e2) {
 			 JOptionPane.showMessageDialog(this, e2, "Error", JOptionPane.ERROR_MESSAGE);
 		 }catch(Exception e3) {
-			 System.out.println(e3);
+			 JOptionPane.showMessageDialog(this, e3, "Error", JOptionPane.ERROR_MESSAGE);
 		}
  	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		//Si le da al enter, presiona el boton de aceptar
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			btnAceptar.doClick();
+        }else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {//Si le da al escape, pide confirmacion para volver a la ventana anterior y la cierra
+        	int confirmacion = JOptionPane.showConfirmDialog(null, "¿Volver atrás?", "Confirmar volver", JOptionPane.YES_NO_OPTION);
+
+    		if (confirmacion == JOptionPane.YES_OPTION) {
+    			dispose();
+    		}
+        }
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -4,9 +4,13 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +31,7 @@ import Controlador.ControladorRegistros;
 import package_main.Background;
 import java.awt.Color;
 
-public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
+public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, KeyListener {
 	Conector_BBDD conexion = new Conector_BBDD();
 	Background fondoPantalla = new Background();
 
@@ -66,21 +70,25 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 		txtNombre.setBounds(137, 197, 207, 29);
 		fondoPantalla.add(txtNombre);
 		txtNombre.setColumns(10);
+		txtNombre.addKeyListener(this);
 
 		txtApellidos = new JTextField();
 		txtApellidos.setBounds(137, 260, 207, 29);
 		fondoPantalla.add(txtApellidos);
 		txtApellidos.setColumns(10);
+		txtApellidos.addKeyListener(this);
 
 		txtDNI = new JTextField();
 		txtDNI.setBounds(137, 137, 207, 29);
 		fondoPantalla.add(txtDNI);
 		txtDNI.setColumns(10);
+		txtDNI.addKeyListener(this);
 
 		txtPassword = new JTextField();
 		txtPassword.setBounds(137, 326, 207, 29);
 		fondoPantalla.add(txtPassword);
 		txtPassword.setColumns(10);
+		txtPassword.addKeyListener(this);
 
 		lblApellidos = new JLabel("Apellidos:");
 		lblApellidos.setForeground(new Color(255, 255, 255));
@@ -120,12 +128,14 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 		txtDniCliente = new JTextField();
 		txtDniCliente.setColumns(10);
 		txtDniCliente.setBounds(488, 326, 207, 29);
+		txtDniCliente.addKeyListener(this);
 		fondoPantalla.add(txtDniCliente);
 
 		lblKilometros = new JLabel("Kilometros: ");
 		lblKilometros.setForeground(new Color(255, 255, 255));
 		lblKilometros.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblKilometros.setBounds(383, 204, 101, 13);
+		
 		fondoPantalla.add(lblKilometros);
 
 		lblAnio = new JLabel("Año: ");
@@ -139,45 +149,52 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 		lblDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDniCliente.setBounds(383, 333, 99, 13);
 		fondoPantalla.add(lblDniCliente);
-		
+
 		panel = new JPanel();
 		panel.setBackground(new Color(102, 153, 204));
 		panel.setBounds(0, 0, 730, 580);
 		fondoPantalla.add(panel);
-				panel.setLayout(null);
-		
-				lblTitulo = new JLabel("CREAR NUEVO REGISTRO");
-				lblTitulo.setBounds(212, 49, 284, 27);
-				panel.add(lblTitulo);
-				lblTitulo.setForeground(new Color(255, 255, 255));
-				lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-				lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 18));
-				
-						btnCrear = new JButton("CREAR");
-						btnCrear.setBounds(223, 458, 284, 42);
-						btnCrear.setFocusable(false);
-						btnCrear.addMouseListener(new MouseAdapter() {
-						    public void mouseEntered(MouseEvent e) {
-						    	btnCrear.setBackground(Color.BLACK);
-						    	btnCrear.setForeground(Color.WHITE);}
-						    public void mouseExited(MouseEvent e) {
-						    	btnCrear.setBackground(Color.WHITE);
-						    	btnCrear.setForeground(new Color(102, 153, 204));;}});
-						panel.add(btnCrear);
-						btnCrear.setForeground(new Color(102, 153, 204));
-						btnCrear.setBackground(new Color(255, 255, 255));
-						btnCrear.addActionListener(this);
-						btnCrear.setFont(new Font("Tahoma", Font.BOLD, 14));
-						
-								txtKilometros = new JTextField();
-								txtKilometros.setBounds(490, 197, 207, 29);
-								panel.add(txtKilometros);
-								txtKilometros.setColumns(10);
-								
-										txtTelefono = new JTextField();
-										txtTelefono.setBounds(490, 138, 207, 29);
-										panel.add(txtTelefono);
-										txtTelefono.setColumns(10);
+		panel.setLayout(null);
+
+		lblTitulo = new JLabel("CREAR NUEVO REGISTRO");
+		lblTitulo.setBounds(212, 49, 284, 27);
+		panel.add(lblTitulo);
+		lblTitulo.setForeground(new Color(255, 255, 255));
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 18));
+
+		btnCrear = new JButton("CREAR");
+		btnCrear.setBounds(223, 458, 284, 42);
+		btnCrear.setFocusable(false);
+		btnCrear.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnCrear.setBackground(Color.BLACK);
+				btnCrear.setForeground(Color.WHITE);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnCrear.setBackground(Color.WHITE);
+				btnCrear.setForeground(new Color(102, 153, 204));
+				;
+			}
+		});
+		panel.add(btnCrear);
+		btnCrear.setForeground(new Color(102, 153, 204));
+		btnCrear.setBackground(new Color(255, 255, 255));
+		btnCrear.addActionListener(this);
+		btnCrear.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		txtKilometros = new JTextField();
+		txtKilometros.setBounds(490, 197, 207, 29);
+		panel.add(txtKilometros);
+		txtKilometros.addKeyListener(this);
+		txtKilometros.setColumns(10);
+
+		txtTelefono = new JTextField();
+		txtTelefono.setBounds(490, 138, 207, 29);
+		panel.add(txtTelefono);
+		txtTelefono.addKeyListener(this);
+		txtTelefono.setColumns(10);
 
 		actualizarVisibilidad(grupo);
 	}
@@ -243,7 +260,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 
 		conexion.conectar();
 		String sql = "";
-		//Segun el grupo que sea, cambia el insert
+		// Segun el grupo que sea, cambia el insert
 		switch (grupo) {
 		case "mecanicos":
 			if (matcherDni.matches()) {
@@ -263,11 +280,12 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + anio + "', '" + dniCliente + "')";
 
 		}
-		//Controla la creacion del registro
+		// Controla la creacion del registro
 		try {
 			int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sql);
 
-			// Si se creó correctamente el registro, muestra un messageDialog, actualiza la tabla correspondiente y cierra la ventana
+			// Si se creó correctamente el registro, muestra un messageDialog, actualiza la
+			// tabla correspondiente y cierra la ventana
 			if (filasAfectadas > 0) {
 				ControladorRegistros.actualizarTablas(grupo, modelTabla);
 				JOptionPane.showMessageDialog(this, "Registro exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -277,7 +295,8 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 			}
 
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(this, "Error en la base de datos al crear el registro", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error en la base de datos al crear el registro", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 
@@ -288,5 +307,33 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener {
 		if (e.getSource() == btnCrear) {
 			crearNuevoRegistro(grupo);
 		}
+	}
+
+	//Eventos de teclado
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		//Si le da al enter, presiona el boton de aceptar
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			btnCrear.doClick();
+        }else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {//Si le da al escape, pide confirmacion para volver a la ventana anterior y la cierra
+        	int confirmacion = JOptionPane.showConfirmDialog(null, "¿Volver atrás?", "Confirmar volver", JOptionPane.YES_NO_OPTION);
+
+    		if (confirmacion == JOptionPane.YES_OPTION) {
+    			dispose();
+    		}
+        }
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

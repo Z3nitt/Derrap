@@ -515,14 +515,15 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         btnLogout.setBounds(976, 600, 119, 23);
         btnLogout.setFocusable(false);
         btnLogout.addMouseListener(new MouseAdapter() {
-		    public void mouseEntered(MouseEvent e) {
-		    	btnLogout.setBackground(Color.BLACK);}
-		    public void mouseExited(MouseEvent e) {
-		    	btnLogout.setBackground(new Color(102, 153, 204));;}});
+	    public void mouseEntered(MouseEvent e) {
+	    	btnLogout.setBackground(Color.BLACK);}
+	    public void mouseExited(MouseEvent e) {
+	    	btnLogout.setBackground(new Color(102, 153, 204));;}});
         jpClientes.add(btnLogout);
         
         
         //Al iniciar
+        modelTabla = modelTablaClientes;
         actualizarVisibilidad(grupo);
         ControladorRegistros.actualizarTablas("clientes", modelTablaClientes);
 	}
