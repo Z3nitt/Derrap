@@ -135,7 +135,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		lblKilometros.setForeground(new Color(255, 255, 255));
 		lblKilometros.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblKilometros.setBounds(383, 204, 101, 13);
-		
+
 		fondoPantalla.add(lblKilometros);
 
 		lblAnio = new JLabel("Año: ");
@@ -274,10 +274,18 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 
 			break;
 		case "vehiculo":
+
+			if (dniCliente.isBlank()) {
+				dniCliente = "NULL";
+			} else {
+				dniCliente = "'" + dniCliente + "'";
+			}
+
 			// Utilizo los otros campos de mecanico y cliente para vehiculo (dni,nombre,etc)
 			sql = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, year, dni_cliente) VALUES"
 					+ " ('" + dniRegistro + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', '" + password
-					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + year + "', '" + dniCliente + "')";
+					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + year + "', " + dniCliente + ")";
+			System.out.println(sql);
 
 		}
 		// Controla la creacion del registro
@@ -309,31 +317,33 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		}
 	}
 
-	//Eventos de teclado
+	// Eventos de teclado
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//Si le da al enter, presiona el boton de aceptar
+		// Si le da al enter, presiona el boton de aceptar
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			btnCrear.doClick();
-        }else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {//Si le da al escape, pide confirmacion para volver a la ventana anterior y la cierra
-        	int confirmacion = JOptionPane.showConfirmDialog(null, "¿Volver atrás?", "Confirmar volver", JOptionPane.YES_NO_OPTION);
+		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {// Si le da al escape, pide confirmacion para volver a la
+															// ventana anterior y la cierra
+			int confirmacion = JOptionPane.showConfirmDialog(null, "¿Volver atrás?", "Confirmar volver",
+					JOptionPane.YES_NO_OPTION);
 
-    		if (confirmacion == JOptionPane.YES_OPTION) {
-    			dispose();
-    		}
-        }
-		
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				dispose();
+			}
+		}
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

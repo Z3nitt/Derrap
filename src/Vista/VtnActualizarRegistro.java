@@ -22,6 +22,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,12 +33,12 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class VtnActualizarRegistro extends JFrame implements ActionListener, KeyListener {
-	Background fondoPantalla = new Background();
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel fondoPantalla;
 	private JButton btnAceptar;
 	private DefaultTableModel modelTabla;
 	private String [] valoresActuales, columnasTablas;
@@ -59,6 +61,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 		setTitle(" Actualizar registro | Derrap");
 		setSize(875, 527);
         setLocationRelativeTo(null);
+		
 		getContentPane().setLayout(null);
 
 		this.valoresActuales = valoresActuales;
@@ -66,60 +69,83 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 		this.grupo = grupo;
 		this.modelTabla = modelTabla;
 		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		fondoPantalla = new JPanel();
+		fondoPantalla.setBorder(new EmptyBorder(5, 5, 5, 5));
 		fondoPantalla.setLayout(null);
+		fondoPantalla.setBackground(new Color(102, 153, 204));
 		setContentPane(fondoPantalla);
 		
 		lblPrimaryKey = new JLabel("Valor Pk: ");
+		lblPrimaryKey.setForeground(new Color(255, 255, 255));
 		lblPrimaryKey.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblPrimaryKey.setBounds(39, 113, 127, 45);
 		labels.add(lblPrimaryKey);
 		getContentPane().add(lblPrimaryKey);
 		
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.setForeground(new Color(102, 153, 204));
 		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnAceptar.setBounds(679, 421, 156, 45);
+		btnAceptar.setBounds(309, 407, 284, 42);
 		btnAceptar.addActionListener(this);
+		btnAceptar.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnAceptar.setBackground(Color.BLACK);
+				btnAceptar.setForeground(Color.WHITE);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnAceptar.setBackground(Color.WHITE);
+				btnAceptar.setForeground(new Color(102, 153, 204));
+				;
+			}
+		});
+		
 		getContentPane().add(btnAceptar);
 		
 		lblTitulo = new JLabel("ACTUALIZAR REGISTRO");
+		lblTitulo.setForeground(new Color(255, 255, 255));
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblTitulo.setBounds(39, 27, 280, 36);
 		getContentPane().add(lblTitulo);
 		
 		lblCampo1 = new JLabel("");
+		lblCampo1.setForeground(new Color(255, 255, 255));
 		lblCampo1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCampo1.setBounds(39, 168, 127, 45);
 		fondoPantalla.add(lblCampo1);
 		labels.add(lblCampo1);
 		
 		lblCampo2 = new JLabel("");
+		lblCampo2.setForeground(new Color(255, 255, 255));
 		lblCampo2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCampo2.setBounds(39, 236, 127, 45);
 		fondoPantalla.add(lblCampo2);
 		labels.add(lblCampo2);
 		
 		lblCampo3 = new JLabel("");
+		lblCampo3.setForeground(new Color(255, 255, 255));
 		lblCampo3.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCampo3.setBounds(39, 299, 127, 45);
 		fondoPantalla.add(lblCampo3);
 		labels.add(lblCampo3);
 		
 		lblCampo4 = new JLabel("");
+		lblCampo4.setForeground(new Color(255, 255, 255));
 		lblCampo4.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCampo4.setBounds(412, 113, 127, 45);
 		fondoPantalla.add(lblCampo4);
 		labels.add(lblCampo4);
 		
 		lblCampo5 = new JLabel("");
+		lblCampo5.setForeground(new Color(255, 255, 255));
 		lblCampo5.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCampo5.setBounds(412, 168, 127, 45);
 		fondoPantalla.add(lblCampo5);
 		labels.add(lblCampo5);
 		
 		lblCampo6 = new JLabel("");
+		lblCampo6.setForeground(new Color(255, 255, 255));
 		lblCampo6.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCampo6.setBounds(412, 236, 127, 45);
 		fondoPantalla.add(lblCampo6);
@@ -178,6 +204,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 		txtFields.add(txtForeignKey);
 		
 		lblForeignKey = new JLabel("");
+		lblForeignKey.setForeground(new Color(255, 255, 255));
 		lblForeignKey.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblForeignKey.setBounds(412, 299, 127, 45);
 		fondoPantalla.add(lblForeignKey);
