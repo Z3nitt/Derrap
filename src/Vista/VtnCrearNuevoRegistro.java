@@ -212,17 +212,17 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		txtDniCliente.setVisible(false);
 
 		switch (grupo) {
-		case "clientes":
+		case "cliente":
 			lblTitulo.setText("CREAR NUEVO CLIENTE");
 			lblTelefono.setVisible(true);
 			txtTelefono.setVisible(true);
 			break;
-		case "mecanicos":
+		case "mecanico":
 			lblTitulo.setText("CREAR NUEVO MECANICO");
 			lblPassword.setVisible(true);
 			txtPassword.setVisible(true);
 			break;
-		case "vehiculos":
+		case "vehiculo":
 			lblTitulo.setText("CREAR NUEVO VEHICULO");
 			lblDNI.setText("Matricula:");
 			lblNombre.setText("Marca:");
@@ -255,7 +255,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 
 		String telefonoRegistro = txtTelefono.getText();
 		String kilometros = txtKilometros.getText();
-		String anio = txtAnio.getText();
+		String year = txtAnio.getText();
 		String dniCliente = txtDniCliente.getText();
 
 		conexion.conectar();
@@ -264,7 +264,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		switch (grupo) {
 		case "mecanico":
 			if (matcherDni.matches()) {
-				sql = "INSERT INTO usuario (DNI, contrasenia, nombre, apellidos, rol) VALUES " + "('" + dniRegistro
+				sql = "INSERT INTO usuario (DNI, password, nombre, apellidos, rol) VALUES " + "('" + dniRegistro
 						+ "', '" + password + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', 'Mecanico')";
 			}
 			break;
@@ -275,9 +275,9 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 			break;
 		case "vehiculo":
 			// Utilizo los otros campos de mecanico y cliente para vehiculo (dni,nombre,etc)
-			sql = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, anio, Cliente_DNI) VALUES"
+			sql = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, year, dni_cliente) VALUES"
 					+ " ('" + dniRegistro + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', '" + password
-					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + anio + "', '" + dniCliente + "')";
+					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + year + "', '" + dniCliente + "')";
 
 		}
 		// Controla la creacion del registro

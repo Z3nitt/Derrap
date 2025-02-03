@@ -37,7 +37,7 @@ public class ControladorRegistros {
 			                fila[0] = rsetMecanico.getString("DNI");       
 			                fila[1] = rsetMecanico.getString("nombre");    
 			                fila[2] = rsetMecanico.getString("apellidos");          
-			                fila[3] = rsetMecanico.getString("contrasenia");           
+			                fila[3] = rsetMecanico.getString("password");           
 			                fila[4] = rsetMecanico.getString("estado");       
 			                
 			                modelTabla.addRow(fila); 
@@ -54,8 +54,8 @@ public class ControladorRegistros {
 		                fila[3] = rsetVehiculos.getString("color");           
 		                fila[4] = rsetVehiculos.getString("combustible");     
 		                fila[5] = rsetVehiculos.getString("kilometros");           
-		                fila[6] = rsetVehiculos.getString("anio");  
-		                fila[7] = rsetVehiculos.getString("Cliente_DNI");             
+		                fila[6] = rsetVehiculos.getString("year");  
+		                fila[7] = rsetVehiculos.getString("dni_cliente");             
 		                
 		                modelTabla.addRow(fila); 
 					}

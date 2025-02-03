@@ -62,7 +62,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     
     //Valores de las columnas de cada tabla
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
-    String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Contraseña", "Estado"};
+    String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Password", "Estado"};
     String[] columnasVehiculos = {"matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI cliente"};
 
     String grupo = "cliente";

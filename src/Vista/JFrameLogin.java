@@ -219,7 +219,7 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
 			try {
 				conexion.conectar();
 				ResultSet rset = conexion
-						.ejecutarSelect("SELECT contrasenia,rol FROM usuario WHERE DNI = '" + usuario + "' ;");
+						.ejecutarSelect("SELECT password,rol FROM usuario WHERE DNI = '" + usuario + "' ;");
 
 				if (!rset.next()) {
 					JOptionPane.showMessageDialog(this, "No se encontraron resultados para el usuario ingresado.",
@@ -227,7 +227,7 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
 					return;
 				}
 
-				String contraseniaBD = rset.getString("contrasenia");
+				String contraseniaBD = rset.getString("password");
 				String rol = rset.getString("rol");
 
 				if (contraseniaBD.equals(password) && rol.equals(admin)) {
@@ -248,6 +248,7 @@ public class JFrameLogin extends JFrame implements ActionListener, KeyListener {
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, "Error al conectar con la base de datos.", "Error",
 						JOptionPane.ERROR_MESSAGE);
+				System.out.println(ex);
 			}
 		}
 	}
