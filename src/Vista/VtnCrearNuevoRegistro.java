@@ -240,6 +240,24 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 			lblDniCliente.setVisible(true);
 			txtDniCliente.setVisible(true);
 			break;
+		case "orden":
+			lblTitulo.setText("CREAR NUEVA ORDEN");
+			lblDNI.setVisible(true);
+			lblDNI.setText("Cliente:");
+			lblNombre.setVisible(true);
+			lblNombre.setText("ID:");
+			lblApellidos.setVisible(true);
+			lblApellidos.setText("Marca:");
+			lblPassword.setVisible(true);
+			lblPassword.setText("Modelo:");
+			lblTelefono.setVisible(true);
+			lblTelefono.setText("Matricula:");
+			txtDNI.setVisible(true);
+			txtNombre.setVisible(true);
+			txtApellidos.setVisible(true);
+			txtPassword.setVisible(true);
+			txtTelefono.setVisible(true);
+			break;
 		}
 	}
 
@@ -285,8 +303,12 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 			sql = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, year, dni_cliente) VALUES"
 					+ " ('" + dniRegistro + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', '" + password
 					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + year + "', " + dniCliente + ")";
-			System.out.println(sql);
-
+			break;
+		case "orden":
+			sql = "INSERT INTO cliente (DNI, nombre, apellidos, telefono) VALUES ('" + dniRegistro + "', '"
+					+ nombreRegistro + "', '" + apellidosRegistro + "', '" + telefonoRegistro + "')";
+		
+			break;
 		}
 		// Controla la creacion del registro
 		try {

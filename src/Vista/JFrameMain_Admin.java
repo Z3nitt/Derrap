@@ -64,6 +64,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
     String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Password", "Estado"};
     String[] columnasVehiculos = {"matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI cliente"};
+    String[] columnasOrdenes = {"ID", "Cliente", "Matricula", "Piezas"};
 
     String grupo = "cliente";
     private JPanel panel;
@@ -313,7 +314,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jpClientes.add(btnCrearRegistro);
 
         // Configurar el hint con el FocusListener
-        String hint4 = "Buscar proveedor...";
+        String hint4 = "Buscar orden...";
 
         // Crear un panel para el JTextField con el ícono
         searchPanelOrdenes = new JPanel(new BorderLayout());
@@ -349,15 +350,10 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 
         
         tblTablaOrdenes = new JTable();
-        tblTablaOrdenes.setModel(new DefaultTableModel(
-        	new Object[][] {
-        	},
-        	new String[] {
-        		"Cliente", "ID", "Veh\u00EDculo", "Matr\u00EDcula"
-        	}
-        ));
         tblTablaOrdenes.setDefaultEditor(Object.class, null);
         tblTablaOrdenes.getSelectionModel().addListSelectionListener(this);
+        modelTablaOrdenes = new DefaultTableModel(columnasOrdenes,0);
+        tblTablaOrdenes.setModel(modelTablaOrdenes);
         scrollPaneOrdenes = new JScrollPane(tblTablaOrdenes); 
         scrollPaneOrdenes.setBounds(337, 82, 616, 381); 
         jpClientes.add(scrollPaneOrdenes);
@@ -541,16 +537,13 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 
 	    txtBuscadorMecanicos.setVisible(false);
 	    tblTablaMecanicos.setVisible(false);
-	    btnCrearRegistro.setVisible(false);
 	    scrollPaneMecanicos.setVisible(false);
 	    searchPanelMecanicos.setVisible(false);
 
 	    txtBuscadorOrden.setVisible(false); 
 	    tblTablaOrdenes.setVisible(false);
 	    scrollPaneOrdenes.setVisible(false);
-	    searchPanelOrdenes.setVisible(false);	
-	    btnBorrarRegistro.setVisible(false);
-	    btnActualizarRegistro.setVisible(false);
+	    searchPanelOrdenes.setVisible(false);
 	    
 	    //Limpiar las tablas
 	    tblTablaClientes.clearSelection();
@@ -567,37 +560,27 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	            scrollPaneVehiculos.setVisible(true);
 	            searchPanelClientes.setVisible(true);
 	            searchPanelVehiculos.setVisible(true);
-	            btnCrearRegistro.setVisible(true);
-	            btnBorrarRegistro.setVisible(true);
-	            btnActualizarRegistro.setVisible(true);
-	            
+	         
 	            break;
 	        case "mecanico":
 	            txtBuscadorMecanicos.setVisible(true);
 	            tblTablaMecanicos.setVisible(true);
-	            btnCrearRegistro.setVisible(true);
 	            scrollPaneMecanicos.setVisible(true);
 	            searchPanelMecanicos.setVisible(true);
-	            btnBorrarRegistro.setVisible(true);
-	            btnActualizarRegistro.setVisible(true);
 	            
 	            break;
 	        case "vehiculo":
 	        	txtBuscadorVehiculos.setVisible(true);
 	        	tblTablaVehiculos.setVisible(true);
-	        	btnCrearRegistro.setVisible(true);
 	        	scrollPaneVehiculos.setVisible(true);
 	        	searchPanelVehiculos.setVisible(true);
-	        	btnBorrarRegistro.setVisible(true);
-	        	btnActualizarRegistro.setVisible(true);
 	        	break;
 	        case "orden":
 	            txtBuscadorOrden.setVisible(true);
 	            tblTablaOrdenes.setVisible(true);
-	            btnOrdenes.setVisible(true);
+	            btnCrearRegistro.setVisible(true);
 	            scrollPaneOrdenes.setVisible(true);
 	            searchPanelOrdenes.setVisible(true);
-	            
 	            break;
 	    }
 	}
