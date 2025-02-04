@@ -174,7 +174,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 							new Object[][] {
 							},
 							new String[] {
-								"Cliente", "ID", "Veh\u00EDculo", "Matr\u00EDcula"
+								"Cliente", "ID", "Matr\u00EDcula", "Piezas"
 							}
 						));
 						scrollPane.setViewportView(table);
@@ -221,6 +221,9 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 						btnAbrirOrden.setBorder(new LineBorder(new Color(0, 0, 0)));
 						btnAbrirOrden.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
+								VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
+								VtnAbrirOrden.setVisible(true);
+								
 							}
 						});
 						btnAbrirOrden.setBackground(new Color(255, 255, 255));
