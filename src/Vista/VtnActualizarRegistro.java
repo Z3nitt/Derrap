@@ -274,11 +274,18 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 
 				}
 	     		
+	     		String tabla = grupo;
+	     		
+	     		if(grupo.equals("mecanico")) {
+	     			tabla = "usuario";
+	     		}
+	     		
+	     		
 	     		//elimino la ultima coma restante
 	     		String camposFinales = campos.substring(0, campos.length()-1);
 	     		
 	     		//Guardo en un string el sql , segun la tabla (grupo) y segun sus campos 
-	     		String sqlActualizar = "UPDATE "+ grupo + " SET " + camposFinales + " WHERE " +  columnasTablas[0] + " = '" + valoresActuales[0] + "'" ;
+	     		String sqlActualizar = "UPDATE "+ tabla + " SET " + camposFinales + " WHERE " +  columnasTablas[0] + " = '" + valoresActuales[0] + "'" ;
 
 	     		int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sqlActualizar);
 	     		
