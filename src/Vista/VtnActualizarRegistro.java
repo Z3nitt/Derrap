@@ -242,7 +242,18 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 			}
 		}
 		
+		//En el caso que este en la ventana de vehiculos siempre muestra el campo de dni cliente para poder reasignarlo
+		if(grupo.equals("vehiculo")) {
+			txtForeignKey.setVisible(true);
+			
+			//Si no tiene un cliente ya asignado, permite asignarle uno
+			if(txtForeignKey.getText().isEmpty()) {
+				txtForeignKey.setEditable(true);
+				txtForeignKey.setEnabled(true);
+			}
 		
+		}
+	
 	}
 
 	@Override
@@ -254,16 +265,13 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 	     		//Guardo cada campo con su respectivo valor cambiado en un string
 	     		String campos = "";
 	     		for (int i = 1; i < columnasTablas.length; i++) {
-	     			if(columnasTablas[i].equals("Contraseña")) {
-	     				columnasTablas[i] = "contrasenia";
-	     			}else if(columnasTablas[i].equals("Año")) {
-	     				columnasTablas[i] = "anio";
+	     			
+	     			if(columnasTablas[i].equals("Año")) {
+	     				columnasTablas[i] = "year";
 	     			}
 	     			
-	     			if(!columnasTablas[i].equals("DNI cliente")) {
-	     				campos+= columnasTablas[i].toLowerCase() + " = '" + txtFields.get(i).getText() + "'," ;
-	     			}
-					
+     				campos+= columnasTablas[i].toLowerCase() + " = '" + txtFields.get(i).getText() + "'," ;
+
 				}
 	     		
 	     		//elimino la ultima coma restante

@@ -63,7 +63,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     //Valores de las columnas de cada tabla
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
     String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Password", "Estado"};
-    String[] columnasVehiculos = {"matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI cliente"};
+    String[] columnasVehiculos = {"matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI_cliente"};
     String[] columnasOrdenes = {"ID", "Cliente", "Matricula", "Piezas"};
 
     String grupo = "cliente";
@@ -392,7 +392,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         panel = new JPanel();
         panel.setBackground(new Color(102, 153, 204));
-        panel.setBounds(0, 0, 176, 634);
+        panel.setBounds(0, 0, 176, 674);
         jpClientes.add(panel);
         panel.setLayout(null);
         
