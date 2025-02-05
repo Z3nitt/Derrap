@@ -165,7 +165,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         	@Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("clientes");
+                	buscarRegistros("cliente");
                 }
             }
 		});
@@ -224,7 +224,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
                     @Override
                     public void keyPressed(KeyEvent e) {
                         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                        	buscarRegistros("vehiculos");
+                        	buscarRegistros("vehiculo");
                         }
                     }
                 });
@@ -279,7 +279,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("mecanicos");
+                	buscarRegistros("mecanico");
                 }
             }
         });
@@ -344,6 +344,15 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
                 if (txtBuscadorOrden.getText().isEmpty()) {
                 	txtBuscadorOrden.setText(hint4);
                 	txtBuscadorOrden.setForeground(Color.GRAY);
+                }
+            }
+        });
+        
+        txtBuscadorOrden.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                	buscarRegistros("orden");
                 }
             }
         });
@@ -691,6 +700,21 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			            fila[6] = rsetVehiculos.getString("anio");
 			            fila[7] = rsetVehiculos.getString("Cliente_DNI");
 			            modelTablaVehiculos.addRow(fila);
+			        }
+					
+					break;
+				case "orden":
+					String id_orden = txtBuscadorOrden.getText().trim();
+					String selectOrden = "SELECT * FROM orden WHERE id_orden LIKE '%" + id_orden + "%'";
+					ResultSet rsetOrden = conexion.ejecutarSelect(selectOrden);
+					modelTablaOrdenes.setRowCount(0);
+					
+					while (rsetOrden.next()) {
+			            Object[] fila = new Object[3];
+			            fila[0] = rsetOrden.getString("id_orden");
+			            fila[1] = rsetOrden.getString("dni_cliente");
+			            fila[2] = rsetOrden.getString("matricula_vehiculo");
+			            modelTablaOrdenes.addRow(fila);
 			        }
 					
 					break;

@@ -60,6 +60,17 @@ public class ControladorRegistros {
 		                modelTabla.addRow(fila); 
 					}
 					break;
+				case "orden":
+					modelTabla.setRowCount(0);
+					ResultSet rsetOrden = conexion.ejecutarSelect("SELECT * FROM orden");
+					while (rsetOrden.next()) {
+		                Object[] fila = new Object[8];
+		                fila[0] = rsetOrden.getString("id_orden");       
+		                fila[1] = rsetOrden.getString("dni_cliente");    
+		                fila[2] = rsetOrden.getString("matricula_vehiculo");                    
+		                modelTabla.addRow(fila); 
+					}
+					break;
 			}
 			
 		}catch(Exception e) {

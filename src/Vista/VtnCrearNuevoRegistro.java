@@ -243,20 +243,20 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		case "orden":
 			lblTitulo.setText("CREAR NUEVA ORDEN");
 			lblDNI.setVisible(true);
-			lblDNI.setText("Cliente:");
+			lblDNI.setText("ID Orden:");
 			lblNombre.setVisible(true);
-			lblNombre.setText("ID:");
+			lblNombre.setText("Cliente:");
 			lblApellidos.setVisible(true);
-			lblApellidos.setText("Marca:");
-			lblPassword.setVisible(true);
+			lblApellidos.setText("Matrícula:");
+			lblPassword.setVisible(false);
 			lblPassword.setText("Modelo:");
-			lblTelefono.setVisible(true);
+			lblTelefono.setVisible(false);
 			lblTelefono.setText("Matricula:");
 			txtDNI.setVisible(true);
 			txtNombre.setVisible(true);
 			txtApellidos.setVisible(true);
-			txtPassword.setVisible(true);
-			txtTelefono.setVisible(true);
+			txtPassword.setVisible(false);
+			txtTelefono.setVisible(false);
 			break;
 		}
 	}
@@ -305,8 +305,8 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + year + "', " + dniCliente + ")";
 			break;
 		case "orden":
-			sql = "INSERT INTO cliente (DNI, nombre, apellidos, telefono) VALUES ('" + dniRegistro + "', '"
-					+ nombreRegistro + "', '" + apellidosRegistro + "', '" + telefonoRegistro + "')";
+			sql = "INSERT INTO orden (id_orden, dni_cliente, matricula_vehiculo) VALUES ('" + dniRegistro + "', '"
+					+ nombreRegistro + "', '" + apellidosRegistro + "')";
 		
 			break;
 		}

@@ -277,6 +277,12 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 						OrdenA_1.add(lblMatrcula_1);
 						
 						JButton btnAbrirOrden_3 = new JButton("Abrir orden");
+						btnAbrirOrden_3.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
+								VtnAbrirOrden.setVisible(true);
+							}
+						});
 						btnAbrirOrden_3.setFont(new Font("Tahoma", Font.BOLD, 12));
 						btnAbrirOrden_3.setBorder(new LineBorder(new Color(0, 0, 0)));
 						btnAbrirOrden_3.setFocusable(false);
@@ -329,6 +335,12 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 						OrdenA_2.add(lblMatrcula_2);
 						
 						JButton btnAbrirOrden_2 = new JButton("Abrir orden");
+						btnAbrirOrden_2.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
+								VtnAbrirOrden.setVisible(true);
+							}
+						});
 						btnAbrirOrden_2.setFont(new Font("Tahoma", Font.BOLD, 12));
 						btnAbrirOrden_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 						btnAbrirOrden_2.setFocusable(false);
