@@ -291,6 +291,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 	     		
 	     		if(filasAfectadas == 0) {
 	    			JOptionPane.showMessageDialog(this, "Error al actualizar el registro", "Error", JOptionPane.ERROR_MESSAGE);
+	    			
 	    		}else {
 	    			ControladorRegistros.actualizarTablas(grupo, modelTabla);
 	    			JOptionPane.showMessageDialog(this, "Actualizacion exitosa ", "Actualizacion exitoso", JOptionPane.INFORMATION_MESSAGE);
@@ -300,6 +301,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 			}
 		 }catch(Exception e2) {
 			 JOptionPane.showMessageDialog(this, e2, "Error", JOptionPane.ERROR_MESSAGE);
+			 System.out.println(e2);
 		}
 		
  	}

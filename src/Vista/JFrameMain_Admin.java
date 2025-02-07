@@ -50,24 +50,27 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     VtnActualizarRegistro vtnActualizarRegistro;
     
     private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
-    private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnOrdenes, btnMecanicos, btnVehiculos, btnBorrarRegistro;
-    private JPanel jpClientes, jpMaterial, jpServicios, jpEconomia;
-    private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorOrden;
-    private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaOrdenes;
-    private JTextField txtBuscadorVehiculos;
-    private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneOrdenes;
-    private JPanel searchPanelClientes, searchPanelVehiculos, searchPanelMecanicos, searchPanelOrdenes;
-    private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos, modelTablaOrdenes, modelTabla;
+    private JPanel contentPane, searchPanelFacturas;
+    private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnOrdenes, btnMecanicos, btnVehiculos, btnBorrarRegistro, btnLogout2, btnCrearPieza, btnActualizarPieza, btnBorrarPieza, btnLogout3, btnCrearFactura;
+    private JPanel jpClientes, jpMaterial, jpEconomia;
+    private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorOrden, txtBuscadorStock;
+    private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaOrdenes, tblTablaRepuesto, tblTablaFactura;
+    private JTextField txtBuscadorVehiculos, txtBuscadorFacturas;
+    private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneOrdenes, scrollPaneRepuesto, scrollPaneFactura;
+    private JPanel searchPanelClientes, searchPanelVehiculos, searchPanelMecanicos, searchPanelOrdenes, searchPanelMaterial;
+    private DefaultTableModel modelTablaClientes, modelTablaMecanicos, modelTablaVehiculos, modelTablaOrdenes, modelTabla, modelTablaRepuesto, modelTablaFactura;
     
     //Valores de las columnas de cada tabla
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
     String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Password", "Estado"};
     String[] columnasVehiculos = {"matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI_cliente"};
     String[] columnasOrdenes = {"ID", "Cliente", "Matricula", "Piezas"};
+    String[] columnasRepuesto = {"ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"};
+    String[] columnasFactura = {"ID_Factura", "Precio", "Fecha", "ID_Orden"};
 
     String grupo = "cliente";
-    private JPanel panel;
+    String grupoStock = "repuesto";
+    private JPanel panel, panel2, panel3;
     
     // Llamada principal para ejecutar la aplicación
     public static void main(String[] args) {
@@ -104,12 +107,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jpClientes.setLayout(null);
         
         jpMaterial = new JPanel();
+        jpMaterial.setBackground(new Color(255, 255, 255));
         jpMaterial.setLayout(null);
         
-        jpServicios = new JPanel();
-        jpServicios.setLayout(null);
         
         jpEconomia = new JPanel();
+        jpEconomia.setBackground(new Color(255, 255, 255));
         jpEconomia.setLayout(null);
         
         JTabbedPane jtpmenuPrincipal = new JTabbedPane();
@@ -119,20 +122,26 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         jtpmenuPrincipal.add("Clientes", jpClientes);
         jtpmenuPrincipal.add("Material", jpMaterial);
-        jtpmenuPrincipal.add("Servicios", jpServicios);
+    
         jtpmenuPrincipal.add("Economía", jpEconomia);
         
         getContentPane().add(jtpmenuPrincipal);
 
         // Configurar el hint con el FocusListener
         String hint = "Buscar clientes...";
+        String hintrep = "Buscar Repuestos...";
 
         // Crear un panel para el JTextField con el ícono
         searchPanelClientes = new JPanel(new BorderLayout());
         searchPanelClientes.setBounds(336, 47, 616, 24);
+        
+        searchPanelMaterial = new JPanel(new BorderLayout());
+        searchPanelMaterial.setBounds(336, 47, 616, 24);
 
         // Agregar el searchPanel en lugar de txtBuscadorChoches directamente
         jpClientes.add(searchPanelClientes);
+        
+        jpMaterial.add(searchPanelMaterial);
         
         
     	// Crear el JTextField con ícono y hint
@@ -169,6 +178,41 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
                 }
             }
 		});
+        
+        //STOCK
+        txtBuscadorStock = new JTextField();
+        searchPanelMaterial.add(txtBuscadorStock, BorderLayout.CENTER);
+        txtBuscadorStock.setColumns(10); // Ajusta el ancho
+        txtBuscadorStock.setText("Buscar Piezas..."); // Placeholder
+        txtBuscadorStock.setForeground(Color.GRAY);
+        txtBuscadorStock.setText(hintrep);
+        txtBuscadorStock.setForeground(Color.GRAY);
+        txtBuscadorStock.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtBuscadorStock.getText().equals(hintrep)) {
+                	txtBuscadorStock.setText("");
+                	txtBuscadorStock.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtBuscadorStock.getText().isEmpty()) {
+                	txtBuscadorStock.setText(hintrep);
+                	txtBuscadorStock.setForeground(Color.GRAY);
+                }
+            }
+        });
+        
+        txtBuscadorStock.addKeyListener(new KeyAdapter() {
+        	@Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                	buscarRegistros("repuesto");
+                }
+            }
+		});
 
         //TABLA CLIENTES
         tblTablaClientes = new JTable();
@@ -180,12 +224,76 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         scrollPaneClientes = new JScrollPane(tblTablaClientes); 
         scrollPaneClientes.setBounds(336, 82, 616, 381); 
         jpClientes.add(scrollPaneClientes);
+        
+        searchPanelFacturas = new JPanel(new BorderLayout());
+        searchPanelFacturas.setBounds(336, 47, 616, 24);
+        
+        jpEconomia.add(searchPanelFacturas);
+        
+        String hintf = "Buscar Facturas...";
+        
+     // Crear el JTextField con ícono y hint
+        txtBuscadorFacturas = new JTextField();
+        searchPanelFacturas.add(txtBuscadorFacturas, BorderLayout.CENTER);
+        txtBuscadorFacturas.setColumns(10); // Ajusta el ancho
+        txtBuscadorFacturas.setText("Buscar Facturas..."); // Placeholder
+        txtBuscadorFacturas.setForeground(Color.GRAY);
+        txtBuscadorFacturas.setText(hintf);
+        txtBuscadorFacturas.setForeground(Color.GRAY);
+        txtBuscadorFacturas.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtBuscadorFacturas.getText().equals(hintf)) {
+                	txtBuscadorFacturas.setText("");
+                	txtBuscadorFacturas.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtBuscadorFacturas.getText().isEmpty()) {
+                	txtBuscadorFacturas.setText(hintf);
+                	txtBuscadorFacturas.setForeground(Color.GRAY);
+                }
+            }
+        });
+        
+        txtBuscadorFacturas.addKeyListener(new KeyAdapter() {
+        	@Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                	buscarRegistros("facturas");
+                }
+            }
+		});
+        
+      //TABLA STOCK
+        tblTablaRepuesto = new JTable();
+        tblTablaRepuesto.setDefaultEditor(Object.class, null);
+        tblTablaRepuesto.getSelectionModel().addListSelectionListener(this);
+        modelTablaRepuesto = new DefaultTableModel(columnasRepuesto,0);
+        tblTablaRepuesto.setModel(modelTablaRepuesto);
+        
+        scrollPaneRepuesto = new JScrollPane(tblTablaRepuesto); 
+        scrollPaneRepuesto.setBounds(336, 82, 616, 381); 
+        jpMaterial.add(scrollPaneRepuesto);
+        
+        //Tabla Factura
+        tblTablaFactura = new JTable();
+        tblTablaFactura.setDefaultEditor(Object.class, null);
+        tblTablaFactura.getSelectionModel().addListSelectionListener(this);
+        modelTablaFactura = new DefaultTableModel(columnasFactura,0);
+        tblTablaFactura.setModel(modelTablaFactura);
+        
+        scrollPaneFactura = new JScrollPane(tblTablaFactura); 
+        scrollPaneFactura.setBounds(336, 82, 616, 381); 
+        jpEconomia.add(scrollPaneFactura);
 
         // Coloca un ícono en el botón redondo
         Icon icon3 = new ImageIcon(getClass().getResource("/package_assets/printicon.png")); // Ruta del ícono
         
         String hint2 = "Buscar vehiculos...";
-
+        
 
         // Crear un panel para el JTextField con el ícono
         searchPanelVehiculos = new JPanel(new BorderLayout());
@@ -312,6 +420,37 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		    public void mouseExited(MouseEvent e) {
 		    	btnCrearRegistro.setBackground(new Color(102, 153, 204));;}});
         jpClientes.add(btnCrearRegistro);
+        
+        btnCrearFactura = new JButton("Añadir");
+        btnCrearFactura.setBorder(new LineBorder(new Color(0, 0, 0)));
+        btnCrearFactura.setForeground(new Color(255, 255, 255));
+        btnCrearFactura.addActionListener(this);
+        btnCrearFactura.setBackground(new Color(102, 153, 204));
+        btnCrearFactura.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnCrearFactura.setBounds(336, 472, 196, 35);
+        btnCrearFactura.setFocusable(false);
+        btnCrearFactura.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnCrearFactura.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnCrearFactura.setBackground(new Color(102, 153, 204));;}});
+        jpEconomia.add(btnCrearFactura);
+        
+        //STOCK
+        btnCrearPieza = new JButton("Añadir");
+        btnCrearPieza.setBorder(new LineBorder(new Color(0, 0, 0)));
+        btnCrearPieza.setForeground(new Color(255, 255, 255));
+        btnCrearPieza.addActionListener(this);
+        btnCrearPieza.setBackground(new Color(102, 153, 204));
+        btnCrearPieza.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnCrearPieza.setBounds(336, 472, 196, 35);
+        btnCrearPieza.setFocusable(false);
+        btnCrearPieza.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnCrearPieza.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnCrearPieza.setBackground(new Color(102, 153, 204));;}});
+        jpMaterial.add(btnCrearPieza);
 
         // Configurar el hint con el FocusListener
         String hint4 = "Buscar orden...";
@@ -383,6 +522,22 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		    	btnBorrarRegistro.setBackground(new Color(102, 153, 204));;}});
         jpClientes.add(btnBorrarRegistro);
         
+        btnBorrarPieza = new JButton("Borrar");
+        btnBorrarPieza.setBorder(new LineBorder(new Color(0, 0, 0)));
+        btnBorrarPieza.setForeground(new Color(255, 255, 255));
+        btnBorrarPieza.setBackground(new Color(102, 153, 204));
+        btnBorrarPieza.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnBorrarPieza.setBounds(756, 472, 196, 35);
+        btnBorrarPieza.setEnabled(false);
+        btnBorrarPieza.addActionListener(this);
+        btnBorrarPieza.setFocusable(false);
+        btnBorrarPieza.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnBorrarPieza.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnBorrarPieza.setBackground(new Color(102, 153, 204));;}});
+        jpMaterial.add(btnBorrarPieza);
+        
         btnActualizarRegistro = new JButton("Editar");
         btnActualizarRegistro.setBorder(new LineBorder(new Color(0, 0, 0)));
         btnActualizarRegistro.setForeground(new Color(255, 255, 255));
@@ -399,16 +554,54 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         btnActualizarRegistro.addActionListener(this);
         btnActualizarRegistro.setEnabled(false);
         
+        btnActualizarPieza = new JButton("Editar");
+        btnActualizarPieza.setBorder(new LineBorder(new Color(0, 0, 0)));
+        btnActualizarPieza.setForeground(new Color(255, 255, 255));
+        btnActualizarPieza.setBackground(new Color(102, 153, 204));
+        btnActualizarPieza.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnActualizarPieza.setBounds(542, 472, 204, 35);
+        btnActualizarPieza.setFocusable(false);
+        btnActualizarPieza.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	btnActualizarPieza.setBackground(Color.BLACK);}
+		    public void mouseExited(MouseEvent e) {
+		    	btnActualizarPieza.setBackground(new Color(102, 153, 204));;}});
+        jpMaterial.add(btnActualizarPieza);
+        btnActualizarPieza.addActionListener(this);
+        btnActualizarPieza.setEnabled(false);
+        
         panel = new JPanel();
         panel.setBackground(new Color(102, 153, 204));
         panel.setBounds(0, 0, 176, 674);
         jpClientes.add(panel);
         panel.setLayout(null);
         
+        panel2 = new JPanel();
+        panel2.setBackground(new Color(102, 153, 204));
+        panel2.setBounds(0, 0, 176, 674);
+        jpMaterial.add(panel2);
+        panel2.setLayout(null);
+        
+        panel3 = new JPanel();
+        panel3.setBackground(new Color(102, 153, 204));
+        panel3.setBounds(0, 0, 176, 674);
+        jpEconomia.add(panel3);
+        panel3.setLayout(null);
+        
         JLabel lblNewLabel_4 = new JLabel("");
         lblNewLabel_4.setIcon(new ImageIcon(JFrameMain_Admin.class.getResource("/package_assets/derrapchicodefinitovo.png")));
         lblNewLabel_4.setBounds(10, 469, 150, 143);
         panel.add(lblNewLabel_4);
+        
+        JLabel lblNewLabel_5 = new JLabel("");
+        lblNewLabel_5.setIcon(new ImageIcon(JFrameMain_Admin.class.getResource("/package_assets/derrapchicodefinitovo.png")));
+        lblNewLabel_5.setBounds(10, 469, 150, 143);
+        panel2.add(lblNewLabel_5);
+        
+        JLabel lblNewLabel_6 = new JLabel("");
+        lblNewLabel_6.setIcon(new ImageIcon(JFrameMain_Admin.class.getResource("/package_assets/derrapchicodefinitovo.png")));
+        lblNewLabel_6.setBounds(10, 469, 150, 143);
+        panel3.add(lblNewLabel_6);
         
         btnOrdenes = new JButton("ÓRDENES  ");
         btnOrdenes.setForeground(new Color(255, 255, 255));
@@ -448,6 +641,20 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         panel.add(lblTitulo);
         lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel lblTitulo2 = new JLabel("PIEZAS");
+        lblTitulo2.setForeground(new Color(255, 255, 255));
+        lblTitulo2.setBounds(0, 25, 176, 24);
+        panel2.add(lblTitulo2);
+        lblTitulo2.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblTitulo2.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel lblTitulo3 = new JLabel("FACTURAS");
+        lblTitulo3.setForeground(new Color(255, 255, 255));
+        lblTitulo3.setBounds(0, 25, 176, 24);
+        panel3.add(lblTitulo3);
+        lblTitulo3.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblTitulo3.setHorizontalAlignment(SwingConstants.CENTER);
         
         btnVehiculos = new JButton("VEHÍCULOS ");
         btnVehiculos.setForeground(new Color(255, 255, 255));
@@ -526,6 +733,34 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	    	btnLogout.setBackground(new Color(102, 153, 204));;}});
         jpClientes.add(btnLogout);
         
+        btnLogout2 = new JButton("Cerrar Sesión");
+        btnLogout2.setBorder(new LineBorder(new Color(0, 0, 0)));
+        btnLogout2.setForeground(new Color(255, 255, 255));
+        btnLogout2.setBackground(new Color(102, 153, 204));
+        btnLogout2.addActionListener(this);
+        btnLogout2.setBounds(976, 600, 119, 23);
+        btnLogout2.setFocusable(false);
+        btnLogout2.addMouseListener(new MouseAdapter() {
+	    public void mouseEntered(MouseEvent e) {
+	    	btnLogout2.setBackground(Color.BLACK);}
+	    public void mouseExited(MouseEvent e) {
+	    	btnLogout2.setBackground(new Color(102, 153, 204));;}});
+        jpMaterial.add(btnLogout2);
+        
+        btnLogout3 = new JButton("Cerrar Sesión");
+        btnLogout3.setBorder(new LineBorder(new Color(0, 0, 0)));
+        btnLogout3.setForeground(new Color(255, 255, 255));
+        btnLogout3.setBackground(new Color(102, 153, 204));
+        btnLogout3.addActionListener(this);
+        btnLogout3.setBounds(976, 600, 119, 23);
+        btnLogout3.setFocusable(false);
+        btnLogout3.addMouseListener(new MouseAdapter() {
+	    public void mouseEntered(MouseEvent e) {
+	    	btnLogout3.setBackground(Color.BLACK);}
+	    public void mouseExited(MouseEvent e) {
+	    	btnLogout3.setBackground(new Color(102, 153, 204));;}});
+        jpEconomia.add(btnLogout3);
+        
         
         //Al iniciar
         modelTabla = modelTablaClientes;
@@ -591,6 +826,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	            scrollPaneOrdenes.setVisible(true);
 	            searchPanelOrdenes.setVisible(true);
 	            break;
+	        case "repuesto":
+	        	txtBuscadorStock.setVisible(true);
+	        	tblTablaRepuesto.setVisible(true);
+	        	btnCrearPieza.setVisible(true);
+	        	scrollPaneRepuesto.setVisible(true);
+	        	searchPanelMaterial.setVisible(true);
 	    }
 	}
 	
@@ -626,6 +867,24 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     		borrarRegistro(grupo);
     	} else if(e.getSource() == btnActualizarRegistro) {
     		actualizarRegistro(grupo);
+    	} else if(e.getSource()== btnCrearPieza) {
+    		grupo = "repuesto";
+    		modelTabla = modelTablaRepuesto;
+ 
+    		ControladorRegistros.crearRegistro(grupo, modelTabla);
+    	} else if (e.getSource() == btnActualizarPieza) {
+    		grupo = "repuesto";
+    		modelTabla = modelTablaRepuesto;
+    		//actualizarVisibilidad(grupo);
+    		actualizarRegistro(grupo);
+    	} else if (e.getSource() == btnBorrarPieza) {
+    		grupo = "repuesto";
+    		modelTabla = modelTablaRepuesto;
+    		borrarRegistro(grupo);
+    	} else if (e.getSource() == btnCrearFactura) {
+    		grupo = "factura";
+    		modelTabla = modelTablaFactura;
+    		ControladorRegistros.crearRegistro(grupo, modelTabla);
     	}
 	 }
 	
@@ -712,9 +971,44 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 					while (rsetOrden.next()) {
 			            Object[] fila = new Object[3];
 			            fila[0] = rsetOrden.getString("id_orden");
-			            fila[1] = rsetOrden.getString("dni_cliente");
-			            fila[2] = rsetOrden.getString("matricula_vehiculo");
+			            fila[1] = rsetOrden.getString("matricula_vehiculo");
+			            fila[2] = rsetOrden.getString("cliente_DNI");
 			            modelTablaOrdenes.addRow(fila);
+			        }
+					
+					break;
+				case "repuesto":
+					String id_repuesto = txtBuscadorStock.getText().trim();
+					String selectRepuesto = "SELECT * FROM repuesto WHERE id_repuesto LIKE '%" + id_repuesto + "%'";
+					ResultSet rsetRepuesto = conexion.ejecutarSelect(selectRepuesto);
+					modelTablaRepuesto.setRowCount(0);
+					
+					while (rsetRepuesto.next()) {
+			            Object[] fila = new Object[7];
+			            fila[0] = rsetRepuesto.getString("id_repuesto");
+			            fila[1] = rsetRepuesto.getString("nombre");
+			            fila[2] = rsetRepuesto.getString("cantidad");
+			            fila[3] = rsetRepuesto.getString("precio_compra");
+			            fila[4] = rsetRepuesto.getString("precio_venta");
+			            fila[5] = rsetRepuesto.getString("mano_de_obra");
+			            fila[6] = rsetRepuesto.getString("id_proveedor");
+			            modelTablaRepuesto.addRow(fila);
+			        }
+					
+					break;
+				case "facturas":
+					String id_factura = txtBuscadorFacturas.getText().trim();
+					String selectFactura = "SELECT * FROM factura WHERE id_factura LIKE '%" + id_factura + "%'";
+					ResultSet rsetFactura = conexion.ejecutarSelect(selectFactura);
+					modelTablaFactura.setRowCount(0);
+					
+					while (rsetFactura.next()) {
+			            Object[] fila = new Object[4];
+			            fila[0] = rsetFactura.getString("id_factura");
+			            fila[1] = rsetFactura.getString("precio_total");
+			            fila[2] = rsetFactura.getString("fecha");
+			            fila[3] = rsetFactura.getString("id_orden");
+			            modelTablaFactura.addRow(fila);
 			        }
 					
 					break;
@@ -748,6 +1042,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 				Object matriculaVehiculo = tblTablaVehiculos.getValueAt(registroSeleccionado, 0);
 				modelTablaSeleccionada=modelTablaVehiculos;
 				sqlBorrar="DELETE FROM vehiculo WHERE matricula = '" + matriculaVehiculo+ "'";
+				break;
+			case "repuesto":
+				registroSeleccionado = tblTablaRepuesto.getSelectedRow();
+				Object id_orden = tblTablaRepuesto.getValueAt(registroSeleccionado, 0);
+				modelTablaSeleccionada=modelTablaRepuesto;
+				sqlBorrar="DELETE FROM repuesto WHERE id_repuesto = '" + id_orden+ "'";
 				break;
 		}
 		
@@ -815,6 +1115,21 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 			    
 			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasVehiculos, valoresActualesVehiculos, grupo, modelTabla);
 				break;
+			case "repuesto":
+				int piezaSeleccionada = tblTablaRepuesto.getSelectedRow();
+				//Obtengo todos los valores del registro seleccionado
+				String id_repuesto = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 0);
+			    String nombrepieza = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 1);
+			    String cantidad = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 2);
+			    String precio_compra = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 3);
+			    String precio_venta = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 4);  
+			    String mano_de_obra = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 5);
+			    String id_proveedor = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 6);
+			    
+			    String[] valoresActualesPiezas = {id_repuesto, nombrepieza, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor};
+			    
+			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasRepuesto, valoresActualesPiezas, grupo, modelTabla);
+				break;
 		}
 	
 		vtnActualizarRegistro.setVisible(true);
@@ -825,12 +1140,16 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		//Verifica si hay una fila seleccionada y habilita o deshabilita el boton de borrar mecanico
-		if(tblTablaClientes.getSelectedRow() != -1 || tblTablaMecanicos.getSelectedRow() != -1 || tblTablaVehiculos.getSelectedRow() != -1) {
+		if(tblTablaClientes.getSelectedRow() != -1 || tblTablaMecanicos.getSelectedRow() != -1 || tblTablaVehiculos.getSelectedRow() != -1 || tblTablaRepuesto.getSelectedRow() != -1) {
 			btnBorrarRegistro.setEnabled(true);
 			btnActualizarRegistro.setEnabled(true);
+			btnActualizarPieza.setEnabled(true);
+			btnBorrarPieza.setEnabled(true);
 		}else {
             btnBorrarRegistro.setEnabled(false);
             btnActualizarRegistro.setEnabled(false);
+            btnActualizarPieza.setEnabled(false);
+            btnBorrarPieza.setEnabled(false);
 		}
 
 	}

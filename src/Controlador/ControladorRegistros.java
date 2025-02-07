@@ -66,10 +66,42 @@ public class ControladorRegistros {
 					while (rsetOrden.next()) {
 		                Object[] fila = new Object[8];
 		                fila[0] = rsetOrden.getString("id_orden");       
-		                fila[1] = rsetOrden.getString("dni_cliente");    
-		                fila[2] = rsetOrden.getString("matricula_vehiculo");                    
+		                fila[1] = rsetOrden.getString("matricula_vehiculo");    
+		                fila[2] = rsetOrden.getString("cliente_DNI");                    
 		                modelTabla.addRow(fila); 
 					}
+					break;
+				
+				case "repuesto":
+					modelTabla.setRowCount(0);
+					ResultSet rsetRepuesto = conexion.ejecutarSelect("SELECT * FROM repuesto");
+					
+					while (rsetRepuesto.next()) {
+			            Object[] fila = new Object[3];
+			            fila[0] = rsetRepuesto.getString("id_repuesto");
+			            fila[1] = rsetRepuesto.getString("nombre");
+			            fila[2] = rsetRepuesto.getString("cantidad");
+			            fila[3] = rsetRepuesto.getString("precio_compra");
+			            fila[4] = rsetRepuesto.getString("precio_venta");
+			            fila[5] = rsetRepuesto.getString("mano_de_obra");
+			            fila[6] = rsetRepuesto.getString("id_proveedor");
+			            modelTabla.addRow(fila);
+			        }
+					
+					break;
+				case "factura":
+					modelTabla.setRowCount(0);
+					ResultSet rsetFactura = conexion.ejecutarSelect("SELECT * FROM factura");
+					
+					while (rsetFactura.next()) {
+			            Object[] fila = new Object[3];
+			            fila[0] = rsetFactura.getString("id_factura");
+			            fila[1] = rsetFactura.getString("precio_total");
+			            fila[2] = rsetFactura.getString("fecha");
+			            fila[3] = rsetFactura.getString("id_orden");
+			            modelTabla.addRow(fila);
+			        }
+					
 					break;
 			}
 			
@@ -84,5 +116,6 @@ public class ControladorRegistros {
 		VtnCrearNuevoRegistro vtnCrearNuevoRegistro = new VtnCrearNuevoRegistro(grupo, modelTabla);
 		vtnCrearNuevoRegistro.setVisible(true);
 	}
+	
 	
 }

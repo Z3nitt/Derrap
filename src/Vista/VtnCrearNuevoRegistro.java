@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,6 +31,8 @@ import Controlador.Conector_BBDD;
 import Controlador.ControladorRegistros;
 import package_main.Background;
 import java.awt.Color;
+import Controlador.Conector_BBDD;
+
 
 public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, KeyListener {
 	Conector_BBDD conexion = new Conector_BBDD();
@@ -39,7 +42,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 	private JPanel contentPane;
 	private JLabel lblTitulo, lblApellidos, lblDNI, lblPassword, lblNombre, lblTelefono, lblKilometros, lblAnio,
 			lblDniCliente;
-	private JTextField txtNombre, txtApellidos, txtDNI, txtPassword, txtTelefono;
+	private JTextField txtNombre, txtApellidos, txtDNI, txtPassword, txtTelefono, txtidRepuesto;
 	private JButton btnCrear;
 	private String grupo;
 	private JTextField txtKilometros;
@@ -49,6 +52,8 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 	private JPanel panel;
 
 	public VtnCrearNuevoRegistro(String grupo, DefaultTableModel modelTabla) {
+		Conector_BBDD conexion = new Conector_BBDD();
+		conexion.conectar();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
 		setTitle(" Nuevo registro | Derrap");
@@ -83,6 +88,12 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		fondoPantalla.add(txtDNI);
 		txtDNI.setColumns(10);
 		txtDNI.addKeyListener(this);
+		
+		txtidRepuesto = new JTextField();
+		txtidRepuesto.setBounds(137, 137, 207, 29);
+		fondoPantalla.add(txtidRepuesto);
+		txtidRepuesto.setColumns(10);
+		txtidRepuesto.addKeyListener(this);
 
 		txtPassword = new JTextField();
 		txtPassword.setBounds(137, 326, 207, 29);
@@ -245,9 +256,9 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 			lblDNI.setVisible(true);
 			lblDNI.setText("ID Orden:");
 			lblNombre.setVisible(true);
-			lblNombre.setText("Cliente:");
+			lblNombre.setText("Matricula:");
 			lblApellidos.setVisible(true);
-			lblApellidos.setText("Matrícula:");
+			lblApellidos.setText("Cliente:");
 			lblPassword.setVisible(false);
 			lblPassword.setText("Modelo:");
 			lblTelefono.setVisible(false);
@@ -258,12 +269,61 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 			txtPassword.setVisible(false);
 			txtTelefono.setVisible(false);
 			break;
+		case "repuesto":
+			lblTitulo.setText("CREAR NUEVA PIEZA");
+			lblDNI.setVisible(true);
+			lblDNI.setText("ID Pieza:");
+			lblNombre.setVisible(true);
+			lblNombre.setText("Nombre:");
+			lblApellidos.setVisible(true);
+			lblApellidos.setText("Cantidad:");
+			lblPassword.setVisible(true);
+			lblPassword.setText("Precio De Compra");
+			lblTelefono.setVisible(true);
+			lblTelefono.setText("Precio De Venta:");
+			lblKilometros.setVisible(true);
+			lblKilometros.setText("Mano De Obra");
+			lblAnio.setVisible(true);
+			lblAnio.setText("ID Proveedor");
+			txtDNI.setVisible(true);
+			txtNombre.setVisible(true);
+			txtApellidos.setVisible(true);
+			txtPassword.setVisible(true);
+			txtTelefono.setVisible(true);
+			txtKilometros.setVisible(true);
+			txtAnio.setVisible(true);
+			break;
+		case "factura":
+			lblTitulo.setText("CREAR NUEVA Factura");
+			lblDNI.setVisible(true);
+			lblDNI.setText("ID Factura:");
+			lblNombre.setVisible(true);
+			lblNombre.setText("Precio:");
+			lblApellidos.setVisible(true);
+			lblApellidos.setText("Fecha:");
+			lblPassword.setVisible(true);
+			lblPassword.setText("ID Orden");
+			lblTelefono.setVisible(false);
+			lblTelefono.setText("Precio De Venta:");
+			lblKilometros.setVisible(false);
+			lblKilometros.setText("Mano De Obra");
+			lblAnio.setVisible(false);
+			lblAnio.setText("ID Proveedor");
+			txtDNI.setVisible(true);
+			txtNombre.setVisible(true);
+			txtApellidos.setVisible(true);
+			txtPassword.setVisible(true);
+			txtTelefono.setVisible(false);
+			txtKilometros.setVisible(false);
+			txtAnio.setVisible(false);
+			break;
 		}
 	}
 
-	public void crearNuevoRegistro(String grupo) {
+	public void crearNuevoRegistro(String grupo) throws SQLException {
 
 		String dniRegistro = txtDNI.getText();
+		String idRepuesto = txtidRepuesto.getText();
 		String patronDNI = "[0-9]{8}[A-Z a-z]";
 		String password = txtPassword.getText();
 		String nombreRegistro = txtNombre.getText();
@@ -305,10 +365,27 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + year + "', " + dniCliente + ")";
 			break;
 		case "orden":
-			sql = "INSERT INTO orden (id_orden, dni_cliente, matricula_vehiculo) VALUES ('" + dniRegistro + "', '"
+			sql = "INSERT INTO orden (id_orden, matricula_vehiculo, cliente_DNI) VALUES ('" + dniRegistro + "', '"
 					+ nombreRegistro + "', '" + apellidosRegistro + "')";
 		
 			break;
+		case "repuesto":
+		    sql = "INSERT INTO repuesto (id_repuesto, nombre, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor) VALUES"
+		        + " ('" + idRepuesto + "', '" + nombreRegistro + "', " + apellidosRegistro + ", " + password + ", "
+		        + telefonoRegistro + ", " + kilometros + ", '" + year + "')";
+		    break;
+		    
+		case "factura":
+			double precioVentaRepuesto = obtenerPrecioRepuesto(idRepuesto, "precio_venta"); // Método para obtener el precio de venta
+		    double manoDeObraRepuesto = obtenerPrecioRepuesto(idRepuesto, "mano_de_obra"); // Método para obtener la mano de obra
+		    
+		    double precioTotal = precioVentaRepuesto + manoDeObraRepuesto;
+		    
+		    sql = "INSERT INTO factura (id_factura, precio_total, fecha, id_orden) VALUES "
+		            + "('" + dniRegistro + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', '" + password + "')";
+		        
+		    break;
+
 		}
 		// Controla la creacion del registro
 		try {
@@ -335,7 +412,12 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnCrear) {
-			crearNuevoRegistro(grupo);
+			try {
+				crearNuevoRegistro(grupo);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -368,4 +450,29 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		// TODO Auto-generated method stub
 
 	}
+	
+	public double obtenerPrecioRepuesto(String idRepuesto, String columna) throws SQLException {
+	    double valor = 0.0;
+
+	    // Realiza la consulta para obtener el valor de la columna especificada (precio_venta o mano_de_obra)
+	    String sql = "SELECT " + columna + " FROM repuesto WHERE id_repuesto = '" + idRepuesto + "'";
+
+	    // Ejecuta la consulta
+	    ResultSet rs = conexion.ejecutarSelect(sql);  // Asegúrate de ejecutar el SQL correcto
+
+	    try {
+	        if (rs.next()) {
+	            valor = rs.getDouble(columna);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return valor;
+	}
+
+	
+
+
+	
 }
