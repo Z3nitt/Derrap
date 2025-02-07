@@ -174,7 +174,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         	@Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("cliente");
+                	ControladorRegistros.buscarRegistros("cliente", modelTablaClientes, txtBuscadorClientes);
                 }
             }
 		});
@@ -209,7 +209,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         	@Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("repuesto");
+                	ControladorRegistros.buscarRegistros("stock", modelTablaRepuesto, txtBuscadorStock);
                 }
             }
 		});
@@ -262,7 +262,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         	@Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("facturas");
+                	ControladorRegistros.buscarRegistros("facturas", modelTablaFactura, txtBuscadorFacturas);
                 }
             }
 		});
@@ -332,7 +332,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
                     @Override
                     public void keyPressed(KeyEvent e) {
                         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                        	buscarRegistros("vehiculo");
+                        	ControladorRegistros.buscarRegistros("vehiculo", modelTablaVehiculos, txtBuscadorVehiculos);
                         }
                     }
                 });
@@ -387,7 +387,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("mecanico");
+                	ControladorRegistros.buscarRegistros("mecanico", modelTablaMecanicos, txtBuscadorMecanicos);
                 }
             }
         });
@@ -491,7 +491,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	buscarRegistros("orden");
+                	ControladorRegistros.buscarRegistros("orden", modelTablaOrdenes, txtBuscadorOrden);
                 }
             }
         });
@@ -901,122 +901,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		 }
 	 }
 	 
-	private void buscarRegistros(String grupo) {
-		
-		try {
-			conexion.conectar();
-			switch (grupo) {
-				case "mecanico":
-					String nombreMecanico = txtBuscadorMecanicos.getText().trim();
-					// Consulta SQL para buscar mecánicos por nombre
-				    String selectMecanicos = "SELECT * FROM usuario WHERE rol = 'Mecanico' AND nombre LIKE '%" + nombreMecanico + "%'";
-				    ResultSet rsetMecanicos = conexion.ejecutarSelect(selectMecanicos);
-				    modelTablaMecanicos.setRowCount(0);
-				    
-				    // Procesar los resultados
-			        while (rsetMecanicos.next()) {
-			            // Obtener cada campo del ResultSet y añadir la fila a la tabla
-			            Object[] fila = new Object[5];
-			            fila[0] = rsetMecanicos.getString("DNI");
-			            fila[1] = rsetMecanicos.getString("nombre");
-			            fila[2] = rsetMecanicos.getString("apellidos");
-			            fila[3] = rsetMecanicos.getString("contrasenia");
-			            fila[4] = rsetMecanicos.getString("estado");
-			            modelTablaMecanicos.addRow(fila); // Agregar fila al modelo de la tabla
-			        }
-			        
-					break;
-				case "cliente":
-					String nombreCliente = txtBuscadorClientes.getText().trim();
-					String selectClientes = "SELECT * FROM cliente WHERE nombre LIKE '%" + nombreCliente + "%'";
-					ResultSet rsetClientes = conexion.ejecutarSelect(selectClientes);
-					modelTablaClientes.setRowCount(0);
-					
-					while (rsetClientes.next()) {
-			            Object[] fila = new Object[4];
-			            fila[0] = rsetClientes.getString("DNI");
-			            fila[1] = rsetClientes.getString("nombre");
-			            fila[2] = rsetClientes.getString("apellidos");
-			            fila[3] = rsetClientes.getString("telefono");
-			            modelTablaClientes.addRow(fila);
-			        }
-					
-					break;
-				case "vehiculo":
-					String matriculaVehiculo = txtBuscadorVehiculos.getText().trim();
-					String selectVehiculos = "SELECT * FROM vehiculo WHERE matricula LIKE '%" + matriculaVehiculo + "%'";
-					ResultSet rsetVehiculos = conexion.ejecutarSelect(selectVehiculos);
-					modelTablaVehiculos.setRowCount(0);
-					
-					while (rsetVehiculos.next()) {
-			            Object[] fila = new Object[8];
-			            fila[0] = rsetVehiculos.getString("matricula");
-			            fila[1] = rsetVehiculos.getString("marca");
-			            fila[2] = rsetVehiculos.getString("modelo");
-			            fila[3] = rsetVehiculos.getString("color");
-			            fila[4] = rsetVehiculos.getString("combustible");
-			            fila[5] = rsetVehiculos.getString("kilometros");
-			            fila[6] = rsetVehiculos.getString("anio");
-			            fila[7] = rsetVehiculos.getString("Cliente_DNI");
-			            modelTablaVehiculos.addRow(fila);
-			        }
-					
-					break;
-				case "orden":
-					String id_orden = txtBuscadorOrden.getText().trim();
-					String selectOrden = "SELECT * FROM orden WHERE id_orden LIKE '%" + id_orden + "%'";
-					ResultSet rsetOrden = conexion.ejecutarSelect(selectOrden);
-					modelTablaOrdenes.setRowCount(0);
-					
-					while (rsetOrden.next()) {
-			            Object[] fila = new Object[3];
-			            fila[0] = rsetOrden.getString("id_orden");
-			            fila[1] = rsetOrden.getString("matricula_vehiculo");
-			            fila[2] = rsetOrden.getString("cliente_DNI");
-			            modelTablaOrdenes.addRow(fila);
-			        }
-					
-					break;
-				case "repuesto":
-					String id_repuesto = txtBuscadorStock.getText().trim();
-					String selectRepuesto = "SELECT * FROM repuesto WHERE id_repuesto LIKE '%" + id_repuesto + "%'";
-					ResultSet rsetRepuesto = conexion.ejecutarSelect(selectRepuesto);
-					modelTablaRepuesto.setRowCount(0);
-					
-					while (rsetRepuesto.next()) {
-			            Object[] fila = new Object[7];
-			            fila[0] = rsetRepuesto.getString("id_repuesto");
-			            fila[1] = rsetRepuesto.getString("nombre");
-			            fila[2] = rsetRepuesto.getString("cantidad");
-			            fila[3] = rsetRepuesto.getString("precio_compra");
-			            fila[4] = rsetRepuesto.getString("precio_venta");
-			            fila[5] = rsetRepuesto.getString("mano_de_obra");
-			            fila[6] = rsetRepuesto.getString("id_proveedor");
-			            modelTablaRepuesto.addRow(fila);
-			        }
-					
-					break;
-				case "facturas":
-					String id_factura = txtBuscadorFacturas.getText().trim();
-					String selectFactura = "SELECT * FROM factura WHERE id_factura LIKE '%" + id_factura + "%'";
-					ResultSet rsetFactura = conexion.ejecutarSelect(selectFactura);
-					modelTablaFactura.setRowCount(0);
-					
-					while (rsetFactura.next()) {
-			            Object[] fila = new Object[4];
-			            fila[0] = rsetFactura.getString("id_factura");
-			            fila[1] = rsetFactura.getString("precio_total");
-			            fila[2] = rsetFactura.getString("fecha");
-			            fila[3] = rsetFactura.getString("id_orden");
-			            modelTablaFactura.addRow(fila);
-			        }
-					
-					break;
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al buscar mecánicos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} 
-	}
+	
 
 	private void borrarRegistro(String grupo) {
 		DefaultTableModel modelTablaSeleccionada=new DefaultTableModel();

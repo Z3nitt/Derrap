@@ -367,7 +367,6 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		case "orden":
 			sql = "INSERT INTO orden (id_orden, matricula_vehiculo, cliente_DNI) VALUES ('" + dniRegistro + "', '"
 					+ nombreRegistro + "', '" + apellidosRegistro + "')";
-		
 			break;
 		case "repuesto":
 		    sql = "INSERT INTO repuesto (id_repuesto, nombre, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor) VALUES"
