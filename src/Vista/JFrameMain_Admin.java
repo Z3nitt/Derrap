@@ -54,7 +54,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnOrdenes, btnMecanicos, btnVehiculos, btnBorrarRegistro, btnLogout2, btnCrearPieza, btnActualizarPieza, btnBorrarPieza, btnLogout3, btnCrearFactura;
     private JPanel jpClientes, jpMaterial, jpEconomia;
     private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorOrden, txtBuscadorStock;
-    private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaOrdenes, tblTablaRepuesto, tblTablaFactura;
+    private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaOrdenes, tblTablaRepuesto, tblTablaFactura, tablaActual;
     private JTextField txtBuscadorVehiculos, txtBuscadorFacturas;
     private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneOrdenes, scrollPaneRepuesto, scrollPaneFactura;
     private JPanel searchPanelClientes, searchPanelVehiculos, searchPanelMecanicos, searchPanelOrdenes, searchPanelMaterial;
@@ -764,6 +764,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         
         //Al iniciar
         modelTabla = modelTablaClientes;
+        tablaActual = tblTablaClientes;
         actualizarVisibilidad(grupo);
         ControladorRegistros.actualizarTablas("cliente", modelTablaClientes);
 	}
@@ -843,44 +844,49 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     	} else if(e.getSource() == btnClientes) {
     		grupo = "cliente";
     		modelTabla = modelTablaClientes;
+    		tablaActual = tblTablaClientes;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnMecanicos) {
     		grupo = "mecanico";
     		modelTabla = modelTablaMecanicos;
+    		tablaActual = tblTablaMecanicos;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnVehiculos) {
     		grupo = "vehiculo";
     		modelTabla = modelTablaVehiculos;
+    		tablaActual = tblTablaVehiculos;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnOrdenes) {
     		grupo = "orden";
     		modelTabla = modelTablaOrdenes;
+    		tablaActual = tblTablaOrdenes;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnCrearRegistro) {
     		//Al crear un registro, llama al metodo crearRegistro y le pasa el grupo y el modelo actual
     		ControladorRegistros.crearRegistro(grupo, modelTabla);
     	} else if(e.getSource() == btnBorrarRegistro) {
-    		borrarRegistro(grupo);
+    		ControladorRegistros.borrarRegistro(grupo,modelTabla, tablaActual);
+    		btnActualizarRegistro.setEnabled(false);
     	} else if(e.getSource() == btnActualizarRegistro) {
-    		actualizarRegistro(grupo);
+    		ControladorRegistros.actualizarRegistro(grupo, modelTabla, tablaActual);
     	} else if(e.getSource()== btnCrearPieza) {
     		grupo = "repuesto";
     		modelTabla = modelTablaRepuesto;
- 
     		ControladorRegistros.crearRegistro(grupo, modelTabla);
     	} else if (e.getSource() == btnActualizarPieza) {
     		grupo = "repuesto";
     		modelTabla = modelTablaRepuesto;
     		//actualizarVisibilidad(grupo);
-    		actualizarRegistro(grupo);
+    		ControladorRegistros.actualizarRegistro(grupo, modelTabla, tablaActual);
     	} else if (e.getSource() == btnBorrarPieza) {
     		grupo = "repuesto";
     		modelTabla = modelTablaRepuesto;
-    		borrarRegistro(grupo);
+    		ControladorRegistros.borrarRegistro(grupo,modelTabla, tablaActual);
+    		btnActualizarRegistro.setEnabled(false);
     	} else if (e.getSource() == btnCrearFactura) {
     		grupo = "factura";
     		modelTabla = modelTablaFactura;
@@ -900,126 +906,6 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		     dispose();
 		 }
 	 }
-	 
-	
-
-	private void borrarRegistro(String grupo) {
-		DefaultTableModel modelTablaSeleccionada=new DefaultTableModel();
-		int registroSeleccionado=0;
-		String sqlBorrar="";
-		
-		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta fila?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-		switch(grupo) {
-			case "cliente":
-				registroSeleccionado = tblTablaClientes.getSelectedRow();
-				Object dniCliente = tblTablaClientes.getValueAt(registroSeleccionado, 0);
-				modelTablaSeleccionada=modelTablaClientes;
-				sqlBorrar="DELETE FROM cliente WHERE DNI = '" + dniCliente +"'";
-				break;
-			case "mecanico":
-				registroSeleccionado = tblTablaMecanicos.getSelectedRow();
-				Object dniMecanico = tblTablaMecanicos.getValueAt(registroSeleccionado, 0);
-				modelTablaSeleccionada=modelTablaMecanicos;
-				sqlBorrar="DELETE FROM usuario WHERE DNI = '" + dniMecanico +"'";
-				break;
-			case "vehiculo":
-				registroSeleccionado = tblTablaVehiculos.getSelectedRow();
-				Object matriculaVehiculo = tblTablaVehiculos.getValueAt(registroSeleccionado, 0);
-				modelTablaSeleccionada=modelTablaVehiculos;
-				sqlBorrar="DELETE FROM vehiculo WHERE matricula = '" + matriculaVehiculo+ "'";
-				break;
-			case "repuesto":
-				registroSeleccionado = tblTablaRepuesto.getSelectedRow();
-				Object id_orden = tblTablaRepuesto.getValueAt(registroSeleccionado, 0);
-				modelTablaSeleccionada=modelTablaRepuesto;
-				sqlBorrar="DELETE FROM repuesto WHERE id_repuesto = '" + id_orden+ "'";
-				break;
-		}
-		
-		if(confirmacion == JOptionPane.YES_OPTION) {
-			modelTablaSeleccionada.removeRow(registroSeleccionado);
-			
-			try {
-				conexion.conectar();
-				int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sqlBorrar);
-				
-				if(filasAfectadas == 0) {
-					JOptionPane.showMessageDialog(this, "Error al borrar el registro", "Error", JOptionPane.ERROR_MESSAGE);
-				}else {
-					JOptionPane.showMessageDialog(this, "Registro borrado ", "Borrado exitoso", JOptionPane.INFORMATION_MESSAGE);
-					btnActualizarRegistro.setEnabled(false);
-				}
-				
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-			
-		}
-		
-	} 
-	
-	private void actualizarRegistro(String grupo) {
-
-		switch (grupo) {
-			case "cliente":
-				int clienteSeleccionado = tblTablaClientes.getSelectedRow();
-				//Obtengo todos los valores del registro seleccionado
-				String dniCliente = (String) tblTablaClientes.getValueAt(clienteSeleccionado, 0);
-			    String nombreCliente = (String) tblTablaClientes.getValueAt(clienteSeleccionado, 1);
-			    String apellidosCliente = (String) tblTablaClientes.getValueAt(clienteSeleccionado, 2);
-			    String telefono = (String) tblTablaClientes.getValueAt(clienteSeleccionado, 3);
-			    String[] valoresActualesCliente = {dniCliente, nombreCliente, apellidosCliente, telefono};
-			    
-			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasCliente, valoresActualesCliente, grupo, modelTabla);
-				break;
-			case "mecanico":
-				int mecanicoSeleccionado = tblTablaMecanicos.getSelectedRow();
-				//Obtengo todos los valores del registro seleccionado
-				String dniUsuario = (String) tblTablaMecanicos.getValueAt(mecanicoSeleccionado, 0);
-			    String nombre = (String) tblTablaMecanicos.getValueAt(mecanicoSeleccionado, 1);
-			    String apellidos = (String) tblTablaMecanicos.getValueAt(mecanicoSeleccionado, 2);
-			    String contrasena = (String) tblTablaMecanicos.getValueAt(mecanicoSeleccionado, 3);
-			    String estado = (String) tblTablaMecanicos.getValueAt(mecanicoSeleccionado, 4);  
-			    String[] valoresActualesMecanico = {dniUsuario, nombre, apellidos, contrasena, estado};
-			    
-			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasMecanico, valoresActualesMecanico, grupo, modelTabla);
-				break;
-			case "vehiculo":
-				int vehiculoSeleccionado = tblTablaVehiculos.getSelectedRow();
-				//Obtengo todos los valores del registro seleccionado
-				String matricula = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 0);
-			    String marca = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 1);
-			    String modelo = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 2);
-			    String color = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 3);
-			    String combustible = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 4);  
-			    String kilometros = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 5);
-			    String anio = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 6);
-			    String cliente_dni = (String) tblTablaVehiculos.getValueAt(vehiculoSeleccionado, 7);
-			    
-			    String[] valoresActualesVehiculos = {matricula, marca, modelo, color, combustible,kilometros, anio, cliente_dni};
-			    
-			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasVehiculos, valoresActualesVehiculos, grupo, modelTabla);
-				break;
-			case "repuesto":
-				int piezaSeleccionada = tblTablaRepuesto.getSelectedRow();
-				//Obtengo todos los valores del registro seleccionado
-				String id_repuesto = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 0);
-			    String nombrepieza = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 1);
-			    String cantidad = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 2);
-			    String precio_compra = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 3);
-			    String precio_venta = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 4);  
-			    String mano_de_obra = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 5);
-			    String id_proveedor = (String) tblTablaRepuesto.getValueAt(piezaSeleccionada, 6);
-			    
-			    String[] valoresActualesPiezas = {id_repuesto, nombrepieza, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor};
-			    
-			    vtnActualizarRegistro = new VtnActualizarRegistro(columnasRepuesto, valoresActualesPiezas, grupo, modelTabla);
-				break;
-		}
-	
-		vtnActualizarRegistro.setVisible(true);
-			
-	}
 
 	//Detecta el cambio en las tablas (cuando selecciona un campo)
 	@Override
