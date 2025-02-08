@@ -40,14 +40,14 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel lblTitulo, lblApellidos, lblDNI, lblPassword, lblNombre, lblTelefono, lblKilometros, lblAnio,
-			lblDniCliente;
-	private JTextField txtNombre, txtApellidos, txtDNI, txtPassword, txtTelefono, txtidRepuesto;
+	private JLabel lblTitulo, lblCampo2, lblPrimaryKey, lblCampo3, lblCampo1, lblCampo4, lblCampo5, lblCampo6,
+			lblForeignKey;
+	private JTextField txtPrimaryKey, txtCampo1, txtCampo2, txtCampo3, txtCampo4;
 	private JButton btnCrear;
 	private String grupo;
-	private JTextField txtKilometros;
-	private JTextField txtAnio;
-	private JTextField txtDniCliente;
+	private JTextField txtCampo5;
+	private JTextField txtCampo6;
+	private JTextField txtForeignKey;
 	private DefaultTableModel modelTabla;
 	private JPanel panel;
 
@@ -71,95 +71,89 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		fondoPantalla.setLayout(null);
 		setContentPane(fondoPantalla);
 
-		txtNombre = new JTextField();
-		txtNombre.setBounds(137, 197, 207, 29);
-		fondoPantalla.add(txtNombre);
-		txtNombre.setColumns(10);
-		txtNombre.addKeyListener(this);
+		txtCampo1 = new JTextField();
+		txtCampo1.setBounds(137, 197, 207, 29);
+		fondoPantalla.add(txtCampo1);
+		txtCampo1.setColumns(10);
+		txtCampo1.addKeyListener(this);
 
-		txtApellidos = new JTextField();
-		txtApellidos.setBounds(137, 260, 207, 29);
-		fondoPantalla.add(txtApellidos);
-		txtApellidos.setColumns(10);
-		txtApellidos.addKeyListener(this);
+		txtCampo2 = new JTextField();
+		txtCampo2.setBounds(137, 260, 207, 29);
+		fondoPantalla.add(txtCampo2);
+		txtCampo2.setColumns(10);
+		txtCampo2.addKeyListener(this);
 
-		txtDNI = new JTextField();
-		txtDNI.setBounds(137, 137, 207, 29);
-		fondoPantalla.add(txtDNI);
-		txtDNI.setColumns(10);
-		txtDNI.addKeyListener(this);
-		
-		txtidRepuesto = new JTextField();
-		txtidRepuesto.setBounds(137, 137, 207, 29);
-		fondoPantalla.add(txtidRepuesto);
-		txtidRepuesto.setColumns(10);
-		txtidRepuesto.addKeyListener(this);
+		txtPrimaryKey = new JTextField();
+		txtPrimaryKey.setBounds(137, 137, 207, 29);
+		fondoPantalla.add(txtPrimaryKey);
+		txtPrimaryKey.setColumns(10);
+		txtPrimaryKey.addKeyListener(this);
 
-		txtPassword = new JTextField();
-		txtPassword.setBounds(137, 326, 207, 29);
-		fondoPantalla.add(txtPassword);
-		txtPassword.setColumns(10);
-		txtPassword.addKeyListener(this);
+		txtCampo3 = new JTextField();
+		txtCampo3.setBounds(137, 326, 207, 29);
+		fondoPantalla.add(txtCampo3);
+		txtCampo3.setColumns(10);
+		txtCampo3.addKeyListener(this);
 
-		lblApellidos = new JLabel("Apellidos:");
-		lblApellidos.setForeground(new Color(255, 255, 255));
-		lblApellidos.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblApellidos.setBounds(24, 266, 66, 15);
-		fondoPantalla.add(lblApellidos);
+		lblCampo2 = new JLabel("");
+		lblCampo2.setForeground(new Color(255, 255, 255));
+		lblCampo2.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCampo2.setBounds(24, 266, 103, 15);
+		fondoPantalla.add(lblCampo2);
 
-		lblDNI = new JLabel("DNI:");
-		lblDNI.setForeground(new Color(255, 255, 255));
-		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblDNI.setBounds(24, 143, 99, 14);
-		fondoPantalla.add(lblDNI);
+		lblPrimaryKey = new JLabel("Pk: ");
+		lblPrimaryKey.setForeground(new Color(255, 255, 255));
+		lblPrimaryKey.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblPrimaryKey.setBounds(24, 143, 99, 14);
+		fondoPantalla.add(lblPrimaryKey);
 
-		lblPassword = new JLabel("Contraseña:");
-		lblPassword.setForeground(new Color(255, 255, 255));
-		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPassword.setBounds(24, 332, 99, 14);
-		fondoPantalla.add(lblPassword);
+		lblCampo3 = new JLabel("");
+		lblCampo3.setForeground(new Color(255, 255, 255));
+		lblCampo3.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCampo3.setBounds(24, 332, 99, 14);
+		fondoPantalla.add(lblCampo3);
 
-		lblNombre = new JLabel("Nombre:");
-		lblNombre.setForeground(new Color(255, 255, 255));
-		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNombre.setBounds(24, 203, 86, 14);
-		fondoPantalla.add(lblNombre);
+		lblCampo1 = new JLabel("Nombre:");
+		lblCampo1.setForeground(new Color(255, 255, 255));
+		lblCampo1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCampo1.setBounds(24, 203, 86, 14);
+		fondoPantalla.add(lblCampo1);
 
-		lblTelefono = new JLabel("Telefono: ");
-		lblTelefono.setForeground(new Color(255, 255, 255));
-		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTelefono.setBounds(383, 144, 99, 13);
-		fondoPantalla.add(lblTelefono);
+		lblCampo4 = new JLabel("");
+		lblCampo4.setForeground(new Color(255, 255, 255));
+		lblCampo4.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCampo4.setBounds(383, 144, 99, 13);
+		fondoPantalla.add(lblCampo4);
 
-		txtAnio = new JTextField();
-		txtAnio.setColumns(10);
-		txtAnio.setBounds(488, 260, 207, 29);
-		fondoPantalla.add(txtAnio);
+		txtCampo6 = new JTextField();
+		txtCampo6.setColumns(10);
+		txtCampo6.setBounds(488, 260, 207, 29);
+		fondoPantalla.add(txtCampo6);
 
-		txtDniCliente = new JTextField();
-		txtDniCliente.setColumns(10);
-		txtDniCliente.setBounds(488, 326, 207, 29);
-		txtDniCliente.addKeyListener(this);
-		fondoPantalla.add(txtDniCliente);
+		txtForeignKey = new JTextField();
+		txtForeignKey.setColumns(10);
+		txtForeignKey.setBounds(488, 326, 207, 29);
+		txtForeignKey.addKeyListener(this);
+		fondoPantalla.add(txtForeignKey);
 
-		lblKilometros = new JLabel("Kilometros: ");
-		lblKilometros.setForeground(new Color(255, 255, 255));
-		lblKilometros.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblKilometros.setBounds(383, 204, 101, 13);
+		lblCampo5 = new JLabel("");
+		lblCampo5.setForeground(new Color(255, 255, 255));
+		lblCampo5.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCampo5.setBounds(383, 204, 101, 13);
 
-		fondoPantalla.add(lblKilometros);
+		fondoPantalla.add(lblCampo5);
 
-		lblAnio = new JLabel("Año: ");
-		lblAnio.setForeground(new Color(255, 255, 255));
-		lblAnio.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblAnio.setBounds(383, 268, 99, 13);
-		fondoPantalla.add(lblAnio);
+		lblCampo6 = new JLabel("");
+		lblCampo6.setForeground(new Color(255, 255, 255));
+		lblCampo6.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCampo6.setBounds(383, 268, 99, 13);
+		fondoPantalla.add(lblCampo6);
 
-		lblDniCliente = new JLabel("DNI cliente:");
-		lblDniCliente.setForeground(new Color(255, 255, 255));
-		lblDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblDniCliente.setBounds(383, 333, 99, 13);
-		fondoPantalla.add(lblDniCliente);
+		lblForeignKey = new JLabel("");
+		lblForeignKey.setForeground(new Color(255, 255, 255));
+		lblForeignKey.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblForeignKey.setBounds(383, 333, 99, 13);
+		fondoPantalla.add(lblForeignKey);
 
 		panel = new JPanel();
 		panel.setBackground(new Color(102, 153, 204));
@@ -195,197 +189,206 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		btnCrear.addActionListener(this);
 		btnCrear.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		txtKilometros = new JTextField();
-		txtKilometros.setBounds(490, 197, 207, 29);
-		panel.add(txtKilometros);
-		txtKilometros.addKeyListener(this);
-		txtKilometros.setColumns(10);
+		txtCampo5 = new JTextField();
+		txtCampo5.setBounds(490, 197, 207, 29);
+		panel.add(txtCampo5);
+		txtCampo5.addKeyListener(this);
+		txtCampo5.setColumns(10);
 
-		txtTelefono = new JTextField();
-		txtTelefono.setBounds(490, 138, 207, 29);
-		panel.add(txtTelefono);
-		txtTelefono.addKeyListener(this);
-		txtTelefono.setColumns(10);
+		txtCampo4 = new JTextField();
+		txtCampo4.setBounds(490, 138, 207, 29);
+		panel.add(txtCampo4);
+		txtCampo4.addKeyListener(this);
+		txtCampo4.setColumns(10);
 
 		actualizarVisibilidad(grupo);
 	}
 
 	private void actualizarVisibilidad(String grupo) {
-		lblPassword.setVisible(false);
-		txtPassword.setVisible(false);
-		lblTelefono.setVisible(false);
-		txtTelefono.setVisible(false);
-		lblKilometros.setVisible(false);
-		txtKilometros.setVisible(false);
-		lblAnio.setVisible(false);
-		txtAnio.setVisible(false);
-		lblDniCliente.setVisible(false);
-		txtDniCliente.setVisible(false);
-
+		//Se ocultan todos los labels y textFields menos el de la primary key , el del nombre y el campo2 (porque aparecen en todas las opciones)
+		lblCampo3.setVisible(false);
+		lblCampo4.setVisible(false);
+		lblCampo5.setVisible(false);
+		lblCampo6.setVisible(false);
+		lblForeignKey.setVisible(false);
+		txtCampo3.setVisible(false);
+		txtCampo4.setVisible(false);
+		txtCampo5.setVisible(false);
+		txtCampo6.setVisible(false);
+		txtForeignKey.setVisible(false);
+		 
 		switch (grupo) {
 		case "cliente":
 			lblTitulo.setText("CREAR NUEVO CLIENTE");
-			lblTelefono.setVisible(true);
-			txtTelefono.setVisible(true);
+			lblPrimaryKey.setText("DNI:");
+			lblCampo2.setText("Apellidos:");
+			lblCampo4.setVisible(true);
+			lblCampo4.setText("Telefono:");
+			txtCampo4.setVisible(true);
+			lblCampo4.setVisible(true);
 			break;
 		case "mecanico":
 			lblTitulo.setText("CREAR NUEVO MECANICO");
-			lblPassword.setVisible(true);
-			txtPassword.setVisible(true);
+			lblPrimaryKey.setText("DNI:");
+			lblCampo2.setText("Apellidos: ");
+			lblCampo3.setVisible(true);
+			lblCampo3.setText("Contraseña: ");
+			txtCampo3.setVisible(true);
 			break;
 		case "vehiculo":
 			lblTitulo.setText("CREAR NUEVO VEHICULO");
-			lblDNI.setText("Matricula:");
-			lblNombre.setText("Marca:");
-			lblApellidos.setText("Modelo:");
-			lblPassword.setText("Color:");
-			lblTelefono.setText("Combustible:");
-			lblPassword.setVisible(true);
-			txtPassword.setVisible(true);
-			lblTelefono.setVisible(true);
-			txtTelefono.setVisible(true);
-			lblKilometros.setVisible(true);
-			txtKilometros.setVisible(true);
-			lblAnio.setVisible(true);
-			txtAnio.setVisible(true);
-			lblDniCliente.setVisible(true);
-			txtDniCliente.setVisible(true);
+			lblPrimaryKey.setText("Matricula:");
+			lblCampo1.setText("Marca:");
+			lblCampo2.setText("Modelo:");
+			lblCampo3.setText("Color:");
+			lblCampo4.setText("Combustible:");
+			lblCampo5.setText("Kilometros:");
+			lblCampo6.setText("Año:");
+			lblForeignKey.setText("Dni cliente:");
+			lblCampo3.setVisible(true);
+			txtCampo3.setVisible(true);
+			lblCampo4.setVisible(true);
+			txtCampo4.setVisible(true);
+			lblCampo5.setVisible(true);
+			txtCampo5.setVisible(true);
+			lblCampo6.setVisible(true);
+			txtCampo6.setVisible(true);
+			lblForeignKey.setVisible(true);
+			txtForeignKey.setVisible(true);
 			break;
 		case "orden":
 			lblTitulo.setText("CREAR NUEVA ORDEN");
-			lblDNI.setVisible(true);
-			lblDNI.setText("ID Orden:");
-			lblNombre.setVisible(true);
-			lblNombre.setText("Matricula:");
-			lblApellidos.setVisible(true);
-			lblApellidos.setText("Cliente:");
-			lblPassword.setVisible(false);
-			lblPassword.setText("Modelo:");
-			lblTelefono.setVisible(false);
-			lblTelefono.setText("Matricula:");
-			txtDNI.setVisible(true);
-			txtNombre.setVisible(true);
-			txtApellidos.setVisible(true);
-			txtPassword.setVisible(false);
-			txtTelefono.setVisible(false);
+			lblPrimaryKey.setVisible(true);
+			lblPrimaryKey.setText("ID Orden:");
+			lblCampo1.setVisible(true);
+			lblCampo1.setText("Matricula:");
+			lblCampo2.setVisible(true);
+			lblCampo2.setText("Cliente:");
+			lblCampo3.setVisible(false);
+			lblCampo3.setText("Modelo:");
+			lblCampo4.setVisible(false);
+			lblCampo4.setText("Matricula:");
+			txtPrimaryKey.setVisible(true);
+			txtCampo1.setVisible(true);
+			txtCampo2.setVisible(true);
+			txtCampo3.setVisible(false);
+			txtCampo4.setVisible(false);
 			break;
 		case "repuesto":
 			lblTitulo.setText("CREAR NUEVA PIEZA");
-			lblDNI.setVisible(true);
-			lblDNI.setText("ID Pieza:");
-			lblNombre.setVisible(true);
-			lblNombre.setText("Nombre:");
-			lblApellidos.setVisible(true);
-			lblApellidos.setText("Cantidad:");
-			lblPassword.setVisible(true);
-			lblPassword.setText("Precio De Compra");
-			lblTelefono.setVisible(true);
-			lblTelefono.setText("Precio De Venta:");
-			lblKilometros.setVisible(true);
-			lblKilometros.setText("Mano De Obra");
-			lblAnio.setVisible(true);
-			lblAnio.setText("ID Proveedor");
-			txtDNI.setVisible(true);
-			txtNombre.setVisible(true);
-			txtApellidos.setVisible(true);
-			txtPassword.setVisible(true);
-			txtTelefono.setVisible(true);
-			txtKilometros.setVisible(true);
-			txtAnio.setVisible(true);
+			lblPrimaryKey.setVisible(true);
+			lblPrimaryKey.setText("ID Pieza:");
+			lblCampo1.setVisible(true);
+			lblCampo1.setText("Nombre:");
+			lblCampo2.setVisible(true);
+			lblCampo2.setText("Cantidad:");
+			lblCampo3.setVisible(true);
+			lblCampo3.setText("Precio Compra:");
+			lblCampo4.setVisible(true);
+			lblCampo4.setText("Precio Venta:");
+			lblCampo5.setVisible(true);
+			lblCampo5.setText("Mano De Obra:");
+			lblCampo6.setVisible(true);
+			lblCampo6.setText("ID Proveedor:");
+			txtCampo1.setVisible(true);
+			txtCampo2.setVisible(true);
+			txtCampo3.setVisible(true);
+			txtCampo4.setVisible(true);
+			txtCampo5.setVisible(true);
+			txtCampo6.setVisible(true);
 			break;
 		case "factura":
-			lblTitulo.setText("CREAR NUEVA Factura");
-			lblDNI.setVisible(true);
-			lblDNI.setText("ID Factura:");
-			lblNombre.setVisible(true);
-			lblNombre.setText("Precio:");
-			lblApellidos.setVisible(true);
-			lblApellidos.setText("Fecha:");
-			lblPassword.setVisible(true);
-			lblPassword.setText("ID Orden");
-			lblTelefono.setVisible(false);
-			lblTelefono.setText("Precio De Venta:");
-			lblKilometros.setVisible(false);
-			lblKilometros.setText("Mano De Obra");
-			lblAnio.setVisible(false);
-			lblAnio.setText("ID Proveedor");
-			txtDNI.setVisible(true);
-			txtNombre.setVisible(true);
-			txtApellidos.setVisible(true);
-			txtPassword.setVisible(true);
-			txtTelefono.setVisible(false);
-			txtKilometros.setVisible(false);
-			txtAnio.setVisible(false);
+			lblTitulo.setText("CREAR NUEVA FACTURA");
+			lblPrimaryKey.setVisible(true);
+			lblPrimaryKey.setText("ID Factura:");
+			lblCampo1.setVisible(true); 
+			lblCampo1.setText("Precio:");
+			lblCampo2.setVisible(true);
+			lblCampo2.setText("Fecha:");
+			lblCampo3.setVisible(true);
+			lblCampo3.setText("ID Orden");
+			lblCampo4.setVisible(false);
+			lblCampo4.setText("Precio De Venta:");
+			lblCampo5.setVisible(false);
+			lblCampo5.setText("Mano De Obra");
+			lblCampo6.setVisible(false);
+			lblCampo6.setText("ID Proveedor");
+			txtCampo1.setVisible(true);
+			txtCampo2.setVisible(true);
+			txtCampo3.setVisible(true);
+			txtCampo4.setVisible(false);
+			txtCampo5.setVisible(false);
+			txtCampo6.setVisible(false);
 			break;
 		}
 	}
 
 	public void crearNuevoRegistro(String grupo) throws SQLException {
 
-		String dniRegistro = txtDNI.getText();
-		String idRepuesto = txtidRepuesto.getText();
+		String primaryKey = txtPrimaryKey.getText(); //DNI USUARIO, DNI CLIENTE, MATRICULA, ID ORDEN, ID REPUESTO Y ID FACTURA
 		String patronDNI = "[0-9]{8}[A-Z a-z]";
-		String password = txtPassword.getText();
-		String nombreRegistro = txtNombre.getText();
-		String apellidosRegistro = txtApellidos.getText();
 		Pattern patternDni = Pattern.compile(patronDNI);
-		Matcher matcherDni = patternDni.matcher(dniRegistro);
-
-		String telefonoRegistro = txtTelefono.getText();
-		String kilometros = txtKilometros.getText();
-		String year = txtAnio.getText();
-		String dniCliente = txtDniCliente.getText();
-
+		Matcher matcherDni = patternDni.matcher(primaryKey);
+		
+		String valorCampo1 = txtCampo1.getText(); //NOMBRE, MARCA, MATRICULA_VEHICULO (ORDEN), PRECIO TOTAL
+		String valorCampo2 = txtCampo2.getText(); //APELLIDO, MODELO, CLIENTE DNI (ORDEN), CANTIDAD, FECHA
+		String valorCampo3 = txtCampo3.getText(); //CONTRASEÑA, COLOR, PRECIO COMPRA, ID ORDEN (FACTURA)
+		String valorCampo4 = txtCampo4.getText(); //TELEFONO, COMBUSTIBLE, PRECIO VENTA
+		String valorCampo5 = txtCampo5.getText(); //KILOMETROS, MANO DE OBRA
+		String valorCampo6 = txtCampo6.getText(); //AÑO VEHICULO, ID PROVEEDOR
+		String foreignKey = txtForeignKey.getText(); //DNI CLIENTE
+		 
+  
 		conexion.conectar();
 		String sql = "";
 		// Segun el grupo que sea, cambia el insert
 		switch (grupo) {
 		case "mecanico":
 			if (matcherDni.matches()) {
-				sql = "INSERT INTO usuario (DNI, password, nombre, apellidos, rol) VALUES " + "('" + dniRegistro
-						+ "', '" + password + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', 'Mecanico')";
+				sql = "INSERT INTO usuario (DNI, password, nombre, apellidos, rol) VALUES " + "('" + primaryKey
+						+ "', '" + valorCampo3 + "', '" + valorCampo1 + "', '" + valorCampo2 + "', 'Mecanico')";
 			}
 			break;
 		case "cliente":
-			sql = "INSERT INTO cliente (DNI, nombre, apellidos, telefono) VALUES ('" + dniRegistro + "', '"
-					+ nombreRegistro + "', '" + apellidosRegistro + "', '" + telefonoRegistro + "')";
+			sql = "INSERT INTO cliente (DNI, nombre, apellidos, telefono) VALUES ('" + primaryKey + "', '"
+					+ valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo4 + "')";
 
 			break;
-		case "vehiculo":
+		case "vehiculo": 
 
-			if (dniCliente.isBlank()) {
-				dniCliente = "NULL";
+			if (foreignKey.isBlank()) {
+				foreignKey = "NULL";
 			} else {
-				dniCliente = "'" + dniCliente + "'";
+				foreignKey = "'" + foreignKey + "'";
 			}
 
 			// Utilizo los otros campos de mecanico y cliente para vehiculo (dni,nombre,etc)
 			sql = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, year, dni_cliente) VALUES"
-					+ " ('" + dniRegistro + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', '" + password
-					+ "', '" + telefonoRegistro + "', '" + kilometros + "', '" + year + "', " + dniCliente + ")";
+					+ " ('" + primaryKey + "', '" + valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo3
+					+ "', '" + valorCampo4 + "', '" + valorCampo5 + "', '" + valorCampo6 + "', " + foreignKey + ")";
 			break;
 		case "orden":
-			sql = "INSERT INTO orden (id_orden, matricula_vehiculo, cliente_DNI) VALUES ('" + dniRegistro + "', '"
-					+ nombreRegistro + "', '" + apellidosRegistro + "')";
+			sql = "INSERT INTO orden (id_orden, matricula_vehiculo, cliente_DNI) VALUES ('" + primaryKey + "', '"
+					+ valorCampo1 + "', '" + valorCampo2 + "')";
 			break;
 		case "repuesto":
 		    sql = "INSERT INTO repuesto (id_repuesto, nombre, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor) VALUES"
-		        + " ('" + idRepuesto + "', '" + nombreRegistro + "', " + apellidosRegistro + ", " + password + ", "
-		        + telefonoRegistro + ", " + kilometros + ", '" + year + "')";
+		        + " ('" + primaryKey + "', '" + valorCampo1 + "', " + valorCampo2 + ", " + valorCampo3 + ", "
+		        + valorCampo4 + ", " + valorCampo5 + ", '" + valorCampo6 + "')";
 		    break;
 		    
 		case "factura":
-			double precioVentaRepuesto = obtenerPrecioRepuesto(idRepuesto, "precio_venta"); // Método para obtener el precio de venta
-		    double manoDeObraRepuesto = obtenerPrecioRepuesto(idRepuesto, "mano_de_obra"); // Método para obtener la mano de obra
+			double precioVentaRepuesto = obtenerPrecioRepuesto(primaryKey, "precio_venta"); // Método para obtener el precio de venta
+		    double manoDeObraRepuesto = obtenerPrecioRepuesto(primaryKey, "mano_de_obra"); // Método para obtener la mano de obra
 		    
 		    double precioTotal = precioVentaRepuesto + manoDeObraRepuesto;
 		    
 		    sql = "INSERT INTO factura (id_factura, precio_total, fecha, id_orden) VALUES "
-		            + "('" + dniRegistro + "', '" + nombreRegistro + "', '" + apellidosRegistro + "', '" + password + "')";
+		            + "('" + primaryKey + "', '" + valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo3 + "')";
 		        
 		    break;
 
-		}
+		} 
 		// Controla la creacion del registro
 		try {
 			int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sql);

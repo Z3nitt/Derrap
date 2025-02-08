@@ -11,6 +11,8 @@ import java.sql.Statement;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -53,7 +55,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     private JPanel contentPane, searchPanelFacturas;
     private JButton btnActualizarRegistro, btnCrearRegistro, btnLogout, btnImprimir, btnClientes, btnOrdenes, btnMecanicos, btnVehiculos, btnBorrarRegistro, btnLogout2, btnCrearPieza, btnActualizarPieza, btnBorrarPieza, btnLogout3, btnCrearFactura;
     private JPanel jpClientes, jpMaterial, jpEconomia;
-    private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorOrden, txtBuscadorStock;
+    private JTextField txtBuscadorClientes, txtBuscadorMecanicos, txtBuscadorOrden, txtBuscadorRepuestos;
     private JTable tblTablaClientes, tblTablaVehiculos, tblTablaMecanicos, tblTablaOrdenes, tblTablaRepuesto, tblTablaFactura, tablaActual;
     private JTextField txtBuscadorVehiculos, txtBuscadorFacturas;
     private JScrollPane scrollPaneClientes, scrollPaneVehiculos, scrollPaneMecanicos, scrollPaneOrdenes, scrollPaneRepuesto, scrollPaneFactura;
@@ -64,12 +66,11 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
     String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Password", "Estado"};
     String[] columnasVehiculos = {"matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI_cliente"};
-    String[] columnasOrdenes = {"ID", "Cliente", "Matricula", "Piezas"};
+    String[] columnasOrdenes = {"ID", "Matricula", "Cliente", "Piezas"};
     String[] columnasRepuesto = {"ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"};
     String[] columnasFactura = {"ID_Factura", "Precio", "Fecha", "ID_Orden"};
 
     String grupo = "cliente";
-    String grupoStock = "repuesto";
     private JPanel panel, panel2, panel3;
     
     // Llamada principal para ejecutar la aplicación
@@ -126,6 +127,31 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
         jtpmenuPrincipal.add("Economía", jpEconomia);
         
         getContentPane().add(jtpmenuPrincipal);
+        
+        //Detecta cuando cambia de pestaña y cambia al grupo actual
+        jtpmenuPrincipal.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) { 
+            	//Obtengo el indice actual de la pestaña que esta seleccioada
+                int selectedIndex = jtpmenuPrincipal.getSelectedIndex();
+                //Segun la pestaña, cambio el grupo, el modelo de la tabla y la tabla actual
+                if(selectedIndex == 0) {
+                	grupo = "cliente";
+                	modelTabla = modelTablaClientes;
+                	tablaActual = tblTablaClientes;
+                }else if(selectedIndex == 1) {
+                	grupo = "repuesto";
+                	modelTabla = modelTablaRepuesto;
+                	tablaActual = tblTablaRepuesto;
+                }else if(selectedIndex == 2) {
+                	grupo = "factura";
+                	modelTabla = modelTablaFactura;
+                	tablaActual = tblTablaFactura;
+                }
+                //Actualizo la tabla que se este mostrando con el grupo y modelo de tabla actuales
+                ControladorRegistros.actualizarTablas(grupo, modelTabla);
+            }
+        });
 
         // Configurar el hint con el FocusListener
         String hint = "Buscar clientes...";
@@ -179,37 +205,37 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             }
 		});
         
-        //STOCK
-        txtBuscadorStock = new JTextField();
-        searchPanelMaterial.add(txtBuscadorStock, BorderLayout.CENTER);
-        txtBuscadorStock.setColumns(10); // Ajusta el ancho
-        txtBuscadorStock.setText("Buscar Piezas..."); // Placeholder
-        txtBuscadorStock.setForeground(Color.GRAY);
-        txtBuscadorStock.setText(hintrep);
-        txtBuscadorStock.setForeground(Color.GRAY);
-        txtBuscadorStock.addFocusListener(new FocusAdapter() {
+        //REPUESTOS
+        txtBuscadorRepuestos = new JTextField();
+        searchPanelMaterial.add(txtBuscadorRepuestos, BorderLayout.CENTER);
+        txtBuscadorRepuestos.setColumns(10); // Ajusta el ancho
+        txtBuscadorRepuestos.setText("Buscar Piezas..."); // Placeholder
+        txtBuscadorRepuestos.setForeground(Color.GRAY);
+        txtBuscadorRepuestos.setText(hintrep);
+        txtBuscadorRepuestos.setForeground(Color.GRAY);
+        txtBuscadorRepuestos.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (txtBuscadorStock.getText().equals(hintrep)) {
-                	txtBuscadorStock.setText("");
-                	txtBuscadorStock.setForeground(Color.BLACK);
+                if (txtBuscadorRepuestos.getText().equals(hintrep)) {
+                	txtBuscadorRepuestos.setText("");
+                	txtBuscadorRepuestos.setForeground(Color.BLACK);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (txtBuscadorStock.getText().isEmpty()) {
-                	txtBuscadorStock.setText(hintrep);
-                	txtBuscadorStock.setForeground(Color.GRAY);
+                if (txtBuscadorRepuestos.getText().isEmpty()) {
+                	txtBuscadorRepuestos.setText(hintrep);
+                	txtBuscadorRepuestos.setForeground(Color.GRAY);
                 }
             }
         });
         
-        txtBuscadorStock.addKeyListener(new KeyAdapter() {
+        txtBuscadorRepuestos.addKeyListener(new KeyAdapter() {
         	@Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	ControladorRegistros.buscarRegistros("stock", modelTablaRepuesto, txtBuscadorStock);
+                	ControladorRegistros.buscarRegistros("repuesto", modelTablaRepuesto, txtBuscadorRepuestos);
                 }
             }
 		});
@@ -267,7 +293,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
             }
 		});
         
-      //TABLA STOCK
+      //TABLA REPUESTOS
         tblTablaRepuesto = new JTable();
         tblTablaRepuesto.setDefaultEditor(Object.class, null);
         tblTablaRepuesto.getSelectionModel().addListSelectionListener(this);
@@ -436,7 +462,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 		    	btnCrearFactura.setBackground(new Color(102, 153, 204));;}});
         jpEconomia.add(btnCrearFactura);
         
-        //STOCK
+        //REPUESTOS
         btnCrearPieza = new JButton("Añadir");
         btnCrearPieza.setBorder(new LineBorder(new Color(0, 0, 0)));
         btnCrearPieza.setForeground(new Color(255, 255, 255));
@@ -828,7 +854,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	            searchPanelOrdenes.setVisible(true);
 	            break;
 	        case "repuesto":
-	        	txtBuscadorStock.setVisible(true);
+	        	txtBuscadorRepuestos.setVisible(true);
 	        	tblTablaRepuesto.setVisible(true);
 	        	btnCrearPieza.setVisible(true);
 	        	scrollPaneRepuesto.setVisible(true);
@@ -861,39 +887,24 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
     	} else if (e.getSource() == btnOrdenes) {
     		grupo = "orden";
-    		modelTabla = modelTablaOrdenes;
+    		modelTabla = modelTablaOrdenes; 
     		tablaActual = tblTablaOrdenes;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
-    	} else if (e.getSource() == btnCrearRegistro) {
-    		//Al crear un registro, llama al metodo crearRegistro y le pasa el grupo y el modelo actual
+    	} //CUANDO TOCA EN CREAR UN REGISTRO YA SEA CLIENTES, MECANICOS, VEHICULOS, REPUESTOS O FACTURAS
+    	else if (e.getSource() == btnCrearRegistro || e.getSource() == btnCrearPieza || e.getSource() == btnCrearFactura) {
     		ControladorRegistros.crearRegistro(grupo, modelTabla);
-    	} else if(e.getSource() == btnBorrarRegistro) {
+    	} //CUANDO TOCA EN BORRAR UN REGISTRO
+    	else if(e.getSource() == btnBorrarRegistro || e.getSource() == btnBorrarPieza) {
     		ControladorRegistros.borrarRegistro(grupo,modelTabla, tablaActual);
     		btnActualizarRegistro.setEnabled(false);
     	} else if(e.getSource() == btnActualizarRegistro) {
     		ControladorRegistros.actualizarRegistro(grupo, modelTabla, tablaActual);
-    	} else if(e.getSource()== btnCrearPieza) {
-    		grupo = "repuesto";
-    		modelTabla = modelTablaRepuesto;
-    		ControladorRegistros.crearRegistro(grupo, modelTabla);
     	} else if (e.getSource() == btnActualizarPieza) {
-    		grupo = "repuesto";
-    		modelTabla = modelTablaRepuesto;
-    		//actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarRegistro(grupo, modelTabla, tablaActual);
-    	} else if (e.getSource() == btnBorrarPieza) {
-    		grupo = "repuesto";
-    		modelTabla = modelTablaRepuesto;
-    		ControladorRegistros.borrarRegistro(grupo,modelTabla, tablaActual);
-    		btnActualizarRegistro.setEnabled(false);
-    	} else if (e.getSource() == btnCrearFactura) {
-    		grupo = "factura";
-    		modelTabla = modelTablaFactura;
-    		ControladorRegistros.crearRegistro(grupo, modelTabla);
     	}
 	 }
-	
+	 
 
 	public void logout() {
 		//Pide confirmacion para cerrar sesion

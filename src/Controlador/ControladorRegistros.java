@@ -22,9 +22,9 @@ public class ControladorRegistros {
 		conexion.conectar();
 		try {
 			
-			//En el caso que el grupo sea mecanicos, cambio el nombre de la tabla a usuarios
+			//En el caso que el grupo sea mecanicos, cambio el nombre de la tabla a usuarios y agrego la condiicon que tienen que ser mecanicos (no admins)
 			if(grupo.equals("mecanico")) {
-				grupo = "usuario";
+				grupo = "usuario WHERE rol = 'Mecanico'";
 			}
 			
 			//Guardo la consulta con la tabla correspondiente
