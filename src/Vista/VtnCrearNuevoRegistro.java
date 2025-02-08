@@ -368,7 +368,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 					+ "', '" + valorCampo4 + "', '" + valorCampo5 + "', '" + valorCampo6 + "', " + foreignKey + ")";
 			break;
 		case "orden":
-			sql = "INSERT INTO orden (id_orden, matricula_vehiculo, cliente_DNI) VALUES ('" + primaryKey + "', '"
+			sql = "INSERT INTO orden (id_orden, estado, matricula_vehiculo, cliente_DNI) VALUES ('" + primaryKey + "', 'Activa', '"
 					+ valorCampo1 + "', '" + valorCampo2 + "')";
 			break;
 		case "repuesto":

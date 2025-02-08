@@ -66,7 +66,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     String[] columnasCliente = {"DNI","Nombre", "Apellidos", "Telefono"};
     String[] columnasMecanico = {"DNI", "Nombre", "Apellidos", "Password", "Estado"};
     String[] columnasVehiculos = {"matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI_cliente"};
-    String[] columnasOrdenes = {"ID", "Matricula", "Cliente", "Piezas"};
+    String[] columnasOrdenes = {"id_orden", "Estado", "Matricula", "Cliente", "Piezas"};
     String[] columnasRepuesto = {"ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"};
     String[] columnasFactura = {"ID_Factura", "Precio", "Fecha", "ID_Orden"};
 
@@ -932,7 +932,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		//Verifica si hay una fila seleccionada y habilita o deshabilita el boton de borrar mecanico
-		if(tblTablaClientes.getSelectedRow() != -1 || tblTablaMecanicos.getSelectedRow() != -1 || tblTablaVehiculos.getSelectedRow() != -1 || tblTablaRepuesto.getSelectedRow() != -1) {
+		if(tblTablaClientes.getSelectedRow() != -1 || tblTablaMecanicos.getSelectedRow() != -1 || tblTablaVehiculos.getSelectedRow() != -1 || tblTablaOrdenes.getSelectedRow()  != -1 || tblTablaRepuesto.getSelectedRow() != -1) {
 			btnBorrarRegistro.setEnabled(true);
 			btnActualizarRegistro.setEnabled(true);
 			btnActualizarPieza.setEnabled(true);

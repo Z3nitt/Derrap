@@ -154,6 +154,9 @@ public class ControladorRegistros {
 			case "vehiculo":
 				sqlBorrar+="WHERE matricula = ";
 				break;
+			case "orden":
+				sqlBorrar+="WHERE id_orden = ";
+				break;
 			case "repuesto":
 				sqlBorrar+="WHERE id_repuesto = ";
 				break;
@@ -211,7 +214,7 @@ public class ControladorRegistros {
 			columnas.addAll(Arrays.asList("matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI_cliente"));
 			break;
 		case "orden":
-			columnas.addAll(Arrays.asList("ID", "Cliente", "Matricula", "Piezas"));
+			columnas.addAll(Arrays.asList("id_orden", "Estado", "matricula_vehiculo", "cliente_dni"));
 			break;
 		case "repuesto":
 			columnas.addAll(Arrays.asList("ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"));

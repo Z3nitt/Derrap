@@ -287,6 +287,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 	     		//Guardo en un string el sql , segun la tabla (grupo) y segun sus campos 
 	     		String sqlActualizar = "UPDATE "+ tabla + " SET " + camposFinales + " WHERE " +  columnasTablas[0] + " = '" + valoresActuales[0] + "'" ;
 
+	     		System.out.println(sqlActualizar);
 	     		int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sqlActualizar);
 	     		
 	     		if(filasAfectadas == 0) {
