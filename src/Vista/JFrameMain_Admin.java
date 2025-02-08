@@ -150,6 +150,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
                 }
                 //Actualizo la tabla que se este mostrando con el grupo y modelo de tabla actuales
                 ControladorRegistros.actualizarTablas(grupo, modelTabla);
+                actualizarVisibilidad(grupo);
             }
         });
 
@@ -821,6 +822,12 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	    tblTablaMecanicos.clearSelection();
 	    tblTablaVehiculos.clearSelection();
 	    
+	    //Desactiva nuevamente los botones de actualizar y borrar
+	    btnActualizarPieza.setEnabled(false);
+	    btnActualizarRegistro.setEnabled(false);
+	    btnBorrarPieza.setEnabled(false);
+	    btnBorrarRegistro.setEnabled(false);
+	    
 	    switch(grupo) {
 	        case "cliente":
 	            txtBuscadorClientes.setVisible(true);
@@ -891,16 +898,19 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
     		tablaActual = tblTablaOrdenes;
     		actualizarVisibilidad(grupo);
     		ControladorRegistros.actualizarTablas(grupo, modelTabla);
-    	} //CUANDO TOCA EN CREAR UN REGISTRO YA SEA CLIENTES, MECANICOS, VEHICULOS, REPUESTOS O FACTURAS
+    	} 
+     	//CUANDO TOCA EN CREAR UN REGISTRO YA SEA CLIENTES, MECANICOS, VEHICULOS, REPUESTOS O FACTURAS
     	else if (e.getSource() == btnCrearRegistro || e.getSource() == btnCrearPieza || e.getSource() == btnCrearFactura) {
     		ControladorRegistros.crearRegistro(grupo, modelTabla);
-    	} //CUANDO TOCA EN BORRAR UN REGISTRO
+    	} 
+     	//CUANDO TOCA EN BORRAR UN REGISTRO
     	else if(e.getSource() == btnBorrarRegistro || e.getSource() == btnBorrarPieza) {
     		ControladorRegistros.borrarRegistro(grupo,modelTabla, tablaActual);
+    		//Desactiva el boton de actualizar
     		btnActualizarRegistro.setEnabled(false);
-    	} else if(e.getSource() == btnActualizarRegistro) {
-    		ControladorRegistros.actualizarRegistro(grupo, modelTabla, tablaActual);
-    	} else if (e.getSource() == btnActualizarPieza) {
+    	} 
+     	//CUANDO TOCA EN ACTUALIZAR UN REGISTRO
+    	else if(e.getSource() == btnActualizarRegistro || e.getSource() == btnActualizarPieza) {
     		ControladorRegistros.actualizarRegistro(grupo, modelTabla, tablaActual);
     	}
 	 }

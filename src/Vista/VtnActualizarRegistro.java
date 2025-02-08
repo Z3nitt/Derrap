@@ -223,7 +223,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 		}
 		
 		//Ahora cambio los label
-		for (int i = 1; i < columnasTablas.length; i++) {
+		for (int i = 0; i < columnasTablas.length; i++) {
 			labels.get(i).setText(columnasTablas[i]);
 		}
 		
