@@ -870,7 +870,7 @@ public class JFrameMain_Admin extends JFrame implements ActionListener, ListSele
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-     	if(e.getSource() == btnLogout) {
+     	if(e.getSource() == btnLogout || e.getSource() == btnLogout2 || e.getSource() == btnLogout3) {
     		logout();
     	} else if(e.getSource() == btnImprimir) {
     		System.out.println("Imprimiendo");

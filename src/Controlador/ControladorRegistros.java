@@ -25,6 +25,9 @@ public class ControladorRegistros {
 			//En el caso que el grupo sea mecanicos, cambio el nombre de la tabla a usuarios y agrego la condiicon que tienen que ser mecanicos (no admins)
 			if(grupo.equals("mecanico")) {
 				grupo = "usuario WHERE rol = 'Mecanico'";
+			}//Si el grupo es "ordenesActivas" mostrara solo las ordenes con el estado "Activa"
+			else if(grupo.equals("ordenesActivas")) {
+				grupo = "orden WHERE estado = 'Activa'";
 			}
 			
 			//Guardo la consulta con la tabla correspondiente

@@ -29,8 +29,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-public class JFrameMain_Mecanico extends JFrame implements ActionListener {
+public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListSelectionListener {
 	Conector_BBDD conexion = new Conector_BBDD();
 	Connection cn = null;
 	Statement stm = null;
@@ -38,15 +40,17 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 	// Background fondoPantalla = new Background();
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	JButton btnLogout;
-	private JPanel panel;
+	private JPanel contentPane, orden1,orden2,orden3;
+	private JButton btnLogout,btnAsignar;
+	private JPanel panel, panelOrdenes;
 	private CardLayout cardLayout = new CardLayout(0, 0);
-	private JTable table;
-	private JTable tblTablaRepuestos;
+	private JTable tblTablaOrdenes, tblTablaRepuestos;
+	private DefaultTableModel modelTablaOrdenes;
+	private JLabel lblSinOrdenAsignada1, lblSinOrdenAsignada2, lblSinOrdenAsignada3;
 	
 	String[] columnasRepuesto = {"ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"};
-
+	String[] columnasOrdenes = {"id_orden", "Estado", "Matricula", "Cliente", "Piezas"};
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -113,7 +117,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				cardLayout.show(panel, "PanelOrdenes");
+				cardLayout.show(panel, "panelOrdenes");
 			}
 
 		});
@@ -179,209 +183,62 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 		contentPane.add(panel);
 		panel.setLayout(cardLayout);
 
-		JPanel PanelOrdenes = new JPanel();
-		PanelOrdenes.setBackground(new Color(255, 255, 255));
-		panel.add(PanelOrdenes, "PanelOrdenes");
-		PanelOrdenes.setLayout(null);
+		panelOrdenes = new JPanel();
+		panelOrdenes.setBackground(new Color(255, 255, 255));
+		panel.add(panelOrdenes, "panelOrdenes");
+		panelOrdenes.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(70, 412, 691, 206);
-		PanelOrdenes.add(scrollPane);
+		panelOrdenes.add(scrollPane);
 
-		table = new JTable();
-		table.setModel(
-				new DefaultTableModel(new Object[][] {}, new String[] { "Cliente", "ID", "Matr\u00EDcula", "Piezas" }));
-		scrollPane.setViewportView(table);
+		tblTablaOrdenes = new JTable();
+		modelTablaOrdenes = new DefaultTableModel(columnasOrdenes,0);
+		tblTablaOrdenes.setModel(modelTablaOrdenes);
+		tblTablaOrdenes.getSelectionModel().addListSelectionListener(this);
+		scrollPane.setViewportView(tblTablaOrdenes);
 
-		JPanel OrdenA = new JPanel();
-		OrdenA.setBorder(new LineBorder(new Color(0, 0, 0)));
-		OrdenA.setBackground(new Color(102, 153, 204));
-		OrdenA.setBounds(70, 59, 184, 295);
-		PanelOrdenes.add(OrdenA);
-		OrdenA.setLayout(null);
+		orden1 = new JPanel();
+		orden1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		orden1.setBackground(new Color(102, 153, 204));
+		orden1.setBounds(70, 59, 184, 295);
+		panelOrdenes.add(orden1);
+		orden1.setLayout(null);
+		
+		lblSinOrdenAsignada1 = new JLabel("SIN ORDEN ASIGNADA");
+		lblSinOrdenAsignada1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSinOrdenAsignada1.setForeground(new Color(255, 255, 255));
+		lblSinOrdenAsignada1.setBounds(7, 105, 174, 72);
+		orden1.add(lblSinOrdenAsignada1);
+		
+		orden3 = new JPanel();
+		orden3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		orden3.setLayout(null);
+		orden3.setBackground(new Color(102, 153, 204));
+		orden3.setBounds(577, 59, 184, 295);
+		panelOrdenes.add(orden3);
+		
+		lblSinOrdenAsignada3 = new JLabel("SIN ORDEN ASIGNADA");
+		lblSinOrdenAsignada3.setForeground(Color.WHITE);
+		lblSinOrdenAsignada3.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSinOrdenAsignada3.setBounds(7, 105, 174, 72);
+		orden3.add(lblSinOrdenAsignada3);
 
-		JLabel lblNewLabel = new JLabel("Cliente: ");
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setBounds(10, 11, 56, 14);
-		OrdenA.add(lblNewLabel);
+		orden2 = new JPanel();
+		orden2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		orden2.setLayout(null);
+		orden2.setBackground(new Color(102, 153, 204));
+		orden2.setBounds(322, 59, 184, 295);
+		panelOrdenes.add(orden2);
+		
+		lblSinOrdenAsignada2 = new JLabel("SIN ORDEN ASIGNADA");
+		lblSinOrdenAsignada2.setForeground(Color.WHITE);
+		lblSinOrdenAsignada2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSinOrdenAsignada2.setBounds(7, 105, 174, 72);
+		orden2.add(lblSinOrdenAsignada2);
 
-		JLabel lblId = new JLabel("ID: ");
-		lblId.setForeground(new Color(255, 255, 255));
-		lblId.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblId.setBounds(10, 51, 56, 14);
-		OrdenA.add(lblId);
-
-		JLabel lblMarca = new JLabel("Marca: ");
-		lblMarca.setForeground(new Color(255, 255, 255));
-		lblMarca.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblMarca.setBounds(10, 91, 56, 14);
-		OrdenA.add(lblMarca);
-
-		JLabel lblModelo = new JLabel("Modelo: ");
-		lblModelo.setForeground(new Color(255, 255, 255));
-		lblModelo.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblModelo.setBounds(10, 134, 56, 14);
-		OrdenA.add(lblModelo);
-
-		JLabel lblMatrcula = new JLabel("Matrícula: ");
-		lblMatrcula.setForeground(new Color(255, 255, 255));
-		lblMatrcula.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblMatrcula.setBounds(10, 175, 64, 14);
-		OrdenA.add(lblMatrcula);
-
-		JButton btnAbrirOrden = new JButton("Abrir orden");
-		btnAbrirOrden.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnAbrirOrden.setBorder(new LineBorder(new Color(0, 0, 0)));
-		btnAbrirOrden.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
-				VtnAbrirOrden.setVisible(true);
-
-			}
-		});
-		btnAbrirOrden.setBackground(new Color(255, 255, 255));
-		btnAbrirOrden.setBounds(35, 220, 111, 53);
-		btnAbrirOrden.setFocusable(false);
-		btnAbrirOrden.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent e) {
-				btnAbrirOrden.setBackground(Color.BLACK);
-				btnAbrirOrden.setForeground(Color.WHITE);
-			}
-
-			public void mouseExited(MouseEvent e) {
-				btnAbrirOrden.setBackground(Color.WHITE);
-				btnAbrirOrden.setForeground(Color.BLACK);
-			}
-		});
-
-		OrdenA.add(btnAbrirOrden);
-
-		JPanel OrdenA_1 = new JPanel();
-		OrdenA_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		OrdenA_1.setLayout(null);
-		OrdenA_1.setBackground(new Color(102, 153, 204));
-		OrdenA_1.setBounds(577, 59, 184, 295);
-		PanelOrdenes.add(OrdenA_1);
-
-		JLabel lblNewLabel_1 = new JLabel("Cliente: ");
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1.setBounds(10, 11, 56, 14);
-		OrdenA_1.add(lblNewLabel_1);
-
-		JLabel lblId_1 = new JLabel("ID: ");
-		lblId_1.setForeground(Color.WHITE);
-		lblId_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblId_1.setBounds(10, 51, 56, 14);
-		OrdenA_1.add(lblId_1);
-
-		JLabel lblMarca_1 = new JLabel("Marca: ");
-		lblMarca_1.setForeground(Color.WHITE);
-		lblMarca_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblMarca_1.setBounds(10, 91, 56, 14);
-		OrdenA_1.add(lblMarca_1);
-
-		JLabel lblModelo_1 = new JLabel("Modelo: ");
-		lblModelo_1.setForeground(Color.WHITE);
-		lblModelo_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblModelo_1.setBounds(10, 134, 56, 14);
-		OrdenA_1.add(lblModelo_1);
-
-		JLabel lblMatrcula_1 = new JLabel("Matrícula: ");
-		lblMatrcula_1.setForeground(Color.WHITE);
-		lblMatrcula_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblMatrcula_1.setBounds(10, 175, 64, 14);
-		OrdenA_1.add(lblMatrcula_1);
-
-		JButton btnAbrirOrden_3 = new JButton("Abrir orden");
-		btnAbrirOrden_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
-				VtnAbrirOrden.setVisible(true);
-			}
-		});
-		btnAbrirOrden_3.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnAbrirOrden_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		btnAbrirOrden_3.setFocusable(false);
-		btnAbrirOrden_3.setBackground(Color.WHITE);
-		btnAbrirOrden_3.setBounds(35, 220, 111, 53);
-		btnAbrirOrden_3.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent e) {
-				btnAbrirOrden_3.setBackground(Color.BLACK);
-				btnAbrirOrden_3.setForeground(Color.WHITE);
-			}
-
-			public void mouseExited(MouseEvent e) {
-				btnAbrirOrden_3.setBackground(Color.WHITE);
-				btnAbrirOrden_3.setForeground(Color.BLACK);
-			}
-		});
-		OrdenA_1.add(btnAbrirOrden_3);
-
-		JPanel OrdenA_2 = new JPanel();
-		OrdenA_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		OrdenA_2.setLayout(null);
-		OrdenA_2.setBackground(new Color(102, 153, 204));
-		OrdenA_2.setBounds(322, 59, 184, 295);
-		PanelOrdenes.add(OrdenA_2);
-
-		JLabel lblNewLabel_2 = new JLabel("Cliente: ");
-		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_2.setBounds(10, 11, 56, 14);
-		OrdenA_2.add(lblNewLabel_2);
-
-		JLabel lblId_2 = new JLabel("ID: ");
-		lblId_2.setForeground(Color.WHITE);
-		lblId_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblId_2.setBounds(10, 51, 56, 14);
-		OrdenA_2.add(lblId_2);
-
-		JLabel lblMarca_2 = new JLabel("Marca: ");
-		lblMarca_2.setForeground(Color.WHITE);
-		lblMarca_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblMarca_2.setBounds(10, 91, 56, 14);
-		OrdenA_2.add(lblMarca_2);
-
-		JLabel lblModelo_2 = new JLabel("Modelo: ");
-		lblModelo_2.setForeground(Color.WHITE);
-		lblModelo_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblModelo_2.setBounds(10, 134, 56, 14);
-		OrdenA_2.add(lblModelo_2);
-
-		JLabel lblMatrcula_2 = new JLabel("Matrícula: ");
-		lblMatrcula_2.setForeground(Color.WHITE);
-		lblMatrcula_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblMatrcula_2.setBounds(10, 175, 64, 14);
-		OrdenA_2.add(lblMatrcula_2);
-
-		JButton btnAbrirOrden_2 = new JButton("Abrir orden");
-		btnAbrirOrden_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
-				VtnAbrirOrden.setVisible(true);
-			}
-		});
-		btnAbrirOrden_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnAbrirOrden_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		btnAbrirOrden_2.setFocusable(false);
-		btnAbrirOrden_2.setBackground(Color.WHITE);
-		btnAbrirOrden_2.setBounds(35, 220, 111, 53);
-		btnAbrirOrden_2.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent e) {
-				btnAbrirOrden_2.setBackground(Color.BLACK);
-				btnAbrirOrden_2.setForeground(Color.WHITE);
-			}
-
-			public void mouseExited(MouseEvent e) {
-				btnAbrirOrden_2.setBackground(Color.WHITE);
-				btnAbrirOrden_2.setForeground(Color.BLACK);
-			}
-		});
-		OrdenA_2.add(btnAbrirOrden_2);
-
-		JButton btnAsignar = new JButton("Asignar");
+		btnAsignar = new JButton("Asignar");
+		btnAsignar.setEnabled(false);
 		btnAsignar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -401,7 +258,8 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 				;
 			}
 		});
-		PanelOrdenes.add(btnAsignar);
+		btnAsignar.addActionListener(this);
+		panelOrdenes.add(btnAsignar);
 
 		JPanel PanelStock = new JPanel();
 		PanelStock.setBackground(new Color(255, 255, 255));
@@ -428,20 +286,144 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 
 		setSize(1122, 735);
 		setLocationRelativeTo(null);
+		orden1.setEnabled(false);
+		orden2.setEnabled(false);
+		orden3.setEnabled(false);
 		
-		
-		//Al iniciar, obtengo los datos de la tabla de repuestos
+		//Al iniciar, obtengo los datos de la tabla de repuestos y la de ordenes
 		ControladorRegistros.actualizarTablas("repuesto", modeloTablaRepuestos);
+		ControladorRegistros.actualizarTablas("ordenesActivas", modelTablaOrdenes);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnLogout) {
 			logout();
+		}else if(e.getSource() == btnAsignar) {
+			asignarOrden();
 		}
 	}
 
+	private void asignarOrden() {
+		
+		//Obtengo el primer panel vacio
+		JPanel panelDisponible = obtenerPrimerPanelVacio();
+		
+		//Si hay al menos uno
+		if(panelDisponible != null) {
+			//Habilito el panel
+			panelDisponible.setEnabled(true);
+			
+			
+			int filaSeleccionada = tblTablaOrdenes.getSelectedRow();
+			
+			//Obtengo los datos de la orden
+			String idOrden = (String) tblTablaOrdenes.getValueAt(filaSeleccionada, 0);
+			String matriculaOrden = (String) tblTablaOrdenes.getValueAt(filaSeleccionada, 2);
+			String dniClienteOrden = (String) tblTablaOrdenes.getValueAt(filaSeleccionada, 3);
+			
+			//Borro de la tabla la orden seleccionada 
+			
+			modelTablaOrdenes.removeRow(filaSeleccionada);
+			
+			//y le cambio el estado a "En proceso"
+			try {
+				Conector_BBDD conexion = new Conector_BBDD();
+				conexion.conectar();
+				conexion.ejecutarInsertDeleteUpdate("UPDATE orden SET estado = 'En proceso' WHERE id_orden = '" + idOrden + "'");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			//Relleno el panel
+			//Guardo los textos que tendran los label
+			String[] textos = {"Cliente: " + dniClienteOrden, "ID: " + idOrden, "Matrícula: " + matriculaOrden};
+			
+			//La posicion en el eje Y que tendran los label
+	        int[] posicionesY = {59, 24, 97}; 
+
+	        //Hago 3 labels y un boton y los agrego
+	        for (int i = 0; i < textos.length; i++) {
+	            JLabel label = new JLabel(textos[i]);
+	            label.setForeground(Color.WHITE);
+	            label.setFont(new Font("Tahoma", Font.BOLD, 12));
+	            label.setBounds(10, posicionesY[i], 136, 14);
+	            panelDisponible.add(label);
+	            
+	            //Cargo los datos (id, dni, matricula) de la orden en los label
+	            
+	            //Creo el boton
+	            JButton boton = new JButton("Abrir orden");
+	            boton.setBounds(35, 220, 111, 53);
+	            boton.setFont(new Font("Tahoma", Font.BOLD, 12));
+	            boton.setBorder(new LineBorder(new Color(0, 0, 0)));
+	            boton.setBackground(new Color(255, 255, 255));
+	            boton.setFocusable(false);
+	            //Agrego el action listener desde aca
+	            boton.addActionListener(new ActionListener() {
+					
+	            	//Cuando hace click abre la ventana de la orden
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
+						VtnAbrirOrden.setVisible(true);
+					}
+				});
+	            
+	            //Agrego el hover
+	            boton.addMouseListener(new MouseAdapter() {
+	    			public void mouseEntered(MouseEvent e) {
+	    				boton.setBackground(Color.BLACK);
+	    				boton.setForeground(Color.WHITE);
+	    			}
+
+	    			public void mouseExited(MouseEvent e) {
+	    				boton.setBackground(Color.WHITE);
+	    				boton.setForeground(Color.BLACK);
+	    			}
+	    		});
+	            panelDisponible.add(boton);
+	        }
+	        
+	        
+	        
+	        
+	        //Esto sirve para refrescar el panel y que cargue los labels
+	        panelDisponible.revalidate(); 
+	        panelDisponible.repaint();
+			
+		}else {
+			JOptionPane.showMessageDialog(this, "Ya hay 3 ordenes asignadas", "Limite de ordenes", JOptionPane.WARNING_MESSAGE);
+		}
+		
+		
+	}
+	
+
+
+	private JPanel obtenerPrimerPanelVacio() {
+		//Obtengo el primer panel que este vacio (deshabilitado), sino devuelve null
+		//Tambien oculta el label de "orden sin asignar"
+        if (!orden1.isEnabled()) {
+        	lblSinOrdenAsignada1.setVisible(false);
+        	return orden1;
+        }
+        else if (!orden2.isEnabled()) {
+        	lblSinOrdenAsignada2.setVisible(false);
+        	return orden2;
+        }
+        else if (!orden3.isEnabled()) {
+        	lblSinOrdenAsignada3.setVisible(false);
+        	return orden3;
+        }else {
+        	return null;
+        }
+        
+    }
+
 	public void logout() {
+
 		// Pide confirmacion para cerrar sesion
 		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar cerrar sesión?",
 				"Confirmar cerrar sesión", JOptionPane.YES_NO_OPTION);
@@ -452,5 +434,16 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener {
 			JFLogin.setVisible(true);
 			dispose();
 		}
+	}
+	
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		//Verifica si hay una fila seleccionada y habilita o deshabilita el boton de asignar orden
+		if(tblTablaOrdenes.getSelectedRow() != -1) {
+			btnAsignar.setEnabled(true);
+		}else {
+			btnAsignar.setEnabled(false);
+		}
+
 	}
 }
