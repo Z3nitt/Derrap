@@ -40,12 +40,15 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 	// Background fondoPantalla = new Background();
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane, orden1,orden2,orden3;
+	private JPanel contentPane;
+	private static JPanel orden1;
+	private JPanel orden2;
+	private JPanel orden3;
 	private JButton btnLogout,btnAsignar;
 	private JPanel panel, panelOrdenes;
 	private CardLayout cardLayout = new CardLayout(0, 0);
 	private JTable tblTablaOrdenes, tblTablaRepuestos;
-	private DefaultTableModel modelTablaOrdenes;
+	private static DefaultTableModel modelTablaOrdenes;
 	private JLabel lblSinOrdenAsignada1, lblSinOrdenAsignada2, lblSinOrdenAsignada3;
 	
 	String[] columnasRepuesto = {"ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"};
@@ -348,7 +351,6 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 	            label.setBounds(10, posicionesY[i], 136, 14);
 	            panelDisponible.add(label);
 	            
-	            //Cargo los datos (id, dni, matricula) de la orden en los label
 	            
 	            //Creo el boton
 	            JButton boton = new JButton("Abrir orden");
@@ -364,7 +366,8 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						//Creo la nueva ventana y le paso la orden con los datos
-						VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
+						//Tambien le paso el panel para despues poder volver a cerrarlo
+						VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden(idOrden, panelDisponible);
 						VtnAbrirOrden.setVisible(true);
 					}
 				});
@@ -404,15 +407,21 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 		//Obtengo el primer panel que este vacio (deshabilitado), sino devuelve null
 		//Tambien oculta el label de "orden sin asignar"
         if (!orden1.isEnabled()) {
-        	lblSinOrdenAsignada1.setVisible(false);
+        	orden1.removeAll();
+        	orden1.revalidate();
+        	orden1.repaint();
         	return orden1;
         }
         else if (!orden2.isEnabled()) {
-        	lblSinOrdenAsignada2.setVisible(false);
+        	orden2.removeAll();
+        	orden2.revalidate();
+        	orden2.repaint();
         	return orden2;
         }
         else if (!orden3.isEnabled()) {
-        	lblSinOrdenAsignada3.setVisible(false);
+        	orden3.removeAll();
+        	orden3.revalidate();
+        	orden3.repaint();
         	return orden3;
         }else {
         	return null;
@@ -443,5 +452,26 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 			btnAsignar.setEnabled(false);
 		}
 
+	}
+	 
+	public static void sacarTarjetaOrden(JPanel panel) {
+		//Recibo el panel de la orden y lo reinicio
+		panel.setEnabled(false);
+		panel.removeAll();
+		
+		//Le agrego el label de "sin orden asignada"
+		JLabel lblSinOrdenAsignada = new JLabel("SIN ORDEN ASIGNADA");
+		lblSinOrdenAsignada.setForeground(Color.WHITE);
+		lblSinOrdenAsignada.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSinOrdenAsignada.setBounds(7, 105, 174, 72);
+		panel.add(lblSinOrdenAsignada);
+				
+		
+		panel.revalidate();
+		panel.repaint();
+		
+		
+		//Actualizo la tabla de ordenes
+		ControladorRegistros.actualizarTablas("ordenesActivas", modelTablaOrdenes);
 	}
 }

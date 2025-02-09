@@ -9,20 +9,36 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import Controlador.Conector_BBDD;
+import Controlador.ControladorRegistros;
+
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 
-public class VtnAbrirOrden extends JFrame {
+public class VtnAbrirOrden extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-
-	public VtnAbrirOrden() {		
+	private JPanel contentPane, panelActual;
+	private String idOrden;
+	private JButton btnCancelar, btnTerminar;
+	private Conector_BBDD conexion = new Conector_BBDD();
+	
+	public VtnAbrirOrden(String idOrden, JPanel panelActual) {	
+		//Obtengo el id de la orden para hacer las consultas
+		this.idOrden = idOrden;
+		//Obtengo el panel en el que esta la orden para poder cambiarlo luego
+		this.panelActual = panelActual;
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1083, 626);
 		setTitle(" Abrir Orden | Derrap");
@@ -60,7 +76,7 @@ public class VtnAbrirOrden extends JFrame {
 		JLabel lblDniCliente = new JLabel("DNI cliente: ");
 		lblDniCliente.setForeground(Color.WHITE);
 		lblDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblDniCliente.setBounds(320, 139, 84, 14);
+		lblDniCliente.setBounds(320, 139, 107, 14);
 		contentPane.add(lblDniCliente);
 		
 		JLabel lblValorDniCliente = new JLabel("ID de la orden");
@@ -171,12 +187,12 @@ public class VtnAbrirOrden extends JFrame {
 		lblValorEstadoOrden.setBounds(499, 66, 107, 14);
 		contentPane.add(lblValorEstadoOrden);
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(142, 526, 133, 38);
 		btnCancelar.setBackground(Color.WHITE);
 		btnCancelar.setForeground(new Color(102, 153, 204));
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 18));
-		//btnCancelar.addActionListener(this);
+		btnCancelar.addActionListener(this);
 		btnCancelar.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
 				btnCancelar.setBackground(Color.BLACK);
@@ -192,12 +208,12 @@ public class VtnAbrirOrden extends JFrame {
 		btnCancelar.setFocusable(false);
 		contentPane.add(btnCancelar);
 		
-		JButton btnTerminar = new JButton("Terminar");
+		btnTerminar = new JButton("Terminar");
 		btnTerminar.setBounds(361, 526, 138, 38);
 		btnTerminar.setBackground(Color.WHITE);
 		btnTerminar.setForeground(new Color(102, 153, 204));
 		btnTerminar.setFont(new Font("Tahoma", Font.BOLD, 18));
-		//btnTerminar.addActionListener(this);
+		btnTerminar.addActionListener(this);
 		btnTerminar.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
 				btnTerminar.setBackground(Color.BLACK);
@@ -218,10 +234,10 @@ public class VtnAbrirOrden extends JFrame {
 		panel.setBounds(10, 174, 246, 202);
 		contentPane.add(panel);
 		
-		JLabel lblNombreCliente = new JLabel("DNI cliente: ");
+		JLabel lblNombreCliente = new JLabel("Nombre cliente: ");
 		lblNombreCliente.setForeground(Color.WHITE);
 		lblNombreCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNombreCliente.setBounds(320, 174, 84, 14);
+		lblNombreCliente.setBounds(320, 174, 120, 14);
 		contentPane.add(lblNombreCliente);
 		
 		JLabel lblValorNombreCliente = new JLabel("ID de la orden");
@@ -229,5 +245,88 @@ public class VtnAbrirOrden extends JFrame {
 		lblValorNombreCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorNombreCliente.setBounds(471, 176, 96, 14);
 		contentPane.add(lblValorNombreCliente);
+		
+		
+		
+		conexion.conectar();
+		//La consulta obtendra todos los datos de la orden y del vehiculo
+		String consultaSql = "SELECT o.*, v.*, c.nombre FROM orden o JOIN vehiculo v ON o.matricula_vehiculo = v.matricula JOIN cliente c ON v.dni_cliente = c.DNI";
+		try {
+			//Ejecuto la consulta
+			ResultSet rset = conexion.ejecutarSelect(consultaSql);
+			
+			//Recorro todos los resultados y los guardo en los labels correspondientes
+			while(rset.next()) {
+				lblValorMatricula.setText(rset.getString("matricula"));
+				lblValorMarca.setText(rset.getString("marca"));
+				lblValorModelo.setText(rset.getString("modelo"));
+				lblValorColor.setText(rset.getString("color"));
+				lblValorCombustible.setText(rset.getString("combustible"));
+				lblValorKilometros.setText(rset.getString("kilometros"));
+				lblValorDniCliente.setText(rset.getString("dni_cliente"));
+				lblValorNombreCliente.setText(rset.getString("nombre"));
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+
+	private void cancelarOrden() {
+		conexion.conectar();
+		//Ejecuto un update sobre la tabla ordenes para cambiar el estado de En proceso -> Activa
+		try {
+			int filasAfectadas = conexion.ejecutarInsertDeleteUpdate("UPDATE orden SET estado = 'Activa' WHERE id_orden = '"+ idOrden + "'");
+			if(filasAfectadas > 0) {
+				
+				//Saco la orden de la tarjeta
+				JFrameMain_Mecanico.sacarTarjetaOrden(panelActual);
+				
+				//Muestro un mensaje y cierra la ventana
+				JOptionPane.showMessageDialog(this, "Orden cancelada");
+				dispose();
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void terminarOrden() {
+		int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas terminar la orden?", "Confirmar terminar orden", JOptionPane.YES_NO_OPTION);
+
+		if(confirmacion == JOptionPane.YES_OPTION) {
+			conexion.conectar();
+			//Ejecuto un update sobre la tabla ordenes para cambiar el estado de En proceso -> Terminada
+			try {
+				int filasAfectadas = conexion.ejecutarInsertDeleteUpdate("UPDATE orden SET estado = 'Terminada' WHERE id_orden = '"+ idOrden + "'");
+				if(filasAfectadas > 0) {
+					
+					//Saco la orden de la tarjeta
+					JFrameMain_Mecanico.sacarTarjetaOrden(panelActual);
+					
+					//Muestro un mensaje y cierra la ventana
+					JOptionPane.showMessageDialog(this, "Orden terminada");
+					dispose();
+					
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCancelar) {
+			cancelarOrden();
+		}else if(e.getSource() == btnTerminar) {
+			terminarOrden();
+		}
+		
 	}
 }
