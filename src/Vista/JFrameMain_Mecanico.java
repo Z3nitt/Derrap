@@ -48,7 +48,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 	private JPanel panel, panelOrdenes;
 	private CardLayout cardLayout = new CardLayout(0, 0);
 	private JTable tblTablaOrdenes, tblTablaRepuestos;
-	private static DefaultTableModel modelTablaOrdenes;
+	private static DefaultTableModel modelTablaOrdenes, modeloTablaRepuestos;
 	private JLabel lblSinOrdenAsignada1, lblSinOrdenAsignada2, lblSinOrdenAsignada3;
 	
 	String[] columnasRepuesto = {"ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"};
@@ -100,6 +100,8 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 			}
 
 			public void mouseClicked(MouseEvent e) {
+				//Actualizo la tabla de repuestp
+				ControladorRegistros.actualizarTablas("repuesto", modeloTablaRepuestos);
 				cardLayout.show(panel, "PanelStock");
 			}
 		});
@@ -275,7 +277,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 		PanelStock.add(scrollPaneTablaRepuestos);
 
 		tblTablaRepuestos = new JTable();
-		DefaultTableModel modeloTablaRepuestos = new DefaultTableModel(columnasRepuesto, 0); 
+		modeloTablaRepuestos = new DefaultTableModel(columnasRepuesto, 0); 
 		tblTablaRepuestos.setModel(modeloTablaRepuestos);
 		scrollPaneTablaRepuestos.setViewportView(tblTablaRepuestos);
 

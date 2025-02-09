@@ -31,12 +31,33 @@ public class ControladorRegistros {
 	        
 	        //Si el grupo es "ordenesActivas", mostrará solo las órdenes con el estado "Activa"
 	        case "ordenesActivas":
-	            consultaSql = "SELECT o.*, v.dni_cliente FROM orden o JOIN vehiculo v ON o.matricula_vehiculo = v.matricula WHERE estado = 'Activa'";
+	            consultaSql = "SELECT o.id_orden, \r\n"
+	            		+ "       o.estado, \r\n"
+	            		+ "       o.matricula_vehiculo, \r\n"
+	            		+ "       v.dni_cliente, \r\n"
+	            		+ "       GROUP_CONCAT(CONCAT(r.nombre, ' (', ru.cantidad, ')') SEPARATOR ', ') AS piezas_utilizadas\r\n"
+	            		+ "FROM orden o\r\n"
+	            		+ "JOIN vehiculo v ON o.matricula_vehiculo = v.matricula\r\n"
+	            		+ "LEFT JOIN repuestos_utilizados ru ON o.id_orden = ru.id_orden\r\n"
+	            		+ "LEFT JOIN repuesto r ON ru.id_repuesto = r.id_repuesto\r\n"
+	            		+ "WHERE o.estado = 'Activa'"
+	            		+ "GROUP BY o.id_orden";
 	            break;
 	        
 	        //Para mostrar las órdenes, hay que hacer un JOIN con la tabla "vehiculo" para obtener el DNI del cliente
+	        //Tambien obtengo el nombre del repuesto y lo uno con su cantidad con la funcion Group_concat
+            //Hago un left join porque si las piezas son null, las quiero mostrar igualmente
 	        case "orden":
-	            consultaSql = "SELECT o.*, v.dni_cliente FROM orden o JOIN vehiculo v ON o.matricula_vehiculo = v.matricula";
+	            consultaSql = "SELECT o.id_orden, \r\n"
+	            		+ "       o.estado, \r\n"
+	            		+ "       o.matricula_vehiculo, \r\n"
+	            		+ "       v.dni_cliente, \r\n"
+	            		+ "       GROUP_CONCAT(CONCAT(r.nombre, ' (', ru.cantidad, ')') SEPARATOR ', ') AS piezas_utilizadas\r\n"
+	            		+ "FROM orden o\r\n"
+	            		+ "JOIN vehiculo v ON o.matricula_vehiculo = v.matricula\r\n"
+	            		+ "LEFT JOIN repuestos_utilizados ru ON o.id_orden = ru.id_orden\r\n"
+	            		+ "LEFT JOIN repuesto r ON ru.id_repuesto = r.id_repuesto\r\n"
+	            		+ "GROUP BY o.id_orden";
 	            break;
 	        
 	        //Para cualquier otro caso, se seleccionan todos los registros de la tabla indicada en "grupo"

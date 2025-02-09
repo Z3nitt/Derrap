@@ -30,9 +30,10 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, panelActual;
-	private String idOrden;
-	private JButton btnCancelar, btnTerminar;
-	private Conector_BBDD conexion = new Conector_BBDD();
+	private static String idOrden;
+	private JButton btnCancelar, btnTerminar, btnAgregarPiezas;
+	private static JLabel lblValorDniCliente, lblValorMarca, lblValorMatricula, lblValorModelo, lblValorPiezas, lblValorColor, lblValorCombustible, lblValorKilometros, lblValorEstadoOrden, lblValorNombreCliente;
+	private static Conector_BBDD conexion = new Conector_BBDD();
 	
 	public VtnAbrirOrden(String idOrden, JPanel panelActual) {	
 		//Obtengo el id de la orden para hacer las consultas
@@ -67,7 +68,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblIdOrden.setBounds(10, 139, 96, 14);
 		contentPane.add(lblIdOrden);
 		
-		JLabel lblValorOrden = new JLabel("ID de la orden");
+		JLabel lblValorOrden = new JLabel(idOrden);
 		lblValorOrden.setForeground(Color.WHITE);
 		lblValorOrden.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorOrden.setBounds(153, 139, 96, 14);
@@ -79,7 +80,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblDniCliente.setBounds(320, 139, 107, 14);
 		contentPane.add(lblDniCliente);
 		
-		JLabel lblValorDniCliente = new JLabel("ID de la orden");
+		lblValorDniCliente = new JLabel("ID de la orden");
 		lblValorDniCliente.setForeground(Color.WHITE);
 		lblValorDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorDniCliente.setBounds(471, 139, 96, 14);
@@ -91,7 +92,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblMarca.setBounds(24, 255, 96, 14);
 		contentPane.add(lblMarca);
 		
-		JLabel lblValorMarca = new JLabel("ID de la orden:");
+		lblValorMarca = new JLabel("ID de la orden:");
 		lblValorMarca.setForeground(Color.WHITE);
 		lblValorMarca.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorMarca.setBounds(142, 255, 107, 14);
@@ -103,7 +104,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblMatricula.setBounds(24, 231, 96, 14);
 		contentPane.add(lblMatricula);
 		
-		JLabel lblValorMatricula = new JLabel("ID de la orden:");
+		lblValorMatricula = new JLabel("ID de la orden:");
 		lblValorMatricula.setForeground(Color.WHITE);
 		lblValorMatricula.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorMatricula.setBounds(142, 231, 107, 14);
@@ -115,7 +116,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblModelo.setBounds(24, 279, 96, 14);
 		contentPane.add(lblModelo);
 		
-		JLabel lblValorModelo = new JLabel("ID de la orden:");
+		lblValorModelo = new JLabel("ID de la orden:");
 		lblValorModelo.setForeground(Color.WHITE);
 		lblValorModelo.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorModelo.setBounds(142, 279, 107, 14);
@@ -124,13 +125,13 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		JLabel lblPiezas = new JLabel("Piezas:");
 		lblPiezas.setForeground(Color.WHITE);
 		lblPiezas.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPiezas.setBounds(320, 351, 60, 14);
+		lblPiezas.setBounds(320, 327, 60, 14);
 		contentPane.add(lblPiezas);
 		
-		JLabel lblValorPiezas = new JLabel("ID de la orden:");
+		lblValorPiezas = new JLabel("...");
 		lblValorPiezas.setForeground(Color.WHITE);
 		lblValorPiezas.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblValorPiezas.setBounds(412, 316, 140, 85);
+		lblValorPiezas.setBounds(427, 292, 140, 85);
 		contentPane.add(lblValorPiezas);
 		
 		JLabel lblTituloVehiculo = new JLabel("VEHÍCULO");
@@ -157,19 +158,19 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblKilometros.setBounds(24, 351, 96, 14);
 		contentPane.add(lblKilometros);
 		
-		JLabel lblValorColor = new JLabel("ID de la orden:");
+		lblValorColor = new JLabel("ID de la orden:");
 		lblValorColor.setForeground(Color.WHITE);
 		lblValorColor.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorColor.setBounds(142, 303, 107, 14);
 		contentPane.add(lblValorColor);
 		
-		JLabel lblValorCombustible = new JLabel("ID de la orden:");
+		lblValorCombustible = new JLabel("ID de la orden:");
 		lblValorCombustible.setForeground(Color.WHITE);
 		lblValorCombustible.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorCombustible.setBounds(142, 327, 107, 14);
 		contentPane.add(lblValorCombustible);
 		
-		JLabel lblValorKilometros = new JLabel("ID de la orden:");
+		lblValorKilometros = new JLabel("ID de la orden:");
 		lblValorKilometros.setForeground(Color.WHITE);
 		lblValorKilometros.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorKilometros.setBounds(142, 351, 107, 14);
@@ -181,7 +182,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblEstadoOrden.setBounds(320, 65, 158, 14);
 		contentPane.add(lblEstadoOrden);
 		
-		JLabel lblValorEstadoOrden = new JLabel("Activa");
+		lblValorEstadoOrden = new JLabel("Activa");
 		lblValorEstadoOrden.setForeground(Color.WHITE);
 		lblValorEstadoOrden.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorEstadoOrden.setBounds(499, 66, 107, 14);
@@ -240,37 +241,21 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblNombreCliente.setBounds(320, 174, 120, 14);
 		contentPane.add(lblNombreCliente);
 		
-		JLabel lblValorNombreCliente = new JLabel("ID de la orden");
+		lblValorNombreCliente = new JLabel("ID de la orden");
 		lblValorNombreCliente.setForeground(Color.WHITE);
 		lblValorNombreCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblValorNombreCliente.setBounds(471, 176, 96, 14);
 		contentPane.add(lblValorNombreCliente);
 		
+		btnAgregarPiezas = new JButton("Agregar Piezas");
+		btnAgregarPiezas.setBounds(309, 395, 131, 21);
+		btnAgregarPiezas.setFocusable(false);
+		btnAgregarPiezas.addActionListener(this);
+		contentPane.add(btnAgregarPiezas);
 		
 		
-		conexion.conectar();
-		//La consulta obtendra todos los datos de la orden y del vehiculo
-		String consultaSql = "SELECT o.*, v.*, c.nombre FROM orden o JOIN vehiculo v ON o.matricula_vehiculo = v.matricula JOIN cliente c ON v.dni_cliente = c.DNI";
-		try {
-			//Ejecuto la consulta
-			ResultSet rset = conexion.ejecutarSelect(consultaSql);
-			
-			//Recorro todos los resultados y los guardo en los labels correspondientes
-			while(rset.next()) {
-				lblValorMatricula.setText(rset.getString("matricula"));
-				lblValorMarca.setText(rset.getString("marca"));
-				lblValorModelo.setText(rset.getString("modelo"));
-				lblValorColor.setText(rset.getString("color"));
-				lblValorCombustible.setText(rset.getString("combustible"));
-				lblValorKilometros.setText(rset.getString("kilometros"));
-				lblValorDniCliente.setText(rset.getString("dni_cliente"));
-				lblValorNombreCliente.setText(rset.getString("nombre"));
-			}
-			
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		
+		
 		
 		
 	}
@@ -320,12 +305,53 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		}
 	}
 	
+	public static void actualizarValores() {
+		conexion.conectar();
+		//La consulta obtendra todos los datos de la orden y del vehiculo
+		String consultaSql = "SELECT o.*, \r\n"
+				+ "       v.*, \r\n"
+				+ "       c.*, \r\n"
+				+ "       GROUP_CONCAT(CONCAT(r.nombre, ' (', ru.cantidad, ')') SEPARATOR ', ') AS piezas_utilizadas\r\n"
+				+ "FROM orden o\r\n"
+				+ "JOIN vehiculo v ON o.matricula_vehiculo = v.matricula\r\n"
+				+ "JOIN cliente c ON v.dni_cliente = c.dni\r\n"
+				+ "LEFT JOIN repuestos_utilizados ru ON o.id_orden = ru.id_orden\r\n"
+				+ "LEFT JOIN repuesto r ON ru.id_repuesto = r.id_repuesto\r\n"
+				+ "WHERE o.id_orden = '" + idOrden + "' "
+				+ "GROUP BY o.id_orden, v.matricula, c.dni";
+		
+		try {
+			//Ejecuto la consulta
+			ResultSet rset = conexion.ejecutarSelect(consultaSql);
+			
+			//Recorro todos los resultados y los guardo en los labels correspondientes
+			while(rset.next()) {
+				lblValorMatricula.setText(rset.getString("matricula"));
+				lblValorMarca.setText(rset.getString("marca"));
+				lblValorModelo.setText(rset.getString("modelo"));
+				lblValorColor.setText(rset.getString("color"));
+				lblValorCombustible.setText(rset.getString("combustible"));
+				lblValorKilometros.setText(rset.getString("kilometros"));
+				lblValorDniCliente.setText(rset.getString("dni_cliente"));
+				lblValorNombreCliente.setText(rset.getString("nombre"));
+				lblValorPiezas.setText(rset.getString("piezas_utilizadas"));
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnCancelar) {
 			cancelarOrden();
 		}else if(e.getSource() == btnTerminar) {
 			terminarOrden();
+		}else if(e.getSource() == btnAgregarPiezas) {
+			VtnAgregarPiezas vtnAgregarPiezas = new VtnAgregarPiezas(idOrden);
+			vtnAgregarPiezas.setVisible(true);
 		}
 		
 	}
