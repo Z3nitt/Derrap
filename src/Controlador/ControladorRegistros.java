@@ -21,17 +21,30 @@ public class ControladorRegistros {
 		Conector_BBDD conexion = new Conector_BBDD();
 		conexion.conectar();
 		try {
+			String consultaSql = "";
 			
-			//En el caso que el grupo sea mecanicos, cambio el nombre de la tabla a usuarios y agrego la condiicon que tienen que ser mecanicos (no admins)
-			if(grupo.equals("mecanico")) {
-				grupo = "usuario WHERE rol = 'Mecanico'";
-			}//Si el grupo es "ordenesActivas" mostrara solo las ordenes con el estado "Activa"
-			else if(grupo.equals("ordenesActivas")) {
-				grupo = "orden WHERE estado = 'Activa'";
-			}
+			switch (grupo) {
+	        //En el caso que el grupo sea "mecanico", selecciona solo los usuarios con rol "Mecanico"
+	        case "mecanico":
+	            consultaSql = "SELECT * FROM usuario WHERE rol = 'Mecanico'";
+	            break;
+	        
+	        //Si el grupo es "ordenesActivas", mostrará solo las órdenes con el estado "Activa"
+	        case "ordenesActivas":
+	            consultaSql = "SELECT o.*, v.dni_cliente FROM orden o JOIN vehiculo v ON o.matricula_vehiculo = v.matricula WHERE estado = 'Activa'";
+	            break;
+	        
+	        //Para mostrar las órdenes, hay que hacer un JOIN con la tabla "vehiculo" para obtener el DNI del cliente
+	        case "orden":
+	            consultaSql = "SELECT o.*, v.dni_cliente FROM orden o JOIN vehiculo v ON o.matricula_vehiculo = v.matricula";
+	            break;
+	        
+	        //Para cualquier otro caso, se seleccionan todos los registros de la tabla indicada en "grupo"
+	        default:
+	            consultaSql = "SELECT * FROM " + grupo;
+	            break;
+	    }
 			
-			//Guardo la consulta con la tabla correspondiente
-			String consultaSql = "SELECT * FROM "+ grupo;
 			
 			//Limpio la tabla
 			modelTabla.setRowCount(0);
@@ -75,7 +88,7 @@ public class ControladorRegistros {
 		Conector_BBDD conexion = new Conector_BBDD();
 		conexion.conectar();
 		try {
-			
+			String consultaSql="";
 			//En el caso que el grupo sea mecanicos, cambio el nombre de la tabla a usuarios
 			if(grupo.equals("mecanico")) {
 				grupo = "usuario";
@@ -85,7 +98,12 @@ public class ControladorRegistros {
 			String textoBuscador = buscador.getText().trim();
 			
 			//Guardo la consulta con la tabla correspondiente y luego agrego las condiciones correspondientes
-			String consultaSql = "SELECT * FROM "+grupo+" ";
+			if(grupo.equals("orden")) {
+				consultaSql = "SELECT o.*, v.dni_cliente FROM orden o JOIN vehiculo v ON o.matricula_vehiculo = v.matricula ";
+			}else {
+				consultaSql = "SELECT * FROM "+grupo+" ";
+			}
+			
 			
 			//Segun el grupo que este seleccionado, cambia la condicion de la consulta
 			switch (grupo) {
@@ -106,7 +124,6 @@ public class ControladorRegistros {
 					break;
 				case "facturas":
 					consultaSql += "WHERE id_factura LIKE '%" + textoBuscador + "%'";
-					
 					break;
 			}
 			
@@ -217,7 +234,7 @@ public class ControladorRegistros {
 			columnas.addAll(Arrays.asList("matricula", "Marca", "Modelo", "Color", "Combustible", "Kilometros", "Año", "DNI_cliente"));
 			break;
 		case "orden":
-			columnas.addAll(Arrays.asList("id_orden", "Estado", "matricula_vehiculo", "cliente_dni"));
+			columnas.addAll(Arrays.asList("id_orden", "Estado", "matricula_vehiculo"));
 			break;
 		case "repuesto":
 			columnas.addAll(Arrays.asList("ID_Repuesto", "Nombre", "Cantidad", "Precio_Compra", "Precio_Venta", "Mano_de_Obra", "ID_Proveedor"));

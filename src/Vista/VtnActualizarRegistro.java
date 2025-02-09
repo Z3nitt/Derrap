@@ -253,6 +253,11 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 			}
 		
 		}
+		//En el caso que este en la ventana de orden, deshabilita el campo de cliente y el de matricula
+		if(grupo.equals("orden")) {
+			txtCampo2.setEnabled(false);
+			txtCampo2.setEditable(false);
+		}
 	
 	}
 

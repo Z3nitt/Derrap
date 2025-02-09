@@ -262,17 +262,9 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 			lblPrimaryKey.setText("ID Orden:");
 			lblCampo1.setVisible(true);
 			lblCampo1.setText("Matricula:");
-			lblCampo2.setVisible(true);
-			lblCampo2.setText("Cliente:");
-			lblCampo3.setVisible(false);
-			lblCampo3.setText("Modelo:");
-			lblCampo4.setVisible(false);
-			lblCampo4.setText("Matricula:");
 			txtPrimaryKey.setVisible(true);
 			txtCampo1.setVisible(true);
-			txtCampo2.setVisible(true);
-			txtCampo3.setVisible(false);
-			txtCampo4.setVisible(false);
+			txtCampo2.setVisible(false);
 			break;
 		case "repuesto":
 			lblTitulo.setText("CREAR NUEVA PIEZA");
@@ -368,8 +360,8 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 					+ "', '" + valorCampo4 + "', '" + valorCampo5 + "', '" + valorCampo6 + "', " + foreignKey + ")";
 			break;
 		case "orden":
-			sql = "INSERT INTO orden (id_orden, estado, matricula_vehiculo, cliente_DNI) VALUES ('" + primaryKey + "', 'Activa', '"
-					+ valorCampo1 + "', '" + valorCampo2 + "')";
+			sql = "INSERT INTO orden (id_orden, estado, matricula_vehiculo) VALUES ('" + primaryKey + "', 'Activa', '"
+					+ valorCampo1 + "')";
 			break;
 		case "repuesto":
 		    sql = "INSERT INTO repuesto (id_repuesto, nombre, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor) VALUES"

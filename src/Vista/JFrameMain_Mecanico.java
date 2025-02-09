@@ -239,10 +239,6 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 
 		btnAsignar = new JButton("Asignar");
 		btnAsignar.setEnabled(false);
-		btnAsignar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnAsignar.setBackground(new Color(102, 153, 204));
 		btnAsignar.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnAsignar.setForeground(new Color(255, 255, 255));
@@ -319,6 +315,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 			
 			//Obtengo los datos de la orden
 			String idOrden = (String) tblTablaOrdenes.getValueAt(filaSeleccionada, 0);
+			String estadoOrden = (String) tblTablaOrdenes.getValueAt(filaSeleccionada, 1);
 			String matriculaOrden = (String) tblTablaOrdenes.getValueAt(filaSeleccionada, 2);
 			String dniClienteOrden = (String) tblTablaOrdenes.getValueAt(filaSeleccionada, 3);
 			
@@ -366,6 +363,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 	            	//Cuando hace click abre la ventana de la orden
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						//Creo la nueva ventana y le paso la orden con los datos
 						VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden();
 						VtnAbrirOrden.setVisible(true);
 					}
