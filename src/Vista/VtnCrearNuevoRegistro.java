@@ -34,7 +34,6 @@ import package_main.Background;
 import java.awt.Color;
 import Controlador.Conector_BBDD;
 
-
 public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, KeyListener {
 	Conector_BBDD conexion = new Conector_BBDD();
 	Background fondoPantalla = new Background();
@@ -207,7 +206,8 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 	}
 
 	private void actualizarVisibilidad(String grupo) {
-		//Se ocultan todos los labels y textFields menos el de la primary key , el del nombre y el campo2 (porque aparecen en todas las opciones)
+		// Se ocultan todos los labels y textFields menos el de la primary key , el del
+		// nombre y el campo2 (porque aparecen en todas las opciones)
 		lblCampo3.setVisible(false);
 		lblCampo4.setVisible(false);
 		lblCampo5.setVisible(false);
@@ -218,7 +218,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		txtCampo5.setVisible(false);
 		txtCampo6.setVisible(false);
 		txtForeignKey.setVisible(false);
-		 
+
 		switch (grupo) {
 		case "cliente":
 			lblTitulo.setText("CREAR NUEVO CLIENTE");
@@ -295,7 +295,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 			lblTitulo.setText("CREAR NUEVA FACTURA");
 			lblPrimaryKey.setVisible(true);
 			lblPrimaryKey.setText("ID Factura:");
-			lblCampo1.setVisible(true); 
+			lblCampo1.setVisible(true);
 			lblCampo1.setText("Precio:");
 			lblCampo2.setVisible(true);
 			lblCampo2.setText("Fecha:");
@@ -319,36 +319,36 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 
 	public void crearNuevoRegistro(String grupo) throws SQLException {
 
-		String primaryKey = txtPrimaryKey.getText(); //DNI USUARIO, DNI CLIENTE, MATRICULA, ID ORDEN, ID REPUESTO Y ID FACTURA
+		String primaryKey = txtPrimaryKey.getText(); // DNI USUARIO, DNI CLIENTE, MATRICULA, ID ORDEN, ID REPUESTO Y ID
+														// FACTURA
 		String patronDNI = "[0-9]{8}[A-Z a-z]";
 		Pattern patternDni = Pattern.compile(patronDNI);
 		Matcher matcherDni = patternDni.matcher(primaryKey);
-		
-		String valorCampo1 = txtCampo1.getText(); //NOMBRE, MARCA, MATRICULA_VEHICULO (ORDEN), PRECIO TOTAL
-		String valorCampo2 = txtCampo2.getText(); //APELLIDO, MODELO, CLIENTE DNI (ORDEN), CANTIDAD, FECHA
-		String valorCampo3 = txtCampo3.getText(); //CONTRASEÑA, COLOR, PRECIO COMPRA, ID ORDEN (FACTURA)
-		String valorCampo4 = txtCampo4.getText(); //TELEFONO, COMBUSTIBLE, PRECIO VENTA
-		String valorCampo5 = txtCampo5.getText(); //KILOMETROS, MANO DE OBRA
-		String valorCampo6 = txtCampo6.getText(); //AÑO VEHICULO, ID PROVEEDOR
-		String foreignKey = txtForeignKey.getText(); //DNI CLIENTE
-		 
-  
+
+		String valorCampo1 = txtCampo1.getText(); // NOMBRE, MARCA, MATRICULA_VEHICULO (ORDEN), PRECIO TOTAL
+		String valorCampo2 = txtCampo2.getText(); // APELLIDO, MODELO, CLIENTE DNI (ORDEN), CANTIDAD, FECHA
+		String valorCampo3 = txtCampo3.getText(); // CONTRASEÑA, COLOR, PRECIO COMPRA, ID ORDEN (FACTURA)
+		String valorCampo4 = txtCampo4.getText(); // TELEFONO, COMBUSTIBLE, PRECIO VENTA
+		String valorCampo5 = txtCampo5.getText(); // KILOMETROS, MANO DE OBRA
+		String valorCampo6 = txtCampo6.getText(); // AÑO VEHICULO, ID PROVEEDOR
+		String foreignKey = txtForeignKey.getText(); // DNI CLIENTE
+
 		conexion.conectar();
 		String sql = "";
 		// Segun el grupo que sea, cambia el insert
 		switch (grupo) {
 		case "mecanico":
 			if (matcherDni.matches()) {
-				sql = "INSERT INTO usuario (DNI, password, nombre, apellidos, rol) VALUES " + "('" + primaryKey
-						+ "', '" + valorCampo3 + "', '" + valorCampo1 + "', '" + valorCampo2 + "', 'Mecanico')";
+				sql = "INSERT INTO usuario (DNI, password, nombre, apellidos, rol) VALUES " + "('" + primaryKey + "', '"
+						+ valorCampo3 + "', '" + valorCampo1 + "', '" + valorCampo2 + "', 'Mecanico')";
 			}
 			break;
 		case "cliente":
-			sql = "INSERT INTO cliente (DNI, nombre, apellidos, telefono) VALUES ('" + primaryKey + "', '"
-					+ valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo4 + "')";
+			sql = "INSERT INTO cliente (DNI, nombre, apellidos, telefono) VALUES ('" + primaryKey + "', '" + valorCampo1
+					+ "', '" + valorCampo2 + "', '" + valorCampo4 + "')";
 
 			break;
-		case "vehiculo": 
+		case "vehiculo":
 
 			if (foreignKey.isBlank()) {
 				foreignKey = "NULL";
@@ -358,63 +358,107 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 
 			// Utilizo los otros campos de mecanico y cliente para vehiculo (dni,nombre,etc)
 			sql = "INSERT INTO vehiculo (matricula, marca, modelo, color, combustible, kilometros, year, dni_cliente) VALUES"
-					+ " ('" + primaryKey + "', '" + valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo3
-					+ "', '" + valorCampo4 + "', '" + valorCampo5 + "', '" + valorCampo6 + "', " + foreignKey + ")";
+					+ " ('" + primaryKey + "', '" + valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo3 + "', '"
+					+ valorCampo4 + "', '" + valorCampo5 + "', '" + valorCampo6 + "', " + foreignKey + ")";
 			break;
 		case "orden":
 			sql = "INSERT INTO orden (id_orden, estado, matricula_vehiculo) VALUES ('" + primaryKey + "', 'Activa', '"
 					+ valorCampo1 + "')";
+			
 			break;
 		case "repuesto":
-		    sql = "INSERT INTO repuesto (id_repuesto, nombre, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor) VALUES"
-		        + " ('" + primaryKey + "', '" + valorCampo1 + "', " + valorCampo2 + ", " + valorCampo3 + ", "
-		        + valorCampo4 + ", " + valorCampo5 + ", '" + valorCampo6 + "')";
-		    break;
-		    
+			sql = "INSERT INTO repuesto (id_repuesto, nombre, cantidad, precio_compra, precio_venta, mano_de_obra, id_proveedor) VALUES"
+					+ " ('" + primaryKey + "', '" + valorCampo1 + "', " + valorCampo2 + ", " + valorCampo3 + ", "
+					+ valorCampo4 + ", " + valorCampo5 + ", '" + valorCampo6 + "')";
+			break;
+
 		case "factura":
-			double precioVentaRepuesto = obtenerPrecioRepuesto(primaryKey, "precio_venta"); // Método para obtener el precio de venta
-		    double manoDeObraRepuesto = obtenerPrecioRepuesto(primaryKey, "mano_de_obra"); // Método para obtener la mano de obra
-		    
-		    double precioTotal = precioVentaRepuesto + manoDeObraRepuesto;
-		    
-		    sql = "INSERT INTO factura (id_factura, precio_total, fecha, id_orden) VALUES "
-		            + "('" + primaryKey + "', '" + valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo3 + "')";
-		        
-		    break;
+			double precioVentaRepuesto = obtenerPrecioRepuesto(primaryKey, "precio_venta"); // Método para obtener el
+																							// precio de venta
+			double manoDeObraRepuesto = obtenerPrecioRepuesto(primaryKey, "mano_de_obra"); // Método para obtener la
+																							// mano de obra
 
-		} 
-		// Controla la creacion del registro
-		try {
-			int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sql);
+			double precioTotal = precioVentaRepuesto + manoDeObraRepuesto;
 
-			// Si se creó correctamente el registro, muestra un messageDialog, actualiza la
-			// tabla correspondiente y cierra la ventana
-			if (filasAfectadas > 0) {
-				ControladorRegistros.actualizarTablas(grupo, modelTabla);
-				JOptionPane.showMessageDialog(this, "Registro exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
-				dispose();
-			} else {
-				JOptionPane.showMessageDialog(this, "Error al crear el registro", "Error", JOptionPane.ERROR_MESSAGE);
-			}
+			sql = "INSERT INTO factura (id_factura, precio_total, fecha, id_orden) VALUES " + "('" + primaryKey + "', '"
+					+ valorCampo1 + "', '" + valorCampo2 + "', '" + valorCampo3 + "')";
 
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(this, "Error en la base de datos al crear el registro", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			break;
+
 		}
+		
+		//Si es un insert de orden y no tiene un cliente, no hace el insert
+		
+		if(grupo.equals("orden") && !tieneCliente(primaryKey)) {
+			JOptionPane.showMessageDialog(this, "El vehiculo que has elegido no tiene un cliente", "Error", JOptionPane.WARNING_MESSAGE);
+		}else {
+			// Controla la creacion del registro
+			try {
+				int filasAfectadas = conexion.ejecutarInsertDeleteUpdate(sql);
+
+				// Si se creó correctamente el registro, muestra un messageDialog, actualiza la
+				// tabla correspondiente y cierra la ventana
+				if (filasAfectadas > 0) {
+					ControladorRegistros.actualizarTablas(grupo, modelTabla);
+					JOptionPane.showMessageDialog(this, "Registro exitoso", "Información", JOptionPane.INFORMATION_MESSAGE);
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(this, "Error al crear el registro", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(this, "Error en la base de datos al crear el registro", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
+		
+		
 
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnCrear) {
-			try {
-				crearNuevoRegistro(grupo);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+	private boolean tieneCliente(String matricula) {
+		conexion.conectar();
+		boolean tieneCliente = false;
+		
+		try {
+			//Ejecuto un select para ver si el vehiculo tiene dni_cliente
+			ResultSet rset = conexion.ejecutarSelect("SELECT dni_cliente FROM vehiculo WHERE matricula = '" + matricula + "' ");
+			//Si encuentra un resultado
+			while(rset.next()) {
+				//Si es distinto
+				String dniCliente = rset.getString("dni_cliente");
+				System.out.println(dniCliente);
+				if(dniCliente != null) {
+					tieneCliente = true;
+				}
 			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return tieneCliente;
+	}
+
+	public double obtenerPrecioRepuesto(String idRepuesto, String columna) throws SQLException {
+		double valor = 0.0;
+
+		// Realiza la consulta para obtener el valor de la columna especificada
+		// (precio_venta o mano_de_obra)
+		String sql = "SELECT " + columna + " FROM repuesto WHERE id_repuesto = '" + idRepuesto + "'";
+
+		// Ejecuta la consulta
+		ResultSet rs = conexion.ejecutarSelect(sql); // Asegúrate de ejecutar el SQL correcto
+
+		try {
+			if (rs.next()) {
+				valor = rs.getDouble(columna);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return valor;
 	}
 
 	// Eventos de teclado
@@ -446,29 +490,17 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		// TODO Auto-generated method stub
 
 	}
-	
-	public double obtenerPrecioRepuesto(String idRepuesto, String columna) throws SQLException {
-	    double valor = 0.0;
 
-	    // Realiza la consulta para obtener el valor de la columna especificada (precio_venta o mano_de_obra)
-	    String sql = "SELECT " + columna + " FROM repuesto WHERE id_repuesto = '" + idRepuesto + "'";
-
-	    // Ejecuta la consulta
-	    ResultSet rs = conexion.ejecutarSelect(sql);  // Asegúrate de ejecutar el SQL correcto
-
-	    try {
-	        if (rs.next()) {
-	            valor = rs.getDouble(columna);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-	    return valor;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCrear) {
+			try {
+				crearNuevoRegistro(grupo);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 
-	
-
-
-	
 }
