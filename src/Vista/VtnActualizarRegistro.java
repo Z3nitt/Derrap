@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
@@ -83,6 +84,7 @@ public class VtnActualizarRegistro extends JFrame implements ActionListener, Key
 		getContentPane().add(lblPrimaryKey);
 		
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnAceptar.setForeground(new Color(102, 153, 204));
 		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnAceptar.setBounds(309, 407, 284, 42);

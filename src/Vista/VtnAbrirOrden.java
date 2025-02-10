@@ -59,7 +59,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		JLabel lblTitulo = new JLabel("DETALLES DE LA ORDEN");
 		lblTitulo.setForeground(new Color(255, 255, 255));
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblTitulo.setBounds(10, 60, 250, 23);
+		lblTitulo.setBounds(25, 60, 224, 23);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblIdOrden = new JLabel("ID  orden:");
@@ -189,6 +189,8 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		contentPane.add(lblValorEstadoOrden);
 		
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnCancelar.setFocusable(false);
 		btnCancelar.setBounds(142, 526, 133, 38);
 		btnCancelar.setBackground(Color.WHITE);
 		btnCancelar.setForeground(new Color(102, 153, 204));
@@ -210,6 +212,8 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		contentPane.add(btnCancelar);
 		
 		btnTerminar = new JButton("Terminar");
+		btnTerminar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnTerminar.setFocusable(false);
 		btnTerminar.setBounds(361, 526, 138, 38);
 		btnTerminar.setBackground(Color.WHITE);
 		btnTerminar.setForeground(new Color(102, 153, 204));
@@ -248,9 +252,25 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		contentPane.add(lblValorNombreCliente);
 		
 		btnAgregarPiezas = new JButton("Agregar Piezas");
-		btnAgregarPiezas.setBounds(309, 395, 131, 21);
+		btnAgregarPiezas.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnAgregarPiezas.setFocusable(false);
+		btnAgregarPiezas.setForeground(new Color(102, 153, 204));
+		btnAgregarPiezas.setBackground(new Color(255, 255, 255));
+		btnAgregarPiezas.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnAgregarPiezas.setBounds(309, 395, 140, 21);
 		btnAgregarPiezas.addActionListener(this);
+		btnAgregarPiezas.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnAgregarPiezas.setBackground(Color.BLACK);
+				btnAgregarPiezas.setForeground(Color.WHITE);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnAgregarPiezas.setBackground(Color.WHITE);
+				btnAgregarPiezas.setForeground((new Color(102, 153, 204)));
+				;
+			}
+		});
 		contentPane.add(btnAgregarPiezas);
 		
 		

@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import Controlador.Conector_BBDD;
 
@@ -14,12 +15,16 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Toolkit;
 
 public class VtnAgregarPiezas extends JFrame implements ActionListener{
 
@@ -33,61 +38,88 @@ public class VtnAgregarPiezas extends JFrame implements ActionListener{
 
 
 	public VtnAgregarPiezas(String idOrden) {
+		setTitle("Agregar piezas | Derrap");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VtnAgregarPiezas.class.getResource("/package_assets/icon.png")));
 		this.idOrden = idOrden;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 479, 435);
+		setBounds(100, 100, 479, 398);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(102, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblPiezasDisponibles = new JLabel("Agregar Pieza: ");
-		lblPiezasDisponibles.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPiezasDisponibles.setBounds(24, 35, 143, 34);
+		lblPiezasDisponibles.setForeground(new Color(255, 255, 255));
+		lblPiezasDisponibles.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblPiezasDisponibles.setBounds(66, 35, 143, 34);
 		contentPane.add(lblPiezasDisponibles);
 		
 		comboBoxPiezas = new JComboBox();
-		comboBoxPiezas.setBounds(177, 44, 162, 21);
+		comboBoxPiezas.setBounds(240, 44, 162, 21);
 		comboBoxPiezas.addActionListener(this);
 		contentPane.add(comboBoxPiezas);
 		
 		btnMenos = new JButton("-");
+		btnMenos.setBackground(new Color(255, 255, 255));
+		btnMenos.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnMenos.setFocusable(false);
 		btnMenos.setFont(new Font("Tahoma", Font.BOLD, 28));
-		btnMenos.setBounds(24, 204, 60, 43);
+		btnMenos.setBounds(143, 204, 60, 43);
 		btnMenos.addActionListener(this);
 		contentPane.add(btnMenos);
 		
 		btnMas = new JButton("+");
+		btnMas.setBackground(new Color(255, 255, 255));
+		btnMas.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnMas.setFocusable(false);
 		btnMas.setFont(new Font("Tahoma", Font.BOLD, 28));
-		btnMas.setBounds(178, 204, 60, 43);
+		btnMas.setBounds(268, 204, 60, 43);
 		btnMas.addActionListener(this);
 		contentPane.add(btnMas);
 		
 		lblCantidad = new JLabel("1");
+		lblCantidad.setForeground(new Color(255, 255, 255));
 		lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblCantidad.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCantidad.setBounds(107, 205, 45, 42);
+		lblCantidad.setBounds(213, 208, 45, 42);
 		contentPane.add(lblCantidad);
 		
 		JLabel lblStockDisponible = new JLabel("Stock Disponible:");
-		lblStockDisponible.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblStockDisponible.setBounds(24, 107, 143, 34);
+		lblStockDisponible.setForeground(new Color(255, 255, 255));
+		lblStockDisponible.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblStockDisponible.setBounds(66, 107, 143, 34);
 		contentPane.add(lblStockDisponible);
 		
 		lblValorStockDisponible = new JLabel("1");
+		lblValorStockDisponible.setForeground(new Color(255, 255, 255));
 		lblValorStockDisponible.setHorizontalAlignment(SwingConstants.CENTER);
 		lblValorStockDisponible.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblValorStockDisponible.setBounds(193, 99, 45, 42);
+		lblValorStockDisponible.setBounds(296, 102, 45, 42);
 		contentPane.add(lblValorStockDisponible);
 		
 		btnAgregar = new JButton("Agregar");
+		btnAgregar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnAgregar.setForeground(new Color(102, 153, 204));
+		btnAgregar.setBackground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnAgregar.setFocusable(false);
 		btnAgregar.addActionListener(this);
-		btnAgregar.setBounds(177, 335, 85, 21);
+		btnAgregar.setBounds(181, 312, 105, 21);
+		btnAgregar.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnAgregar.setBackground(Color.BLACK);
+				btnAgregar.setForeground(Color.WHITE);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnAgregar.setBackground(Color.WHITE);
+				btnAgregar.setForeground((new Color(102, 153, 204)));
+				;
+			}
+		});
 		contentPane.add(btnAgregar);
 		
 		

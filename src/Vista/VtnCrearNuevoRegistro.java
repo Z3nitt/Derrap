@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.Conector_BBDD;
@@ -169,6 +170,7 @@ public class VtnCrearNuevoRegistro extends JFrame implements ActionListener, Key
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 18));
 
 		btnCrear = new JButton("CREAR");
+		btnCrear.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnCrear.setBounds(223, 458, 284, 42);
 		btnCrear.setFocusable(false);
 		btnCrear.addMouseListener(new MouseAdapter() {

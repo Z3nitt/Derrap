@@ -259,6 +259,7 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 				;
 			}
 		});
+
 		btnAsignar.addActionListener(this);
 		panelOrdenes.add(btnAsignar);
 
