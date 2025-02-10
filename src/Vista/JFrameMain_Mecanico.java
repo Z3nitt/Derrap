@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -292,9 +293,101 @@ public class JFrameMain_Mecanico extends JFrame implements ActionListener, ListS
 		orden2.setEnabled(false);
 		orden3.setEnabled(false);
 		
+		obtenerOrdenesEnProceso();
+		
 		//Al iniciar, obtengo los datos de la tabla de repuestos y la de ordenes
 		ControladorRegistros.actualizarTablas("repuesto", modeloTablaRepuestos);
 		ControladorRegistros.actualizarTablas("ordenesActivas", modelTablaOrdenes);
+	}
+
+	public void obtenerOrdenesEnProceso() {
+		//Obtengo las ordenes que ya estan en proceso
+		conexion.conectar();
+		
+		try {
+			ResultSet rset = conexion.ejecutarSelect("SELECT o.*, v.dni_cliente "
+					+ "FROM orden o "
+					+ "JOIN vehiculo v ON o.matricula_vehiculo = v.matricula "
+					+ "WHERE o.estado = 'En proceso'");
+			
+			//Recorro todos las ordenes encontradas
+			while(rset.next()) {
+				
+				//Obtengo el primer panel vacio
+				JPanel panelDisponible = obtenerPrimerPanelVacio();
+				//Habilito el panel
+				panelDisponible.setEnabled(true);
+				
+				//Guardo los valores de los campos
+				String idOrden = rset.getString("id_orden");
+				String estadoOrden = rset.getString("estado");
+				String matriculaOrden = rset.getString("matricula_vehiculo");
+				String dniClienteOrden = rset.getString("dni_cliente");
+				
+				//Relleno el panel
+				//Guardo los textos que tendran los label
+				String[] textos = {"Cliente: " + dniClienteOrden, "ID: " + idOrden, "Matrícula: " + matriculaOrden};
+				
+				//La posicion en el eje Y que tendran los label
+		        int[] posicionesY = {59, 24, 97}; 
+
+		        //Hago 3 labels y un boton y los agrego
+		        for (int i = 0; i < textos.length; i++) {
+		            JLabel label = new JLabel(textos[i]);
+		            label.setForeground(Color.WHITE);
+		            label.setFont(new Font("Tahoma", Font.BOLD, 12));
+		            label.setBounds(10, posicionesY[i], 136, 14);
+		            panelDisponible.add(label);
+		            
+		            
+		            //Creo el boton
+		            JButton boton = new JButton("Abrir orden");
+		            boton.setBounds(35, 220, 111, 53);
+		            boton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		            boton.setBorder(new LineBorder(new Color(0, 0, 0)));
+		            boton.setBackground(new Color(255, 255, 255));
+		            boton.setFocusable(false);
+		            //Agrego el action listener desde aca
+		            boton.addActionListener(new ActionListener() {
+						
+		            	//Cuando hace click abre la ventana de la orden
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							//Creo la nueva ventana y le paso la orden con los datos
+							//Tambien le paso el panel para despues poder volver a cerrarlo
+							VtnAbrirOrden VtnAbrirOrden = new VtnAbrirOrden(idOrden, panelDisponible);
+							VtnAbrirOrden.setVisible(true);
+						}
+					});
+		            
+		            //Agrego el hover
+		            boton.addMouseListener(new MouseAdapter() {
+		    			public void mouseEntered(MouseEvent e) {
+		    				boton.setBackground(Color.BLACK);
+		    				boton.setForeground(Color.WHITE);
+		    			}
+
+		    			public void mouseExited(MouseEvent e) {
+		    				boton.setBackground(Color.WHITE);
+		    				boton.setForeground(Color.BLACK);
+		    			}
+		    		});
+		            panelDisponible.add(boton);
+		        }
+		        
+		        
+		        
+		        
+		        //Esto sirve para refrescar el panel y que cargue los labels
+		        panelDisponible.revalidate(); 
+		        panelDisponible.repaint();
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
