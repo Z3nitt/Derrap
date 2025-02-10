@@ -83,7 +83,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblValorDniCliente = new JLabel("ID de la orden");
 		lblValorDniCliente.setForeground(Color.WHITE);
 		lblValorDniCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblValorDniCliente.setBounds(471, 139, 96, 14);
+		lblValorDniCliente.setBounds(471, 139, 96, 26);
 		contentPane.add(lblValorDniCliente);
 		
 		JLabel lblMarca = new JLabel("Marca:");
@@ -244,7 +244,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		lblValorNombreCliente = new JLabel("ID de la orden");
 		lblValorNombreCliente.setForeground(Color.WHITE);
 		lblValorNombreCliente.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblValorNombreCliente.setBounds(471, 176, 96, 14);
+		lblValorNombreCliente.setBounds(471, 176, 96, 23);
 		contentPane.add(lblValorNombreCliente);
 		
 		btnAgregarPiezas = new JButton("Agregar Piezas");
@@ -254,7 +254,7 @@ public class VtnAbrirOrden extends JFrame implements ActionListener{
 		contentPane.add(btnAgregarPiezas);
 		
 		
-		
+		actualizarValores();
 		
 		
 		
